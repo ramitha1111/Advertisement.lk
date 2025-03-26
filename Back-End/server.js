@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const passport = require('passport');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 
@@ -11,6 +12,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Initialize Passport
+app.use(passport.initialize());
 
 // Connect to MongoDB
 connectDB();
