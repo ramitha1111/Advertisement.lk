@@ -1,29 +1,26 @@
-const { MongoClient, ObjectId } = require('mongodb');
-require('dotenv').config();
-
-const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
-const db = client.db('AdvertisementLk');
-const categoriesCollection = db.collection('categories');
+const mongoose = require('mongoose');
+const Category = require('../models/category');
 
 // Create Category
 const createCategory = async (req, res) => {
     try {
         const { name, description } = req.body;
+
         if (!name) {
             return res.status(400).json({ message: 'Category name is required' });
         }
 
-        const existingCategory = await categoriesCollection.findOne({ name });
+        const existingCategory = await Category.findOne({ name });
         if (existingCategory) {
             return res.status(400).json({ message: 'Category already exists' });
         }
 
-        const result = await categoriesCollection.insertOne({ name, description });
+        const category = new Category({ name, description });
+        await category.save();
 
-        res.status(201).json({ 
-            message: 'Category created successfully', 
-            category: { _id: result.insertedId, name, description } 
+        res.status(201).json({
+            message: 'Category created successfully',
+            category
         });
     } catch (error) {
         console.error('Error in createCategory:', error);
@@ -31,11 +28,10 @@ const createCategory = async (req, res) => {
     }
 };
 
-
 // Get All Categories
 const getCategories = async (req, res) => {
     try {
-        const categories = await categoriesCollection.find().toArray();
+        const categories = await Category.find();
         res.status(200).json(categories);
     } catch (error) {
         console.error('Error in getCategories:', error);
@@ -47,15 +43,24 @@ const getCategories = async (req, res) => {
 const getCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const category = await categoriesCollection.findOne({ _id: new ObjectId(id) });
 
+        // Check if the ID is a valid ObjectId
+        if (!mongoose.isValidObjectId(id)) {
+            return res.status(400).json({ message: 'Invalid category ID' });
+        }
+
+        // Find the category by ID
+        const category = await Category.findById(id);
+
+        // If category is not found
         if (!category) {
             return res.status(404).json({ message: 'Category not found' });
         }
 
+        // Return the category if found
         res.status(200).json(category);
     } catch (error) {
-        console.error('Error in getCategory:', error);
+        console.error('Error in getCategory:', error); // Log the error to the console
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -66,35 +71,40 @@ const updateCategory = async (req, res) => {
         const { id } = req.params;
         const { name, description } = req.body;
 
-        if (!ObjectId.isValid(id)) {
+        // Validate ObjectId
+        if (!mongoose.isValidObjectId(id)) {
             return res.status(400).json({ message: 'Invalid category ID' });
         }
 
-        const result = await categoriesCollection.findOneAndUpdate(
-            { _id: new ObjectId(id) },
-            { $set: { name, description } },
-            { returnDocument: 'after' } // Returns the updated document
+        const updatedCategory = await Category.findByIdAndUpdate(
+            id,
+            { name, description },
+            { new: true } // Return the updated document
         );
 
-        if (!result) {
+        if (!updatedCategory) {
             return res.status(404).json({ message: 'Category not found' });
         }
 
-        res.status(200).json({ message: 'Category updated successfully', category: result });
+        res.status(200).json({ message: 'Category updated successfully', category: updatedCategory });
     } catch (error) {
         console.error('Error in updateCategory:', error);
         res.status(500).json({ message: 'Server error' });
     }
 };
 
-
 // Delete Category
 const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const result = await categoriesCollection.deleteOne({ _id: new ObjectId(id) });
 
-        if (result.deletedCount === 0) {
+        // Validate ObjectId
+        if (!mongoose.isValidObjectId(id)) {
+            return res.status(400).json({ message: 'Invalid category ID' });
+        }
+
+        const result = await Category.findByIdAndDelete(id);
+        if (!result) {
             return res.status(404).json({ message: 'Category not found' });
         }
 

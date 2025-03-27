@@ -1,76 +1,68 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { MongoClient } = require('mongodb');
-require('dotenv').config();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const Auth = require("../models/user");
+const otpController = require("./otpController");
 
-const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
-const db = client.db('AdvertisementLk');
-const usersCollection = db.collection('users');
+// Register User
+exports.register = async (req, res) => {
+  const { name, username, email, password, phone } = req.body;
 
-// User Registration
-const registerUser = async (req, res) => {
-    try {
-        const { name, username, email, password, phone } = req.body;
+  try {
+    // Check if email already exists
+    let user = await Auth.findOne({ email });
+    if (user) return res.status(400).json({ message: "Email already exists" });
 
-        if (!name || !username || !email || !password || !phone) {
-            return res.status(400).json({ message: 'All fields are required' });
-        }
+    // Check if username already exists
+    user = await Auth.findOne({ username });
+    if (user) return res.status(400).json({ message: "Username taken" });
 
-        // Check if user already exists
-        const existingUser = await usersCollection.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Email already registered' });
-        }
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+    // Create new user
+    user = new Auth({ name, username, email, password: hashedPassword, phone });
+    await user.save();
 
-        // Save user details in DB
-        await usersCollection.insertOne({
-            name,
-            username,
-            email,
-            password: hashedPassword,
-            phone,
-        });
+    // Send OTP after successful registration
+    await otpController.sendOTP(email);
 
-        res.status(201).json({ message: 'Registration successful. You can now log in.' });
-    } catch (error) {
-        console.error('Error in registerUser:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
+    res.json({ message: "User registered successfully. OTP sent to email for verification." });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
 };
 
-// User Login
-const loginUser = async (req, res) => {
-    try {
-        const { email, password } = req.body;
+// Login User
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
 
-        if (!email || !password) {
-            return res.status(400).json({ message: 'All fields are required' });
-        }
+  try {
+    const user = await Auth.findOne({ email });
 
-        // Check if user exists
-        const user = await usersCollection.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ message: 'User not found' });
-        }
-
-        // Compare password
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (!isPasswordCorrect) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        // Generate JWT token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-        res.status(200).json({ message: 'Login successful', token });
-    } catch (error) {
-        console.error('Error in loginUser:', error);
-        res.status(500).json({ message: 'Server error' });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(400).json({ message: "Invalid credentials" });
     }
+
+    if (!user.emailVerified) {
+      return res.status(403).json({ message: "Email not verified" });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    res.json({ token, user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
 };
 
-module.exports = { registerUser, loginUser };
+// Google Authentication
+exports.googleAuth = (req, res) => {
+  // Google login successful, user and token are available
+  const { user, token } = req.user;
+
+  res.json({
+    message: "Google login successful",
+    user: user,  // Send user data
+    token: token, // Send the JWT token for session management
+  });
+};
+
