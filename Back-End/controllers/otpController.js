@@ -1,4 +1,4 @@
-const Auth = require("../models/Auth");
+const Auth = require("../models/user");
 const nodemailer = require("nodemailer");
 
 // Email Transporter
