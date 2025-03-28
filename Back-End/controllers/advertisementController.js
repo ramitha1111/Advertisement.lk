@@ -176,12 +176,13 @@ exports.getAdvertisementsByAdvertisementId=async (req,res)=>{
 //Get advertisement by search keyword within debounced search
 // This is a debounced search function that waits for the user to stop typing before sending a request to the server.
 // This reduces the number of requests sent to the server and improves performance.
+//TODO:Ensure following code base is correct or not
 exports.getAdvertisementsBySearching= async (req, res) => {
     try {
         const query = req.query.query;
         if (!query) return res.json({ products: [] });
 
-        const products = await Product.find({
+        const products = await advertisementModel.find({
             $text: { $search: query }
         }).limit(10); // Optimized search with a limit
 
@@ -191,3 +192,15 @@ exports.getAdvertisementsBySearching= async (req, res) => {
     }
 }
 
+const favourites=require('./../models/favourites');
+//Get advertisements by favourite
+exports.getAdvertisementsByFavourite=async (req,res)=>{
+    try{
+        const advertisements=await favourites.findById({userId:req.params.userId});
+        res.status(200).json(advertisements);
+
+    }
+    catch (error){
+        res.status(500).json({message:"Server error",error});
+    }
+}
