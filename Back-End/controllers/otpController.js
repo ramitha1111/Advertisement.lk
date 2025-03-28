@@ -36,6 +36,31 @@ exports.sendOTP = async (email) => {
   }
 };
 
+// Password Reset OTP
+exports.passwordResetOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: "Email is required" });
+
+    const otp = generateOTP(); // Generate a 6-digit OTP
+    await Auth.findOneAndUpdate({ email }, { otp }, { upsert: true });
+
+    // Send OTP email
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Email Verification OTP",
+      text: `Your OTP code is ${otp}`,
+    });
+
+    console.log(`OTP sent to ${email}`);
+    res.status(200).json({ message: "OTP sent successfully" });
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    res.status(500).json({ message: "Server error in sending OTP" });
+  }
+};
+
 // Verify OTP
 exports.verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
