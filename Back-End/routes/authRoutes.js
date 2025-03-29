@@ -27,7 +27,4 @@ router.get('/google/callback',
   googleAuth  // Callback method to handle the success and send JWT token to frontend
 );
 
-// Update user details
-router.put('/update', authenticate, updateUser);
-
 module.exports = router;
