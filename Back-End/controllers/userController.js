@@ -1,4 +1,5 @@
 const Auth = require('../models/user');
+const mongoose = require('mongoose');
 
 // Update User
 exports.updateUser = async (req, res) => {
@@ -74,6 +75,32 @@ exports.getUsers = async (req, res) => {
       res.status(200).json(users);
     } catch (error) {
       console.error('Error in getUsers:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+
+  // Get User by ID
+exports.getUserById = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      // Validate if the provided ID is a valid MongoDB ObjectId
+      if (!mongoose.isValidObjectId(id)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+      }
+  
+      // Find the user by their ID
+      const user = await Auth.findById(id).select('-password -otp'); // Exclude sensitive fields like password and OTP
+  
+      // Check if user exists
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Return the user data
+      res.status(200).json(user);
+    } catch (error) {
+      console.error('Error in getUserById:', error);
       res.status(500).json({ message: 'Server error' });
     }
   };
