@@ -36,3 +36,25 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// Delete User
+exports.deleteUser = async (req, res) => {
+    const userId = req.user._id; // The user ID is attached to req.user after authentication
+  
+    try {
+      // Find the user by ID
+      const user = await Auth.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Delete the user
+      await user.remove();
+  
+      res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+      console.error('Error in deleteUser:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
