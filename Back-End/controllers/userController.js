@@ -58,3 +58,22 @@ exports.deleteUser = async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   };
+
+  // Get All Users
+exports.getUsers = async (req, res) => {
+    try {
+      // Fetch all users from the database
+      const users = await Auth.find().select('-password -otp'); // Exclude sensitive fields like password and OTP
+      
+      // Check if no users found
+      if (!users || users.length === 0) {
+        return res.status(404).json({ message: 'No users found' });
+      }
+  
+      // Send the list of users
+      res.status(200).json(users);
+    } catch (error) {
+      console.error('Error in getUsers:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
