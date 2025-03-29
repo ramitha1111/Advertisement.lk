@@ -7,4 +7,7 @@ const router = express.Router();
 // Update user details
 router.put('/update', authenticate, updateUser); // Protect this route with JWT
 
+// Delete user
+router.delete('/delete', authenticate, deleteUser);
+
 module.exports = router;
