@@ -1,6 +1,6 @@
-const Package = require('../models/Package');
-const User = require('../models/User');
-const Transaction = require('../models/Transaction');
+const Package = require('../models/package');
+const User = require('../models/user');
+// const Transaction = require('../models/transaction');
 
 // Create a new package
 exports.createPackage = async (req, res) => {
@@ -62,8 +62,8 @@ exports.buyPackage = async (req, res) => {
             packageExpiry: new Date(Date.now() + selectedPackage.duration * 86400000),
         });
 
-        const transaction = new Transaction({ userId, packageId, amount: selectedPackage.price, type: 'purchase' });
-        await transaction.save();
+        // const transaction = new Transaction({ userId, packageId, amount: selectedPackage.price, type: 'purchase' });
+        // await transaction.save();
 
         res.status(200).json({ message: 'Package purchased successfully', selectedPackage });
     } catch (error) {
