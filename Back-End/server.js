@@ -27,7 +27,7 @@ connectDB();
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use("api/packages", packageRoutes);
+app.use("/api/packages", packageRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

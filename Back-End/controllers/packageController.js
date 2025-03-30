@@ -1,6 +1,7 @@
-const Package = require('../models/Package');
-const User = require('../models/User');
-const Transaction = require('../models/Transaction');
+const Package = require('../models/package');
+const jwt = require("jsonwebtoken");
+const User = require('../models/user');
+// const Transaction = require('../models/transaction');
 
 // Create a new package
 exports.createPackage = async (req, res) => {
@@ -17,8 +18,28 @@ exports.createPackage = async (req, res) => {
     }
 };
 
+// Get a single package by ID
+exports.getPackageById = async (req, res) => {
+    try {
+        const packageId = req.params.id;
+        res.status(200).json({ message: 'Package ID', packageId });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get all packages
+exports.getAllPackages = async (req, res) => {
+    try {
+        const packages = await Package.find();
+        res.status(200).json(packages);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // Get all active packages
-exports.getPackages = async (req, res) => {
+exports.getActivePackages = async (req, res) => {
     try {
         const packages = await Package.find({ isActive: true });
         res.status(200).json(packages);
@@ -62,8 +83,8 @@ exports.buyPackage = async (req, res) => {
             packageExpiry: new Date(Date.now() + selectedPackage.duration * 86400000),
         });
 
-        const transaction = new Transaction({ userId, packageId, amount: selectedPackage.price, type: 'purchase' });
-        await transaction.save();
+        // const transaction = new Transaction({ userId, packageId, amount: selectedPackage.price, type: 'purchase' });
+        // await transaction.save();
 
         res.status(200).json({ message: 'Package purchased successfully', selectedPackage });
     } catch (error) {
