@@ -4,6 +4,7 @@ const passport = require("passport");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const packageRoutes = require("./routes/packageRoutes");
 require("dotenv").config();
 const session = require("express-session");
 
@@ -26,6 +27,7 @@ connectDB();
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("api/packages", packageRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
