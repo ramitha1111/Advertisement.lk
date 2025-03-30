@@ -1,4 +1,5 @@
 const Package = require('../models/package');
+const jwt = require("jsonwebtoken");
 const User = require('../models/user');
 // const Transaction = require('../models/transaction');
 
@@ -17,8 +18,28 @@ exports.createPackage = async (req, res) => {
     }
 };
 
+// Get a single package by ID
+exports.getPackageById = async (req, res) => {
+    try {
+        const packageId = req.params.id;
+        res.status(200).json({ message: 'Package ID', packageId });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get all packages
+exports.getAllPackages = async (req, res) => {
+    try {
+        const packages = await Package.find();
+        res.status(200).json(packages);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // Get all active packages
-exports.getPackages = async (req, res) => {
+exports.getActivePackages = async (req, res) => {
     try {
         const packages = await Package.find({ isActive: true });
         res.status(200).json(packages);
