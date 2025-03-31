@@ -7,6 +7,7 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String },
   phone: { type: String, required: true },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
   otp: { type: String }, // Field to store OTP
   emailVerified: { type: Boolean, default: false }, // Email verification status
 });

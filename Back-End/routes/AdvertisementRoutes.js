@@ -1,21 +1,20 @@
 const express=require('express');
-const { createAdvertisement, getAdvertisements, getAdvertisement, updateAdvertisement, deleteAdvertisement,
-    getAdvertisementsByAdvertisementId,getAdvertisementByCategory,getAdvertisementsBySearch,getCompareAds,addToCompareList,removeFromCompareList
+
+const { createAdvertisement, getAllAdvertisements, getAdvertisements, updateAdvertisement, deleteAdvertisement,
+    getAdvertisementsByCategory, getAdvertisementsByAdvertisementId, getAdvertisementsBySearching
 } = require('../controllers/advertisementController');
 const routes=express.Router();
+const authMiddleware = require('../middlewares/authMiddleware');
 
 
 routes.post('/', createAdvertisement); // Create advertisement
-routes.get('/', getAdvertisements); // Get all advertisements
-routes.get('/:id', getAdvertisement); // Get a single advertisement by ID
+routes.get('/', getAllAdvertisements); // Get all advertisements
+routes.get('/:id', getAdvertisements); // Get a single advertisement by ID
 routes.put('/:id', updateAdvertisement); // Update advertisement
 routes.delete('/:id', deleteAdvertisement); // Delete advertisement
-routes.get('/:categories',getAdvertisementByCategory);//Get advertisements by category , make an adjustment by Mihiran on this line 
+routes.get('/:categories', getAdvertisementsByCategory);//Get advertisements by category
 routes.get('/:advertisementId',getAdvertisementsByAdvertisementId);//Get advertisements by id
-routes.get('/:search',getAdvertisementsBySearch);//Get advertisements by search
-routes.post('/compare/:id',addToCompareList); // Add ad to compare list
-routes.delete('/compare/:id',removeFromCompareList);//remove ad from compare list 
-routes.get('/compare',getCompareAds);// Get compared Ads
+routes.get('/search/:search',getAdvertisementsBySearching);//Get advertisements by search
 
 
 module.exports=routes;
