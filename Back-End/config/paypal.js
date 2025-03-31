@@ -1,5 +1,3 @@
-
-
 const paypal = require('paypal-rest-sdk');
 
 //ToDo:Have to Install Paypal SDK using npm install paypal-rest-sdk
