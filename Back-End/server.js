@@ -22,7 +22,7 @@ app.use(passport.session());
 require("./config/passport")(passport);
 
 // Connect to MongoDB
-connectDB();
+connectDB().then((response) => console.log("Connected to MongoDB"));
 
 // Routes
 app.use("/api/auth", authRoutes);
