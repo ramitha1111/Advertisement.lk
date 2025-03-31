@@ -11,7 +11,7 @@ routes.get('/', getAllAdvertisements); // Get all advertisements
 routes.get('/:id', getAdvertisements); // Get a single advertisement by ID
 routes.put('/:id', updateAdvertisement); // Update advertisement
 routes.delete('/:id', deleteAdvertisement); // Delete advertisement
-
+routes.get('/:categories', getAdvertisementsByCategory);//Get advertisements by category
 
 routes.get('/search/:search',getAdvertisementsBySearching);//Get advertisements by search
 
