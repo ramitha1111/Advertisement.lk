@@ -3,6 +3,7 @@ const cors = require("cors");
 const passport = require("passport");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const packageRoutes = require("./routes/packageRoutes");
 require("dotenv").config();
@@ -26,6 +27,7 @@ connectDB();
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/packages", packageRoutes);
 
