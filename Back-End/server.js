@@ -24,7 +24,7 @@ app.use(passport.session());
 require("./config/passport")(passport);
 
 // Connect to MongoDB
-connectDB().then((response) => console.log("Connected to MongoDB"));
+connectDB();
 
 // Routes
 app.use("/api/auth", authRoutes);
