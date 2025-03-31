@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const packageRoutes = require("./routes/packageRoutes");
+const advertisementRoutes = require("./routes/AdvertisementRoutes")
 require("dotenv").config();
 const session = require("express-session");
 
@@ -30,6 +31,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/packages", packageRoutes);
+app.use("/api/advertisements", advertisementRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

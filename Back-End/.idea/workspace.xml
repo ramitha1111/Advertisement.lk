@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="">
+    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="fix categories, packages, users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/authController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/authController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/roleMiddleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/roleMiddleware.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/categoryRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/categoryRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/userRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/userRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/AdvertisementRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/AdvertisementRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/packageRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/packageRoutes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,11 +78,24 @@
       <option name="presentableId" value="Default" />
       <updated>1743405972747</updated>
       <workItem from="1743405973883" duration="592000" />
-      <workItem from="1743434237734" duration="873000" />
+      <workItem from="1743434237734" duration="4480000" />
     </task>
+    <task id="LOCAL-00001" summary="fix categories, packages, users">
+      <option name="closed" value="true" />
+      <created>1743435455474</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743435455474</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix categories, packages, users" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix categories, packages, users" />
   </component>
 </project>
