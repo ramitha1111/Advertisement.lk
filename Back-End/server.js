@@ -9,6 +9,7 @@ const packageRoutes = require("./routes/packageRoutes");
 const advertisementRoutes = require("./routes/AdvertisementRoutes")
 require("dotenv").config();
 const session = require("express-session");
+const {compare} = require("bcryptjs");
 
 const app = express();
 const PORT = process.env.PORT || 3000;

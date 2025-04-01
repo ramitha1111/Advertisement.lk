@@ -26,4 +26,3 @@ const Advertisement=mongoose.model('Advertisement',advertisementSchema);
 //Export the model
 module.exports=Advertisement;
 
-
