@@ -4,7 +4,7 @@ const mongoose=require('mongoose');
 const {Schema}=mongoose;
 //Create a schema
 const advertisementSchema=new Schema({
-    id:{type:String,required:true},
+
     title:{type:String,required:true},
     description:{type:String,required:true},
     price:{type:Number,required:true},
@@ -13,7 +13,7 @@ const advertisementSchema=new Schema({
     location:{type:String,required:true},
     images:{type:String,required:true},
     videoUrl:{type:String,required:true},
-    isBoosted:{type:String,required:true},
+    isBoosted:{type:Number,required:true},
     views:{type:String,required:true},
     status:{type:String,required:true},
     createdAt:{type:Date,required:true},

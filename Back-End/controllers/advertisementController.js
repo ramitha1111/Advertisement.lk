@@ -21,6 +21,10 @@ const validateData = (req, res) => {
 // Create advertisement
 exports.createAdvertisement = async (req, res) => {
     try {
+        //Those additional Values which kept in db as default value
+        req.body.createdAt = new Date();
+        req.body.updatedAt = req.body.createdAt;
+        req.body.isBoosted = 0;
         if (!validateData(req, res)) return; // Stop execution if validation fails
 
         const advertisement = new advertisementModel(req.body);
@@ -56,6 +60,7 @@ exports.getAllAdvertisements = async (req, res) => {
 // Update advertisement
 exports.updateAdvertisement = async (req, res) => {
     try {
+        req.body.updatedAt = new Date();
         if (!validateData(req, res)) return;
 
         const updatedAdvertisement = await advertisementModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -70,9 +75,10 @@ exports.updateAdvertisement = async (req, res) => {
 // Delete advertisement
 exports.deleteAdvertisement = async (req, res) => {
     try {
-        const deletedAd = await advertisementModel.findByIdAndDelete(req.params.id);
+        const deletedAd = await advertisementModel.findById(req.params.id);
         if (!deletedAd) return res.status(404).json({ message: "Advertisement not found" });
-
+//remove the advertisement
+        await deletedAd.remove();
         res.json({ message: "Advertisement deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
