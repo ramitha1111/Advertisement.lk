@@ -18,5 +18,3 @@ routes.get('/search/:search',getAdvertisementsBySearching);//Get advertisements 
 
 
 module.exports=routes;
-
-
