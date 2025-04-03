@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="fix categories, packages, users">
+    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="fix favouriteRoutes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/advertisement.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/advertisement.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/AdvertisementRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/AdvertisementRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/favourites.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/favourites.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,12 +46,13 @@
     "git-widget-placeholder": "ramitha",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Projects/Advertisement.lk/Advertisement.lk/Back-End/server.js",
+    "last_opened_file_path": "D:/Projects/Web project portfolio/SENG31313-2025/se-2021-038",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Program Files (x86)\\IntelliJ IDEA 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -83,6 +82,9 @@
       <workItem from="1743444805396" duration="13000" />
       <workItem from="1743444918379" duration="13000" />
       <workItem from="1743445863189" duration="2049000" />
+      <workItem from="1743486933541" duration="3007000" />
+      <workItem from="1743610627219" duration="23000" />
+      <workItem from="1743701926589" duration="5993000" />
     </task>
     <task id="LOCAL-00001" summary="fix categories, packages, users">
       <option name="closed" value="true" />
@@ -100,7 +102,31 @@
       <option name="project" value="LOCAL" />
       <updated>1743439151131</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix categories, packages, users">
+      <option name="closed" value="true" />
+      <created>1743486993554</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743486993554</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix categories, packages, users">
+      <option name="closed" value="true" />
+      <created>1743487107238</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743487107238</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix favouriteRoutes">
+      <option name="closed" value="true" />
+      <created>1743709543474</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1743709543474</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -119,6 +145,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix categories, packages, users" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix categories, packages, users" />
+    <MESSAGE value="fix favouriteRoutes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix favouriteRoutes" />
   </component>
 </project>
