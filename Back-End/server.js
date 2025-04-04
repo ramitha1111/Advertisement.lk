@@ -7,8 +7,11 @@ const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const packageRoutes = require("./routes/packageRoutes");
 const advertisementRoutes = require("./routes/AdvertisementRoutes")
+const favouritesRoutes = require("./routes/favouritesRoutes");
+
 require("dotenv").config();
 const session = require("express-session");
+const {compare} = require("bcryptjs");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,6 +35,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/packages", packageRoutes);
 app.use("/api/advertisements", advertisementRoutes)
+app.use("/api/favourites", favouritesRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

@@ -1,5 +1,5 @@
-const CompareList = require('../models/compareList'); 
-const Advertisement = require('../models/advertisement');
+const CompareList = require('../models/compare');
+
 
 // Add Advertisement to Compare List
 const addToCompareList = async (req, res) => {
