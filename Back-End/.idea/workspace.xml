@@ -4,24 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add transactionRoutes">
+    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add invoice">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/advertisement.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/advertisement.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/package.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/package.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/eslint.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/main.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/categoryController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/categoryController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/category.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/category.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +98,7 @@
       <workItem from="1743780312319" duration="3329000" />
       <workItem from="1743837126554" duration="149000" />
       <workItem from="1743877082923" duration="11000" />
-      <workItem from="1743919291599" duration="8477000" />
+      <workItem from="1743919291599" duration="12244000" />
     </task>
     <task id="LOCAL-00001" summary="fix categories, packages, users">
       <option name="closed" value="true" />
@@ -170,7 +156,31 @@
       <option name="project" value="LOCAL" />
       <updated>1743711057338</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add checkout, payment and header">
+      <option name="closed" value="true" />
+      <created>1743943908407</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1743943908407</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add header">
+      <option name="closed" value="true" />
+      <created>1743944021304</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1743944021304</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add invoice">
+      <option name="closed" value="true" />
+      <created>1743949071544</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1743949071544</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +201,9 @@
     <MESSAGE value="fix categories, packages, users" />
     <MESSAGE value="fix favouriteRoutes" />
     <MESSAGE value="add transactionRoutes" />
-    <option name="LAST_COMMIT_MESSAGE" value="add transactionRoutes" />
+    <MESSAGE value="add checkout, payment and header" />
+    <MESSAGE value="add header" />
+    <MESSAGE value="add invoice" />
+    <option name="LAST_COMMIT_MESSAGE" value="add invoice" />
   </component>
 </project>
