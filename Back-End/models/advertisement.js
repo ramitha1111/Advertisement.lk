@@ -14,15 +14,16 @@ const advertisementSchema=new Schema({
     images:{type:String,required:true},
     videoUrl:{type:String,required:true},
     isBoosted:{type:Number,required:true},
+    boostedUntil: { type: Date },
     views:{type:String,required:true},
     status:{type:String,required:true},
     createdAt:{type:Date,required:true},
     updatedAt:{type:Date,required:true}
 
-
 })
 //Create a model
-const Advertisement=mongoose.model('Advertisement',advertisementSchema);
+const Advertisement = mongoose.models.Advertisement || mongoose.model('Advertisement', advertisementSchema);
+
 //Export the model
 module.exports=Advertisement;
 
