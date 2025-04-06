@@ -9,6 +9,8 @@ const advertisementSchema=new Schema({
     description:{type:String,required:true},
     price:{type:Number,required:true},
     categoryId:{type:String,required:true},
+    subcategoryId:{type:String,required:true},
+    features:[{type:String,required:true}],
     sellerId:{type:String,required:true},
     location:{type:String,required:true},
     images:{type:String,required:true},
