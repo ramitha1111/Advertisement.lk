@@ -1,10 +1,24 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
-const categorySchema = new Schema({
-    name: { type: String, required: true, unique: true },
-    description: { type: String }
-}, { timestamps: true });
+const categorySchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    subcategories: [{
+        name: {
+            type: String,
+            required: true
+        }
+    }],
+    features: [{
+        name: {
+            type: String,
+            required: true
+        }
+    }]
+});
 
 const Category = mongoose.model('Category', categorySchema);
 
