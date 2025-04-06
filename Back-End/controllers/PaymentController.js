@@ -2,6 +2,7 @@ const Order = require('../models/Order');
 const Advertisement = require('../models/Advertisement');
 const Package = require('../models/Package');
 const paymentGateway = require('../utils/mockPaymentgateway');
+const { generateInvoiceWithParams } = require('../controllers/invoiceController');
 
 const verifyPayment = async (req, res) => {
     const { paymentId, orderId } = req.body;
@@ -17,7 +18,7 @@ const verifyPayment = async (req, res) => {
         const paymentVerification = await paymentGateway.verifyPayment(paymentId, order.paymentIntentId);
 
         if (paymentVerification.status === 'succeeded') {
-            // Update order status
+            // Update order status to 'succeeded'
             order.paymentStatus = 'succeeded';
             await order.save();
 
@@ -41,8 +42,13 @@ const verifyPayment = async (req, res) => {
                 { new: true, runValidators: false }
             );
 
+            // Await the result of invoice generation
+            const invoiceResponse = await generateInvoiceWithParams(orderId);
+            console.log(invoiceResponse.message); // Log success message
+
+            // Return response
             res.status(200).json({
-                message: 'Payment verified, order updated, and ad boosted!',
+                message: 'Payment verified, order updated, ad boosted, and invoice sent!',
                 orderId: order._id,
                 status: 'paid',
                 boostedUntil,
@@ -55,5 +61,6 @@ const verifyPayment = async (req, res) => {
         res.status(500).json({ message: 'Error verifying payment', error: err.message });
     }
 };
+
 
 module.exports = { verifyPayment };
