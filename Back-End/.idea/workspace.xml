@@ -4,14 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="fix favouriteRoutes">
+    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add transactionRoutes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/favourites.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/favourites.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/advertisement.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/advertisement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/package.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/package.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/eslint.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -36,26 +58,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Node.js.server.js.executor": "Run",
-    "Node.js.user.js.executor": "Run",
-    "Node.js.userRoutes.js.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "ramitha",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Projects/Web project portfolio/SENG31313-2025/se-2021-038",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files (x86)\\IntelliJ IDEA 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.server.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.user.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.userRoutes.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ramitha&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/Web project portfolio/SENG31313-2025/se-2021-038&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files (x86)\\IntelliJ IDEA 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="server.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="server.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
@@ -84,7 +106,13 @@
       <workItem from="1743445863189" duration="2049000" />
       <workItem from="1743486933541" duration="3007000" />
       <workItem from="1743610627219" duration="23000" />
-      <workItem from="1743701926589" duration="5993000" />
+      <workItem from="1743701926589" duration="6727000" />
+      <workItem from="1743739306254" duration="8592000" />
+      <workItem from="1743779055416" duration="24000" />
+      <workItem from="1743780312319" duration="3329000" />
+      <workItem from="1743837126554" duration="149000" />
+      <workItem from="1743877082923" duration="11000" />
+      <workItem from="1743919291599" duration="8477000" />
     </task>
     <task id="LOCAL-00001" summary="fix categories, packages, users">
       <option name="closed" value="true" />
@@ -126,7 +154,23 @@
       <option name="project" value="LOCAL" />
       <updated>1743709543474</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add transactionRoutes">
+      <option name="closed" value="true" />
+      <created>1743711045739</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1743711045739</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add transactionRoutes">
+      <option name="closed" value="true" />
+      <created>1743711057338</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1743711057338</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,6 +190,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix categories, packages, users" />
     <MESSAGE value="fix favouriteRoutes" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix favouriteRoutes" />
+    <MESSAGE value="add transactionRoutes" />
+    <option name="LAST_COMMIT_MESSAGE" value="add transactionRoutes" />
   </component>
 </project>
