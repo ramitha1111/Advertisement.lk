@@ -2,7 +2,7 @@ const Order = require('../models/Order');
 const Advertisement = require('../models/Advertisement');
 const Package = require('../models/Package');
 const paymentGateway = require('../utils/mockPaymentgateway');
-const { generateInvoiceWithParams } = require('../controllers/invoiceController');
+const { generateInvoiceWithParams } = require('../utils/invoiceSend');
 
 const verifyPayment = async (req, res) => {
     const { paymentId, orderId } = req.body;
@@ -20,6 +20,7 @@ const verifyPayment = async (req, res) => {
         if (paymentVerification.status === 'succeeded') {
             // Update order status to 'succeeded'
             order.paymentStatus = 'succeeded';
+            order.paymentMethod = paymentVerification.method || 'unknown';
             await order.save();
 
             // Fetch package to get boost duration
@@ -28,9 +29,18 @@ const verifyPayment = async (req, res) => {
                 return res.status(404).json({ message: 'Package not found' });
             }
 
+            // Check if the advertisement is already boosted
+            const advertisement = await Advertisement.findById(order.advertisementId);
+            if (!advertisement) {
+                return res.status(404).json({ message: 'Advertisement not found' });
+            }
+
             // Calculate boostedUntil
             const boostDurationMs = pkg.duration * 24 * 60 * 60 * 1000;
-            const boostedUntil = new Date(Date.now() + boostDurationMs);
+            const currentBoostedUntil = advertisement.boostedUntil || null;
+            const boostedUntil = currentBoostedUntil
+                ? new Date(currentBoostedUntil.getTime() + boostDurationMs)
+                : new Date(Date.now() + boostDurationMs);
 
             // Update only the fields you want in Advertisement
             await Advertisement.findByIdAndUpdate(

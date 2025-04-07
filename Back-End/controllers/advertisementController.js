@@ -1,7 +1,10 @@
-
+const mongoose = require("mongoose");
 const advertisementModel = require("../models/advertisement");
 const favourites = require("../models/favourites");
-const jwt=require("./../middlewares/authMiddleware");
+const dayjs = require('dayjs');
+const Order = require('../models/Order');
+const Advertisement = require('../models/Advertisement');
+
 // Validate advertisement data
 const validateData = (req, res) => {
     const { title, description, price, categoryId, location, images, videoUrl,subcategoryId } = req.body;
@@ -91,6 +94,7 @@ exports.updateAdvertisement = async (req, res) => {
         res.status(500).json({ message: "Server error", error });
     }
 };
+
 // Delete advertisement
 exports.deleteAdvertisement = async (req, res) => {
     try {
@@ -153,5 +157,44 @@ exports.getAdvertisementsByFavourite = async (req, res) => {
         res.status(200).json(favouriteAds);
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
+    }
+};
+
+// Get renewable ads
+
+exports.getRenewableAds = async (req, res) => {
+    const userId = req.user.id; // Extracted from token via authMiddleware
+
+    try {
+        // Get orders for the current user
+        const orders = await Order.find({ userId });
+
+        // Extract advertisementIds from orders and ensure they are ObjectIds
+        const adIds = orders.map(order => order.advertisementId);
+
+        // Ensure adIds contains only valid ObjectId values
+        if (!adIds.length) {
+            return res.status(400).json({ message: 'No advertisements found for this user' });
+        }
+
+        // Get the current time and the time 1 day from now
+        const tomorrowStart = dayjs().add(1, 'day').startOf('day').toDate();
+        const tomorrowEnd = dayjs().add(1, 'day').endOf('day').toDate();
+
+        // Find ads that are boosted and will expire in 1 day
+        const renewableAds = await Advertisement.find({
+            _id: { $in: adIds },  // Ensure adIds are ObjectId types
+            isBoosted: 1,  // Ads that are boosted
+            boostedUntil: {
+                $gte: tomorrowStart,
+                $lte: tomorrowEnd
+            }
+        }).select('_id packageId boostedUntil'); // Select adId and packageId only
+
+        // Return the filtered ads
+        res.status(200).json({ renewableAds });
+    } catch (err) {
+        console.error('Error fetching renewable ads:', err);
+        res.status(500).json({ message: 'Failed to fetch renewable ads', error: err.message });
     }
 };

@@ -12,12 +12,11 @@ const contactRoutes = require("./routes/contactRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
-const invoiceRoutes = require("./routes/invoiceRoutes");
 
 require("dotenv").config();
 const session = require("express-session");
 const {compare} = require("bcryptjs");
-const {checkout} = require("./controllers/CheckoutController");
+const {checkout} = require("./controllers/checkoutController");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,7 +45,6 @@ app.use("/api/contact", contactRoutes);
 //app.use("/api/orders", orderRoutes);
 app.use("/api/checkout", checkoutRoutes)
 app.use("/api/payment", paymentRoutes);
-app.use("/api/invoice", invoiceRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
