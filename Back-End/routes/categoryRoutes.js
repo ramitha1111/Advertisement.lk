@@ -12,3 +12,6 @@ router.put('/:id', authMiddleware, isAdmin, updateCategory); // Only admins can 
 router.delete('/:id', authMiddleware, isAdmin, deleteCategory); // Only admins can delete categories
 
 module.exports = router;
+//Updated Electronics
+//Electronicssss
+//Fruits
