@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const advertisementModel = require("../models/advertisement");
 const favourites = require("../models/favourites");
 const dayjs = require('dayjs');
@@ -6,44 +7,64 @@ const Advertisement = require('../models/Advertisement');
 
 // Validate advertisement data
 const validateData = (req, res) => {
-    const { title, description, price, categoryId, sellerId, location, images, videoUrl } = req.body;
+    const { title, description, price, categoryId, location, images, videoUrl,subcategoryId } = req.body;
 
     if (!title) return res.status(400).json({ message: "Title is required" });
     if (!description) return res.status(400).json({ message: "Description is required" });
     if (!price) return res.status(400).json({ message: "Price is required" });
     if (!categoryId) return res.status(400).json({ message: "Category is required" });
-    if (!sellerId) return res.status(400).json({ message: "Seller is required" });
+
     if (!location) return res.status(400).json({ message: "Location is required" });
     if (!images) return res.status(400).json({ message: "Images are required" });
     if (!videoUrl) return res.status(400).json({ message: "Video URL is required" });
-
+    if(!subcategoryId) return res.status(400).json({ message: "Subcategory is required" });
     return true;
 };
 
 // Create advertisement
 exports.createAdvertisement = async (req, res) => {
     try {
+        // Check if the user is authenticated
+        req.body.userId=req.user.id;
         //Those additional Values which kept in db as default value
         req.body.createdAt = new Date();
         req.body.updatedAt = req.body.createdAt;
         req.body.isBoosted = 0;
+console.log(req.user.userId);
+
         if (!validateData(req, res)) return; // Stop execution if validation fails
 
         const advertisement = new advertisementModel(req.body);
+
+       //save advertisement in db
         await advertisement.save();
+
         res.json({ message: "Advertisement created successfully" });
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }
 };
 
-// Get advertisement by ID
-exports.getAdvertisements = async (req, res) => {
+// Get advertisement by userId
+exports.getAdvertisementsByUserId = async (req, res) => {
     try {
-        const advertisement = await advertisementModel.findById(req.params.id);
-        if (!advertisement) return res.status(404).json({ message: "Advertisement not found" });
+      // get the UserId by authMiddleware
+        const userId = req.user.id;
+        console.log(userId);
 
-        res.status(200).json(advertisement);
+        //find advertisements by userId
+        //It will return all advertisements of the user
+        const advertisements = await advertisementModel.find({ userId: userId});
+       //Pass the Parameter for filter the advertisement want to delete
+
+
+        //Delete the advertisement by advertisementId
+
+
+        if (!advertisements) return res.status(404).json({ message: "Advertisement not found" });
+        // Check if the advertisement belongs to the user
+        console.log(advertisements.toString());
+        res.status(200).json(advertisements);
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }
@@ -65,7 +86,7 @@ exports.updateAdvertisement = async (req, res) => {
         req.body.updatedAt = new Date();
         if (!validateData(req, res)) return;
 
-        const updatedAdvertisement = await advertisementModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const updatedAdvertisement = await advertisementModel.findByIdAndUpdate(req.id, req.body, { new: true });
         if (!updatedAdvertisement) return res.status(404).json({ message: "Advertisement not found" });
 
         res.json({ message: "Advertisement updated successfully", advertisement: updatedAdvertisement });
@@ -77,11 +98,15 @@ exports.updateAdvertisement = async (req, res) => {
 // Delete advertisement
 exports.deleteAdvertisement = async (req, res) => {
     try {
-        const deletedAd = await advertisementModel.findById(req.params.id);
-        if (!deletedAd) return res.status(404).json({ message: "Advertisement not found" });
-//remove the advertisement
-        await deletedAd.remove();
-        res.json({ message: "Advertisement deleted successfully" });
+        const userId=req.user.id;
+        const advertisementId=req.params.id;
+        const advertisement = await advertisementModel.findOne({userId: userId,_id: advertisementId});
+        console.log(advertisement);
+        // Check if the advertisement belongs to the user
+        if (!advertisement) return res.status(404).json({ message: "Advertisement not found" });
+        await advertisement.deleteOne();
+        res.status(200).json({ message: "Advertisement deleted successfully" });
+        console.log(advertisement.toString());
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }
