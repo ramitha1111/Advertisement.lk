@@ -11,6 +11,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.1",
     "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.8.4",
     "lucide-react": "^0.487.0",

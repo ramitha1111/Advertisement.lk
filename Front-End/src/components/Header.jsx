@@ -1,101 +1,316 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { User, Plus, Moon, Sun, Menu, X } from 'lucide-react';
-import { toggleTheme } from '../store/themeSlice';
+'use client'
+
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  User,
+  Plus,
+  Moon,
+  Sun,
+  Menu,
+  X,
+  LogIn,
+  UserPlus,
+  Heart,
+  Settings,
+  FileText,
+  ShoppingBag,
+  LogOut,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram
+} from 'lucide-react'
+import { toggleTheme } from '../store/themeSlice'
+import { logout } from '../store/authSlice'
+import useAuth from '../hooks/useAuth';
+import {
+  Dialog,
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+} from '@headlessui/react'
 
 const Header = () => {
-  const isDark = useSelector((state) => state.theme.isDark);
-  const dispatch = useDispatch();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isDark = useSelector((state) => state.theme.isDark)
+  const dispatch = useDispatch()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [headerHeight, setHeaderHeight] = useState(0)
+  const headerRef = React.useRef(null)
+  const { isLoggedIn, isAdmin } = useAuth() // Get login and admin status from useAuth hook
+
+  // Calculate and set header height
+  useEffect(() => {
+    if (headerRef.current) {
+      const height = headerRef.current.offsetHeight
+      setHeaderHeight(height)
+      document.body.style.paddingTop = `${height}px`
+    }
+    
+    // Recalculate on window resize
+    const handleResize = () => {
+      if (headerRef.current) {
+        const height = headerRef.current.offsetHeight
+        setHeaderHeight(height)
+        document.body.style.paddingTop = `${height}px`
+      }
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      document.body.style.paddingTop = '0px'
+    }
+  }, [])
 
   useEffect(() => {
     if (isDark) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add('dark')
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove('dark')
     }
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  }, [isDark]);
+    localStorage.setItem('theme', isDark ? 'dark' : 'light')
+  }, [isDark])
 
   // Prevent body scrolling when menu is open
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'auto'
     }
     return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isMenuOpen]);
+      document.body.style.overflow = 'auto'
+    }
+  }, [mobileMenuOpen])
+
+  // Handle logout
+  const handleLogout = () => {
+    dispatch(logout())
+  }
+
+  const navLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Contact Us', href: '/contact' },
+    { name: 'Business', href: '/business' }
+  ]
+
+  const guestOptions = [
+    { name: 'Log In', href: '/login', icon: LogIn },
+    { name: 'Register', href: '/register', icon: UserPlus },
+    { name: 'Favorites', href: '/favorites', icon: Heart }
+  ]
+
+  const userOptions = [
+    { name: 'My Profile', href: '/profile', icon: User },
+    { name: 'My Ads', href: '/my-ads', icon: FileText },
+    { name: 'My Orders', href: '/my-orders', icon: ShoppingBag },
+    { name: 'Settings', href: '/settings', icon: Settings },
+    { name: 'Favorites', href: '/favorites', icon: Heart }
+  ]
 
   return (
-    <>
-      {/* Mobile Header */}
-      <header className="md:hidden bg-white dark:bg-gray-900 shadow-md font-sans py-4 fixed top-0 left-0 right-0 z-30">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <button 
-            onClick={() => setIsMenuOpen(true)}
-            className="text-gray-700 dark:text-gray-300"
-          >
-            <Menu size={24} className="stroke-2" />
-          </button>
-          
-          <div className="flex-1 text-center">
-            <a href="/" className="text-xl font-extrabold tracking-tight inline-block">
-              <span className="text-black dark:text-white">ADvertise</span>
-              <span className="text-primary">ments.lk</span>
-            </a>
+    <header ref={headerRef} className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700">
+      {/* Top bar */}
+      <div className="hidden md:block bg-gray-100 dark:bg-gray-800 py-2">
+        <div className="mx-auto max-w-7xl px-8">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="font-medium">Sri Lanka's #1 Marketplace</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <a href="mailto:support@advertisements.lk" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                support@advertisements.lk
+              </a>
+              <div className="flex items-center space-x-2">
+                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                  <Facebook size={16} className="stroke-2" />
+                </a>
+                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                  <Twitter size={16} className="stroke-2" />
+                </a>
+                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                  <Linkedin size={16} className="stroke-2" />
+                </a>
+                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                  <Instagram size={16} className="stroke-2" />
+                </a>
+              </div>
+            </div>
           </div>
-          
-          <a href="/login" className="text-gray-700 dark:text-gray-300">
-            <User size={24} className="stroke-2" />
-          </a>
         </div>
-      </header>
+      </div>
 
       {/* Desktop Header */}
-      <header className="hidden md:block bg-white dark:bg-gray-900 shadow-md font-sans py-4">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center">
-            <a href="/" className="text-2xl font-extrabold tracking-tight">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 xl:px-8">
+        {/* Logo */}
+        <div className="flex xl:flex-1">
+          <a href="/" className="text-2xl font-bold tracking-tight">
+            <span className="text-black dark:text-white">ADvertise</span>
+            <span className="text-primary">ments.lk</span>
+          </a>
+        </div>
+
+        {/* Mobile menu button - show when width < 1280px (xl breakpoint) */}
+        <div className="flex xl:hidden">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-300"
+          >
+            <span className="sr-only">Open main menu</span>
+            <Menu className="size-6 stroke-2" aria-hidden="true" />
+          </button>
+        </div>
+
+        {/* Desktop navigation - hidden until width >= 1280px (xl breakpoint) */}
+        <div className="hidden xl:flex xl:gap-x-12">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className="text-sm/6 font-semibold text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
+
+        {/* Desktop right section - hidden until width >= 1280px (xl breakpoint) */}
+        <div className="hidden xl:flex xl:flex-1 xl:justify-end xl:items-center xl:space-x-4">
+          {/* Theme toggle */}
+          <button
+            onClick={() => dispatch(toggleTheme())}
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            title="Toggle Theme"
+          >
+            {isDark ?
+              <Sun size={20} className="text-yellow-400 stroke-2" /> :
+              <Moon size={20} className="text-gray-800 stroke-2" />
+            }
+          </button>
+
+          {/* User dropdown - changes based on auth state */}
+          <Popover className="relative group">
+            {({ open }) => (
+              <>
+                {isLoggedIn ? (
+                  <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 hover:border-primary hover:text-primary dark:hover:text-primary dark:hover:border-primary px-4 py-2 rounded-md transition-colors">
+                    <User size={20} className="mr-2 stroke-2" />
+                    <span>My Account</span>
+                  </PopoverButton>
+                ) : (
+                  <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 hover:border-primary hover:text-primary dark:hover:text-primary dark:hover:border-primary px-4 py-2 rounded-md transition-colors">
+                    <User size={20} className="mr-2 stroke-2" />
+                    <span>Guest</span>
+                  </PopoverButton>
+                )}
+
+                <div className="group relative">
+                  <PopoverPanel
+                    static
+                    className="absolute right-0 top-full z-10 mt-0 w-screen max-w-xs overflow-hidden rounded-3xl bg-white dark:bg-gray-800 shadow-lg ring-1 ring-gray-900/5 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 invisible group-hover:visible duration-200 ease-out transition-all"
+                  >
+                    <div className="p-4">
+                      {isLoggedIn ? (
+                        <>
+                          {userOptions.map((option) => (
+                            <div
+                              key={option.name}
+                              className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            >
+                              <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 dark:bg-gray-900 group-hover:bg-white dark:group-hover:bg-gray-800">
+                                <option.icon className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary" />
+                              </div>
+                              <div className="flex-auto">
+                                <a href={option.href} className="block font-semibold text-gray-900 dark:text-white">
+                                  {option.name}
+                                  <span className="absolute inset-0" />
+                                </a>
+                              </div>
+                            </div>
+                          ))}
+                          <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 dark:bg-gray-900 group-hover:bg-white dark:group-hover:bg-gray-800">
+                              <LogOut className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary" />
+                            </div>
+                            <div className="flex-auto">
+                              <button
+                                onClick={handleLogout}
+                                className="block w-full text-left font-semibold text-gray-900 dark:text-white"
+                              >
+                                Logout
+                                <span className="absolute inset-0" />
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {guestOptions.map((option) => (
+                            <div
+                              key={option.name}
+                              className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            >
+                              <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 dark:bg-gray-900 group-hover:bg-white dark:group-hover:bg-gray-800">
+                                <option.icon className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary" />
+                              </div>
+                              <div className="flex-auto">
+                                <a href={option.href} className="block font-semibold text-gray-900 dark:text-white">
+                                  {option.name}
+                                  <span className="absolute inset-0" />
+                                </a>
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  </PopoverPanel>
+                </div>
+              </>
+            )}
+          </Popover>
+
+          {/* Post Ad Button */}
+          <a
+            href="/post-ad"
+            className="relative overflow-hidden group bg-primary hover:bg-primary/90 border border-primary dark:border-primary hover:border-primary text-white dark:hover:border-primary/90 px-6 py-2 rounded-md flex items-center"
+          >
+            <span className="relative z-10 flex items-center font-medium">
+              Post Your Ad
+              <Plus size={20} className="ml-2 stroke-2" />
+            </span>
+            <span className="absolute inset-0 bg-orange-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
+          </a>
+        </div>
+      </nav>
+
+      {/* Mobile menu - using xl instead of lg */}
+      <Dialog as="div" className="xl:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+        <div className="fixed inset-0 z-10 bg-black bg-opacity-50" />
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white dark:bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="flex items-center justify-between">
+            <a href="/" className="text-xl font-bold tracking-tight">
               <span className="text-black dark:text-white">ADvertise</span>
               <span className="text-primary">ments.lk</span>
             </a>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-300"
+            >
+              <span className="sr-only">Close menu</span>
+              <X className="size-6 stroke-2" aria-hidden="true" />
+            </button>
           </div>
 
-          {/* Center Navigation */}
-          <nav className="flex items-center space-x-8">
-            <a href="/" className="text-gray-700 dark:text-gray-300 hover:text-primary font-medium transition-colors">Home</a>
-            <a href="/about" className="text-gray-700 dark:text-gray-300 hover:text-primary font-medium transition-colors">About Us</a>
-            <a href="/contact" className="text-gray-700 dark:text-gray-300 hover:text-primary font-medium transition-colors">Contact Us</a>
-            <a href="/business" className="text-gray-700 dark:text-gray-300 hover:text-primary font-medium transition-colors">Business</a>
-          </nav>
-
-          {/* Right Auth Buttons */}
-          <div className="flex items-center space-x-4">
-            <button 
-              onClick={() => dispatch(toggleTheme())} 
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-              title="Toggle Theme"
-            >
-              {isDark ? 
-                <Sun size={20} className="text-yellow-400 stroke-2" /> : 
-                <Moon size={20} className="text-gray-800 stroke-2" />
-              }
-            </button>
-
-            <a href="/login" className="flex items-center text-gray-700 dark:text-gray-300 hover:text-primary">
-              <User size={20} className="mr-2 stroke-2" />
-              <span className="font-medium">Log In</span>
-            </a>
-            <a href="/register" className="text-gray-700 dark:text-gray-300 hover:text-primary font-medium">
-              Register
-            </a>
-            <a 
-              href="/post-ad" 
-              className="relative overflow-hidden group bg-primary text-white px-6 py-2 rounded-md flex items-center"
+          {/* Post Ad button in mobile - full width */}
+          <div className="mt-6">
+            <a
+              href="/post-ad"
+              className="relative overflow-hidden group bg-primary text-white px-4 py-2 rounded-md flex items-center justify-center w-full"
             >
               <span className="relative z-10 flex items-center font-medium">
                 Post Your Ad
@@ -104,96 +319,102 @@ const Header = () => {
               <span className="absolute inset-0 bg-orange-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
             </a>
           </div>
-        </div>
-      </header>
 
-      {/* Mobile Menu Drawer */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          {/* Overlay */}
-          <div 
-            className="absolute inset-0 bg-black bg-opacity-50"
-            onClick={() => setIsMenuOpen(false)}
-          ></div>
-          
-          {/* Drawer */}
-          <div className="absolute top-0 left-0 bottom-0 w-4/5 max-w-xs bg-white dark:bg-gray-900 flex flex-col h-full">
-            {/* Drawer Header */}
-            <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
-              <a 
-                href="/post-ad" 
-                className="relative overflow-hidden group bg-primary text-white px-6 py-2 rounded-md flex-1 flex items-center justify-center"
-              >
-                <span className="relative z-10 flex items-center font-medium">
-                  Post Your Ad
-                  <Plus size={20} className="ml-2 stroke-2" />
-                </span>
-                <span className="absolute inset-0 bg-orange-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
-              </a>
-              <button 
-                onClick={() => setIsMenuOpen(false)}
-                className="text-gray-700 dark:text-gray-300 ml-4"
-              >
-                <X size={24} className="stroke-2" />
-              </button>
-            </div>
-            
-            {/* Navigation Links */}
-            <nav className="flex-1 overflow-y-auto p-4">
-              <ul className="space-y-4">
-                <li>
-                  <a href="/" className="block text-gray-700 dark:text-gray-300 hover:text-primary font-medium py-2">
-                    Home
+          <div className="mt-6 flow-root">
+            <div className="-my-6 divide-y divide-gray-500/10 dark:divide-gray-700">
+              {/* Navigation links */}
+              <div className="space-y-2 py-6">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    {link.name}
                   </a>
-                </li>
-                <li>
-                  <a href="/about" className="block text-gray-700 dark:text-gray-300 hover:text-primary font-medium py-2">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="/contact" className="block text-gray-700 dark:text-gray-300 hover:text-primary font-medium py-2">
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a href="/business" className="block text-gray-700 dark:text-gray-300 hover:text-primary font-medium py-2">
-                    Business
-                  </a>
-                </li>
-              </ul>
-              
-              <div className="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">
+                ))}
+              </div>
+
+              {/* User options based on auth state */}
+              <div className="py-6">
+                {isLoggedIn ? (
+                  <>
+                    {userOptions.map((option) => (
+                      <a
+                        key={option.name}
+                        href={option.href}
+                        className="-mx-3 flex items-center rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
+                        <option.icon className="mr-3 size-5 text-gray-600 dark:text-gray-400" />
+                        {option.name}
+                      </a>
+                    ))}
+                    <button
+                      onClick={handleLogout}
+                      className="-mx-3 flex w-full items-center rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <LogOut className="mr-3 size-5 text-gray-600 dark:text-gray-400" />
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {guestOptions.map((option) => (
+                      <a
+                        key={option.name}
+                        href={option.href}
+                        className="-mx-3 flex items-center rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
+                        <option.icon className="mr-3 size-5 text-gray-600 dark:text-gray-400" />
+                        {option.name}
+                      </a>
+                    ))}
+                  </>
+                )}
+              </div>
+
+              {/* Theme Toggle */}
+              <div className="py-6">
+                <button
+                  onClick={() => dispatch(toggleTheme())}
+                  className="flex items-center space-x-2 text-gray-900 dark:text-gray-300"
+                >
+                  {isDark ?
+                    <><Sun size={20} className="text-yellow-400 stroke-2" /> <span>Light Mode</span></> :
+                    <><Moon size={20} className="text-gray-800 stroke-2" /> <span>Dark Mode</span></>
+                  }
+                </button>
+              </div>
+
+              {/* Contact/social section with improved icons */}
+              <div className="pt-6">
                 <div className="text-gray-600 dark:text-gray-400 font-medium">Email Address</div>
                 <a href="mailto:support@advertisements.lk" className="text-primary">
                   support@advertisements.lk
                 </a>
-              </div>
-              
-              {/* Social Media Placeholder - Replace with actual icons */}
-              <div className="mt-8 flex items-center space-x-4">
-                <a href="#" className="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-full">
-                  <span className="text-primary">f</span>
-                </a>
-                <a href="#" className="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-full">
-                  <span className="text-primary">t</span>
-                </a>
-                <a href="#" className="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-full">
-                  <span className="text-primary">in</span>
-                </a>
-                <a href="#" className="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-full">
-                  <span className="text-primary">ig</span>
-                </a>
-              </div>
-            </nav>
-          </div>
-        </div>
-      )}
-      
-      {/* Spacer for fixed mobile header */}
-      <div className="md:hidden h-16"></div>
-    </>
-  );
-};
 
-export default Header;
+                {/* Social Media Icons */}
+                <div className="mt-4 mb-12 flex items-center space-x-3">
+                  <a href="#" className="w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full text-white hover:bg-blue-600 transition-colors">
+                    <Facebook size={18} />
+                  </a>
+                  <a href="#" className="w-10 h-10 flex items-center justify-center bg-sky-500 rounded-full text-white hover:bg-sky-600 transition-colors">
+                    <Twitter size={18} />
+                  </a>
+                  <a href="#" className="w-10 h-10 flex items-center justify-center bg-blue-700 rounded-full text-white hover:bg-blue-800 transition-colors">
+                    <Linkedin size={18} />
+                  </a>
+                  <a href="#" className="w-10 h-10 flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white hover:from-purple-600 hover:to-pink-600 transition-colors">
+                    <Instagram size={18} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Dialog.Panel>
+      </Dialog>
+    </header>
+  )
+}
+
+export default Header
