@@ -1,7 +1,7 @@
 const express=require('express');
 
 const { createAdvertisement, getAllAdvertisements, getAdvertisements, updateAdvertisement, deleteAdvertisement,
-    getAdvertisementsByCategory, getAdvertisementsByAdvertisementId, getAdvertisementsBySearching
+    getAdvertisementsByCategory, getAdvertisementsByAdvertisementId, getAdvertisementsBySearching, getRenewableAds
 } = require('../controllers/advertisementController');
 const routes=express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
@@ -15,6 +15,8 @@ routes.delete('/:id', deleteAdvertisement); // Delete advertisement
 routes.get('/:categories', getAdvertisementsByCategory);//Get advertisements by category
 routes.get('/:advertisementId',getAdvertisementsByAdvertisementId);//Get advertisements by id
 routes.get('/search/:search',getAdvertisementsBySearching);//Get advertisements by search
+// routes.get('/search/:search', getAdvertisementsBySearching); // Get advertisements by search keyword
+routes.get('/renewable-ads', authMiddleware, getRenewableAds); // Get renewable advertisements
 
 
 module.exports=routes;

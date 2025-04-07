@@ -23,6 +23,7 @@ const advertisementSchema=new Schema({
     updatedAt:{type:Date,required:true}
 
 })
+
 //Create a model
 const Advertisement = mongoose.models.Advertisement || mongoose.model('Advertisement', advertisementSchema);
 

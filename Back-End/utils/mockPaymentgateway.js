@@ -18,6 +18,7 @@ const mockPaymentGateway = {
             status: 'succeeded',
             paymentId,
             paymentIntentId,
+            method: 'credit_card', // Mock payment method
         };
     },
 };

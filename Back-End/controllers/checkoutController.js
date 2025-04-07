@@ -36,6 +36,7 @@ const checkout = async (req, res) => {
             advertisementId,
             amount,
             paymentStatus: 'pending',
+            paymentMethod: 'credit_card',  // Assuming credit card for now
             paymentIntentId: `mock_intent_${Date.now()}`, // Or leave empty if generated later
             userDetails: {
                 firstName,

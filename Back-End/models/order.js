@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, required: true },
     packageId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    packageName: { type: String, required: true },
     advertisementId: { type: mongoose.Schema.Types.ObjectId, required: true },
     amount: { type: Number, required: true },
     paymentStatus: { type: String, default: 'pending' },
+    paymentMethod: { type: String, default: 'credit_card' },
     paymentIntentId: { type: String, required: true },
     userDetails: {
         firstName: { type: String, required: true },
@@ -22,4 +24,8 @@ const orderSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Order', orderSchema);
+//Create a model
+const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
+
+//Export the model
+module.exports=Order;
