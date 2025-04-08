@@ -4,23 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="update header">
+    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add coupon">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/CheckoutController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/checkoutController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/PaymentController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/PaymentController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/advertisementController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/advertisementController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/invoiceController.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/invoiceSend.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/advertisement.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/advertisement.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/order.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/order.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/advertisementRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/advertisementRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/contactRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/contactRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/favouritesRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/favouritesRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/invoiceRoutes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/mockPaymentgateway.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/mockPaymentgateway.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/store/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,26 +54,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Node.js.server.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.user.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.userRoutes.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#28 on ramitha&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Projects/Web project portfolio/SENG31313-2025/se-2021-038&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files (x86)\\IntelliJ IDEA 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.server.js.executor": "Run",
+    "Node.js.user.js.executor": "Run",
+    "Node.js.userRoutes.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "ramitha",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Projects/Web project portfolio/SENG31313-2025/se-2021-038",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Program Files (x86)\\IntelliJ IDEA 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Projects\Advertisement.lk\Advertisement.lk\Back-End\utils" />
@@ -128,6 +115,8 @@
       <workItem from="1743877082923" duration="11000" />
       <workItem from="1743919291599" duration="16040000" />
       <workItem from="1744049780194" duration="9673000" />
+      <workItem from="1744059626824" duration="647000" />
+      <workItem from="1744126967564" duration="4090000" />
     </task>
     <task id="LOCAL-00001" summary="fix categories, packages, users">
       <option name="closed" value="true" />
@@ -233,7 +222,31 @@
       <option name="project" value="LOCAL" />
       <updated>1744053278464</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="add renew">
+      <option name="closed" value="true" />
+      <created>1744059855125</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1744059855125</updated>
+    </task>
+    <task id="LOCAL-00015" summary="add renew">
+      <option name="closed" value="true" />
+      <created>1744060118345</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1744060118345</updated>
+    </task>
+    <task id="LOCAL-00016" summary="add coupon">
+      <option name="closed" value="true" />
+      <created>1744140118696</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1744140118696</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,6 +272,8 @@
     <MESSAGE value="add invoice" />
     <MESSAGE value="update category" />
     <MESSAGE value="update header" />
-    <option name="LAST_COMMIT_MESSAGE" value="update header" />
+    <MESSAGE value="add renew" />
+    <MESSAGE value="add coupon" />
+    <option name="LAST_COMMIT_MESSAGE" value="add coupon" />
   </component>
 </project>
