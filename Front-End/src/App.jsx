@@ -4,12 +4,15 @@ import UserRoutes from './routes/UserRoutes';
 import AdminRoutes from './routes/AdminRoutes';
 import PublicRoutes from './routes/PublicRoutes';
 import { useSelector } from 'react-redux';
+import useDarkMode from './hooks/useDarkMode';
 
 const App = () => {
   const { token, user } = useSelector((state) => state.auth);
+  
+  useDarkMode();
 
   return (
-    <main className=" min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
+    <main className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
       <Routes>
         {/* Public Routes */}
         <Route path="/*" element={<PublicRoutes />} />

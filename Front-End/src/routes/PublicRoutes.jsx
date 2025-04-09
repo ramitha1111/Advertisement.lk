@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Unauthorized from '../pages/Unauthorized';
+import GoogleCallback from '../googleLogin/GoogleCallback';
 
 const PublicRoutes = () => {
   const location = useLocation();
@@ -17,6 +18,7 @@ const PublicRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/google/callback" element={<GoogleCallback />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
       </Routes>
     </>
