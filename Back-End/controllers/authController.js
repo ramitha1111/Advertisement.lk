@@ -65,10 +65,14 @@ exports.googleAuth = (req, res) => {
   // Google login successful, user and token are available
   const { user, token } = req.user;
 
+  // Send success response with user data and token
   res.json({
     message: "Google login successful",
     user: user,  // Send user data
     token: token, // Send the JWT token for session management
   });
+
+  // Redirect to the client URL with the token
+  res.redirect(`${process.env.CLIENT_URL}/user/dashboard?token=${token}&user=${JSON.stringify(user)}`);
 };
 
