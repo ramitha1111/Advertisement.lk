@@ -47,22 +47,32 @@ exports.login = async (req, res) => {
       return res.status(403).json({ message: "Email not verified" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-    res.json({ token, user });
+    const token = jwt.sign(
+        { id: user._id, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+    );
+
+    res.json({ token, user: { id: user._id, email: user.email, role: user.role } });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
 
 // Google Authentication
 exports.googleAuth = (req, res) => {
   // Google login successful, user and token are available
   const { user, token } = req.user;
 
+  // Send success response with user data and token
   res.json({
     message: "Google login successful",
     user: user,  // Send user data
     token: token, // Send the JWT token for session management
   });
+
+  // Redirect to the client URL with the token
+  res.redirect(`${process.env.CLIENT_URL}/user/dashboard?token=${token}&user=${JSON.stringify(user)}`);
 };
 
