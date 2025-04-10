@@ -4,7 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="fix login page and google login" />
+    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add register, reset password, otp verification">
+      <change afterPath="$PROJECT_DIR$/../Front-End/src/components/PageWrapper.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Front-End/src/pages/ForgotPassword.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Front-End/src/pages/Register.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Front-End/src/pages/ResetPassword.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Front-End/src/pages/VerifyEmail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/authController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/authController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/authRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/authRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/components/ResetPasswordPopup.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/routes/PublicRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/routes/PublicRoutes.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,26 +67,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Node.js.server.js.executor": "Run",
-    "Node.js.user.js.executor": "Run",
-    "Node.js.userRoutes.js.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging ramitha",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Projects/Web project portfolio/SENG31313-2025/se-2021-038",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files (x86)\\IntelliJ IDEA 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.server.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.user.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.userRoutes.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ramitha&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/Web project portfolio/SENG31313-2025/se-2021-038&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files (x86)\\IntelliJ IDEA 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Projects\Advertisement.lk\Advertisement.lk\Back-End\utils" />
@@ -114,7 +131,9 @@
       <workItem from="1744059626824" duration="647000" />
       <workItem from="1744126967564" duration="5419000" />
       <workItem from="1744171746778" duration="3914000" />
-      <workItem from="1744208366698" duration="11222000" />
+      <workItem from="1744208366698" duration="11388000" />
+      <workItem from="1744222334340" duration="771000" />
+      <workItem from="1744283737708" duration="16008000" />
     </task>
     <task id="LOCAL-00001" summary="fix categories, packages, users">
       <option name="closed" value="true" />
@@ -260,7 +279,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744222094540</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="fix login page and google login">
+      <option name="closed" value="true" />
+      <created>1744222250197</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1744222250197</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,6 +317,7 @@
     <MESSAGE value="add coupon" />
     <MESSAGE value="add login page" />
     <MESSAGE value="fix login page and google login" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix login page and google login" />
+    <MESSAGE value="add register, reset password, otp verification" />
+    <option name="LAST_COMMIT_MESSAGE" value="add register, reset password, otp verification" />
   </component>
 </project>
