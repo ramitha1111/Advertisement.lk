@@ -99,7 +99,6 @@ const Header = () => {
   const guestOptions = [
     { name: 'Log In', href: '/login', icon: LogIn },
     { name: 'Register', href: '/register', icon: UserPlus },
-    { name: 'Favorites', href: '/favorites', icon: Heart }
   ]
 
   const userOptions = [

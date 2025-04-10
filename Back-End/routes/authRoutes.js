@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const { register, login, googleAuth } = require('../controllers/authController');
+const { register, login, sendPasswordResetEmail, resetPassword } = require('../controllers/authController');
 const { passwordResetOTP, verifyOTP } = require('../controllers/otpController');
 
 
@@ -14,6 +14,15 @@ router.post('/send-otp', passwordResetOTP); // sendOTP method should be defined 
 
 // Verify OTP
 router.post('/verify-otp', verifyOTP); // verifyOTP method should be defined in authController.js
+
+// Send Password Reset Email
+router.post('/forgot-password', sendPasswordResetEmail)
+
+// Reset Password
+router.post('/reset-password', resetPassword)
+
+
+
 
 // Login user
 router.post('/login', login);
