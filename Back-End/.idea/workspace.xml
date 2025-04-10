@@ -5,22 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add register, reset password, otp verification">
-      <change afterPath="$PROJECT_DIR$/../Front-End/src/components/PageWrapper.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Front-End/src/pages/ForgotPassword.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Front-End/src/pages/Register.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Front-End/src/pages/ResetPassword.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Front-End/src/pages/VerifyEmail.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/authController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/authController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/authRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/authRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/components/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/components/ResetPasswordPopup.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/ForgotPassword.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/ForgotPassword.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/routes/PublicRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/routes/PublicRoutes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/Register.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/VerifyEmail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/VerifyEmail.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +122,7 @@
       <workItem from="1744171746778" duration="3914000" />
       <workItem from="1744208366698" duration="11388000" />
       <workItem from="1744222334340" duration="771000" />
-      <workItem from="1744283737708" duration="16008000" />
+      <workItem from="1744283737708" duration="17735000" />
     </task>
     <task id="LOCAL-00001" summary="fix categories, packages, users">
       <option name="closed" value="true" />
@@ -287,7 +276,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744222250197</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="add register, reset password, otp verification">
+      <option name="closed" value="true" />
+      <created>1744302983954</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1744302983954</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

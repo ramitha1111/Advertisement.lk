@@ -245,7 +245,7 @@ export default function EmailVerification() {
             >
                 <div className="absolute inset-0">
                     <img
-                        src="./assets/login-image.jpg"
+                        src="./src/assets/login-image.jpg"
                         alt="Verification"
                         className="w-full h-full object-cover"
                     />
