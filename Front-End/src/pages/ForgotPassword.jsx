@@ -154,7 +154,7 @@ export default function ForgotPassword() {
       >
         <div className="absolute inset-0">
           <img
-            src="./assets/login-image.jpg"
+            src="./src/assets/login-image.jpg"
             alt="Reset Password"
             className="w-full h-full object-cover"
           />

@@ -299,7 +299,7 @@ export default function Login() {
       >
         <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800">
           <img
-            src="./assets/login-image.jpg"
+            src="./src/assets/login-image.jpg"
             alt="login"
             className="h-full w-full object-cover"
           />
