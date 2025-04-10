@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add register, reset password, otp verification">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/ForgotPassword.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/ForgotPassword.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/Register.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/VerifyEmail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/VerifyEmail.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add register, reset password, otp verification" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,6 +18,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="backup" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
