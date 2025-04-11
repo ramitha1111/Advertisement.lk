@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add register, reset password, otp verification" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="backup" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Rami2212&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DevSolutions1/Advertisement.lk.git&quot;,
+    &quot;accountId&quot;: &quot;e44c3131-e5da-42d8-95c0-d1e2108b1b0e&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;DevSolutions1&quot;,
+    &quot;repository&quot;: &quot;Advertisement.lk&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2v4YmXH1RUGxKTxxqaiB01SfajA" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.server.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.user.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.userRoutes.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ramitha&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/Web project portfolio/SENG31313-2025/se-2021-038&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files (x86)\\IntelliJ IDEA 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Projects\Advertisement.lk\Advertisement.lk\Back-End\utils" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="server.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="server.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.189" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.189" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="" />
+      <created>1743405972747</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743405972747</updated>
+      <workItem from="1743405973883" duration="592000" />
+      <workItem from="1743434237734" duration="5021000" />
+      <workItem from="1743444805396" duration="13000" />
+      <workItem from="1743444918379" duration="13000" />
+      <workItem from="1743445863189" duration="2049000" />
+      <workItem from="1743486933541" duration="3007000" />
+      <workItem from="1743610627219" duration="23000" />
+      <workItem from="1743701926589" duration="6727000" />
+      <workItem from="1743739306254" duration="8592000" />
+      <workItem from="1743779055416" duration="24000" />
+      <workItem from="1743780312319" duration="3329000" />
+      <workItem from="1743837126554" duration="149000" />
+      <workItem from="1743877082923" duration="11000" />
+      <workItem from="1743919291599" duration="16040000" />
+      <workItem from="1744049780194" duration="9673000" />
+      <workItem from="1744059626824" duration="647000" />
+      <workItem from="1744126967564" duration="5419000" />
+      <workItem from="1744171746778" duration="3914000" />
+      <workItem from="1744208366698" duration="11388000" />
+      <workItem from="1744222334340" duration="771000" />
+      <workItem from="1744283737708" duration="17735000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix categories, packages, users">
+      <option name="closed" value="true" />
+      <created>1743435455474</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743435455474</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix categories, packages, users">
+      <option name="closed" value="true" />
+      <created>1743439151131</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743439151131</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix categories, packages, users">
+      <option name="closed" value="true" />
+      <created>1743486993554</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743486993554</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix categories, packages, users">
+      <option name="closed" value="true" />
+      <created>1743487107238</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743487107238</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix favouriteRoutes">
+      <option name="closed" value="true" />
+      <created>1743709543474</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1743709543474</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add transactionRoutes">
+      <option name="closed" value="true" />
+      <created>1743711045739</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1743711045739</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add transactionRoutes">
+      <option name="closed" value="true" />
+      <created>1743711057338</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1743711057338</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add checkout, payment and header">
+      <option name="closed" value="true" />
+      <created>1743943908407</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1743943908407</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add header">
+      <option name="closed" value="true" />
+      <created>1743944021304</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1743944021304</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add invoice">
+      <option name="closed" value="true" />
+      <created>1743949071544</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1743949071544</updated>
+    </task>
+    <task id="LOCAL-00011" summary="update category">
+      <option name="closed" value="true" />
+      <created>1743950129248</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1743950129248</updated>
+    </task>
+    <task id="LOCAL-00012" summary="update category">
+      <option name="closed" value="true" />
+      <created>1743951215005</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1743951215005</updated>
+    </task>
+    <task id="LOCAL-00013" summary="update header">
+      <option name="closed" value="true" />
+      <created>1744053278464</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1744053278464</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add renew">
+      <option name="closed" value="true" />
+      <created>1744059855125</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1744059855125</updated>
+    </task>
+    <task id="LOCAL-00015" summary="add renew">
+      <option name="closed" value="true" />
+      <created>1744060118345</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1744060118345</updated>
+    </task>
+    <task id="LOCAL-00016" summary="add coupon">
+      <option name="closed" value="true" />
+      <created>1744140118696</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1744140118696</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add login page">
+      <option name="closed" value="true" />
+      <created>1744142135740</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1744142135740</updated>
+    </task>
+    <task id="LOCAL-00018" summary="fix login page and google login">
+      <option name="closed" value="true" />
+      <created>1744222094540</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1744222094540</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fix login page and google login">
+      <option name="closed" value="true" />
+      <created>1744222250197</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1744222250197</updated>
+    </task>
+    <task id="LOCAL-00020" summary="add register, reset password, otp verification">
+      <option name="closed" value="true" />
+      <created>1744302983954</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1744302983954</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix categories, packages, users" />
+    <MESSAGE value="fix favouriteRoutes" />
+    <MESSAGE value="add transactionRoutes" />
+    <MESSAGE value="add checkout, payment and header" />
+    <MESSAGE value="add header" />
+    <MESSAGE value="add invoice" />
+    <MESSAGE value="update category" />
+    <MESSAGE value="update header" />
+    <MESSAGE value="add renew" />
+    <MESSAGE value="add coupon" />
+    <MESSAGE value="add login page" />
+    <MESSAGE value="fix login page and google login" />
+    <MESSAGE value="add register, reset password, otp verification" />
+    <option name="LAST_COMMIT_MESSAGE" value="add register, reset password, otp verification" />
+  </component>
+</project>

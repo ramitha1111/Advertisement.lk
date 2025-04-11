@@ -1,32 +1,32 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import UserRoutes from './routes/UserRoutes';
-import AdminRoutes from './routes/AdminRoutes';
-import PublicRoutes from './routes/PublicRoutes';
-import { useSelector } from 'react-redux';
-import useDarkMode from './hooks/useDarkMode';
+// App.jsx
+import React from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
+import { useSelector } from 'react-redux'
+import useDarkMode from './hooks/useDarkMode'
+import UserRoutes from './routes/UserRoutes'
+import AdminRoutes from './routes/AdminRoutes'
+import PublicRoutes from './routes/PublicRoutes'
 
 const App = () => {
-  const { token, user } = useSelector((state) => state.auth);
-  
-  useDarkMode();
+  const { token, user } = useSelector((state) => state.auth)
+  const location = useLocation()
+
+  useDarkMode()
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/*" element={<PublicRoutes />} />
-
-        {/* Protected User Routes */}
-        {token && <Route path="/user/*" element={<UserRoutes />} />}
-
-        {/* Admin Routes */}
-        {token && user?.role === 'admin' && (
-          <Route path="/admin/*" element={<AdminRoutes />} />
-        )}
-      </Routes>
+    <main className="bg-white dark:bg-gray-900 text-black dark:text-white">
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/*" element={<PublicRoutes />} />
+          {token && <Route path="/user/*" element={<UserRoutes />} />}
+          {token && user?.role === 'admin' && (
+            <Route path="/admin/*" element={<AdminRoutes />} />
+          )}
+        </Routes>
+      </AnimatePresence>
     </main>
-  );
-};
+  )
+}
 
-export default App;
+export default App
