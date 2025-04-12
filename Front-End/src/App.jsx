@@ -15,7 +15,7 @@ const App = () => {
   useDarkMode()
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
+    <main className="bg-white dark:bg-gray-900 text-black dark:text-white">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/*" element={<PublicRoutes />} />

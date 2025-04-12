@@ -105,7 +105,7 @@ export default function ResetPassword() {
     }
 
     return (
-        <div className="flex items-center justify-center mt-12 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div className="flex items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-300">
             <motion.div
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
