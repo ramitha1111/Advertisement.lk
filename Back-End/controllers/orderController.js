@@ -21,11 +21,11 @@ exports.getOrderById = async (req, res) => {
     }
 };
 
-// Admin: Get all orders
 exports.getAllOrders = async (req, res) => {
-    if (!req.user.isAdmin) {
-        return res.status(403).json({ message: 'Forbidden' });
+    if (!req.user || req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'Access denied. Admins only.' });
     }
+
     try {
         const orders = await Order.find().sort({ createdAt: -1 });
         res.status(200).json(orders);
