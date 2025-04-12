@@ -8,11 +8,11 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
+// Admin route
+router.get('/all', authMiddleware, getAllOrders);
+
 // User routes
 router.get('/my-orders', authMiddleware, getUserOrders);
 router.get('/:id', authMiddleware, getOrderById);
-
-// Admin route
-router.get('/all', authMiddleware, getAllOrders);
 
 module.exports = router;
