@@ -110,7 +110,7 @@ const Header = () => {
   ]
 
   return (
-    <header ref={headerRef} className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700">
+    <header ref={headerRef} className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 z-10">
       {/* Top bar */}
       <div className="hidden md:block bg-gray-100 dark:bg-gray-800 py-2">
         <div className="mx-auto max-w-7xl px-8">
@@ -288,7 +288,7 @@ const Header = () => {
 
       {/* Mobile menu - using xl instead of lg */}
       <Dialog as="div" className="xl:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-10 bg-black bg-opacity-50" />
+        <div className="fixed inset-0 z-100 bg-black bg-opacity-50" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white dark:bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <a href="/" className="text-xl font-bold tracking-tight">

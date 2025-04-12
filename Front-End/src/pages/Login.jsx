@@ -30,6 +30,7 @@ export default function Login() {
     }
   }, [isLoggedIn, navigate])
 
+  // Handle login form submission
   const handleLogin = async (e) => {
     e.preventDefault()
     setLoading(true)
