@@ -4,15 +4,15 @@ const {
     getOrderById,
     getAllOrders
 } = require('../controllers/orderController')
-const isAuthenticated = require('../middlewares/authMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
 // User routes
-router.get('/my-orders', isAuthenticated, getUserOrders);
-router.get('/:id', isAuthenticated, getOrderById);
+router.get('/my-orders', authMiddleware, getUserOrders);
+router.get('/:id', authMiddleware, getOrderById);
 
 // Admin route
-router.get('/all', isAuthenticated, getAllOrders);
+router.get('/all', authMiddleware, getAllOrders);
 
 module.exports = router;
