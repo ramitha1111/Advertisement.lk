@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from '../components/Header';
-import Dashboard from '../pages/user/Dashboard';
+import UserDashboard from '../pages/user/UserDashboard';
 import ProtectedRoutes from './ProtectedRoutes';
 
 const UserRoutes = () => {
@@ -9,7 +9,14 @@ const UserRoutes = () => {
     <>
       <Header />
       <Routes>
-        <Route path="/dashboard" element={<ProtectedRoutes element={<Dashboard />} />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoutes>
+              <UserDashboard />
+            </ProtectedRoutes>
+          }
+        />
       </Routes>
     </>
   );
