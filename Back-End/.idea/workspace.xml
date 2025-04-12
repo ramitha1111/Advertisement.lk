@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add register, reset password, otp verification" />
+    <list default="true" id="a1eaa6d8-dede-47bd-b32b-b3ad12e88852" name="Changes" comment="add register, reset password, otp verification">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/pages/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/pages/users/Dashboard.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/routes/PublicRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/routes/PublicRoutes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Front-End/src/routes/UserRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Front-End/src/routes/UserRoutes.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -122,6 +133,9 @@
       <workItem from="1744208366698" duration="11388000" />
       <workItem from="1744222334340" duration="771000" />
       <workItem from="1744283737708" duration="17735000" />
+      <workItem from="1744382139315" duration="3869000" />
+      <workItem from="1744450684632" duration="44000" />
+      <workItem from="1744451687848" duration="7359000" />
     </task>
     <task id="LOCAL-00001" summary="fix categories, packages, users">
       <option name="closed" value="true" />

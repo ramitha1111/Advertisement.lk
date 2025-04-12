@@ -10,6 +10,7 @@ import ResetPassword from '../pages/ResetPassword'
 import Unauthorized from '../pages/Unauthorized'
 import GoogleCallback from '../googleLogin/GoogleCallback'
 import PageWrapper from '../components/PageWrapper'
+import NotFound from '../pages/NotFound'
 
 const PublicRoutes = () => {
   const location = useLocation()
@@ -31,6 +32,8 @@ const PublicRoutes = () => {
         <Route path="/reset-password/:token" element={<PageWrapper><ResetPassword /></PageWrapper>} />
         <Route path="/google/callback" element={<PageWrapper><GoogleCallback /></PageWrapper>} />
         <Route path="/unauthorized" element={<PageWrapper><Unauthorized /></PageWrapper>} />
+        <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
+        {/* Add other public routes here */}
       </Routes>
     </>
   )

@@ -19,10 +19,8 @@ const App = () => {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/*" element={<PublicRoutes />} />
-          {token && <Route path="/user/*" element={<UserRoutes />} />}
-          {token && user?.role === 'admin' && (
-            <Route path="/admin/*" element={<AdminRoutes />} />
-          )}
+          <Route path="/user/*" element={<UserRoutes />} />
+          <Route path="/admin/*" element={<AdminRoutes />} />
         </Routes>
       </AnimatePresence>
     </main>
