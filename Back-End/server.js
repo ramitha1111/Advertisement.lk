@@ -47,7 +47,7 @@ app.use("/api/packages", packageRoutes);
 app.use("/api/advertisements", advertisementRoutes)
 app.use("/api/favourites", favouritesRoutes)
 app.use("/api/contact", contactRoutes);
-//app.use("/api/orders", orderRoutes);
+app.use("/api/orders", orderRoutes);
 app.use("/api/checkout", checkoutRoutes)
 app.use("/api/payment", paymentRoutes);
 
