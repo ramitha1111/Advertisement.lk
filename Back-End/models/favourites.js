@@ -3,8 +3,11 @@ const { Schema } = mongoose;
 
 const favouritesSchema = new Schema({
 
-    userid: { type: String, required: true },
+    userId: { type: String, required: true },
     advertisementId: { type: String, required: true },
+    categoryId: { type: String, required: true },
+    subcategoryId: { type: String, required: true },
+
 });
 
 

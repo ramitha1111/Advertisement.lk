@@ -113,20 +113,42 @@ exports.deleteAdvertisement = async (req, res) => {
 };
 
 // Get advertisements by category
+const getCategery=require("./categoryController");
 exports.getAdvertisementsByCategory = async (req, res) => {
     try {
-        const advertisements = await advertisementModel.find({ categoryId: req.params.categoryId });
-        res.status(200).json(advertisements);
+        const id=req.params.categoryId;
+        //get the categories in to arrays
+        console.log(id);
+      let name="";
+        switch (id) {
+            //Fruits
+            case 1: name="Fruits";
+                    let advertisements = await advertisementModel.find({ name: name });
+                    res.status(200).json(advertisements.subCategories);
+                    return;
+            case 2: name="Electronics";
+                     advertisements = await advertisementModel.find({ name: name });
+                    res.status(200).json(advertisements.subCategories);
+                    return;
+            default:
+                return res.status(500).json("Error");
+
+
+
+        }
+
+
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }
 };
 
 // Get advertisements by Advertisement ID
-exports.getAdvertisementsByAdvertisementId = async (req, res) => {
+exports.getAdvertisementsByAdvertisementId = async (req, res,next) => {
     try {
-        const advertisements = await advertisementModel.find({ id: req.params.id });
-        res.status(200).json(advertisements);
+        const advertisements = await advertisementModel.findById({ id: req.params.id });
+        next(advertisements);
+
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }
@@ -135,18 +157,62 @@ exports.getAdvertisementsByAdvertisementId = async (req, res) => {
 // Get advertisements by search keyword (Debounced Search)
 exports.getAdvertisementsBySearching = async (req, res) => {
     try {
-        const query = req.query.query;
-        if (!query) return res.json({ advertisements: [] });
+        const query = req.params.search;
+        if (!query) return res.json("Error!,No any data found");
+    //Get the InCaseSensitive items by using keyword
+
 
         const advertisements = await advertisementModel.find({
-            $text: { $search: query },
-        }).limit(10); // Optimized search with a limit
+            $or: [
+                { title: { $regex: query, $options: "i" } },
+                { description: { $regex: query, $options: "i" } },
+            ],
+        }).limit(10); // Limit to 10 results
+
+
 
         res.json({ advertisements });
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }
 };
+//Get Advertisement By Filtering
+exports.getAdvertisementsByFiltering = async (req, res) => {
+    try {
+        const category = req.params.category;
+        const location = req.params.location;
+        const priceRange = req.params.priceRange;
+        console.log(category);
+        console.log(location);
+        console.log(priceRange);
+
+
+        if (category || location || priceRange) {
+            const filters = {};
+
+            if (category) {
+                filters.categoryId = category;
+            }
+
+            if (location) {
+                filters.location = {$regex: location, $options: "i"}; // Case-insensitive search
+            }
+
+            if (priceRange) {
+                const [minPrice, maxPrice] = priceRange.split(",").map(Number);
+                filters.price = {$gte: minPrice, $lte: maxPrice};
+            }
+
+            const advertisements = await advertisementModel.find(filters);
+            res.status(200).json(advertisements);
+        }
+    }
+        catch (e) {
+        console.error("Error fetching advertisements:", e);
+        res.status(500).json({ message: "Server error" });
+    }
+
+    }
 
 // Get advertisements by user's favorite list
 exports.getAdvertisementsByFavourite = async (req, res) => {
@@ -196,5 +262,23 @@ exports.getRenewableAds = async (req, res) => {
     } catch (err) {
         console.error('Error fetching renewable ads:', err);
         res.status(500).json({ message: 'Failed to fetch renewable ads', error: err.message });
+    }
+};
+//get userId from advertisementId
+exports.getUserIdByAdvertisementId = async (req, res,next) => {
+    try {
+        const advertisementId = req.params.advertisementId;
+
+        // Find the advertisement by ID
+        const advertisement = await advertisementModel.findById(advertisementId);
+
+        if (!advertisement) {
+            return res.status(404).json({ message: "Advertisement not found" });
+        }
+
+        // Return the userId associated with the advertisement
+      next();
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error });
     }
 };
