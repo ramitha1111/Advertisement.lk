@@ -1,16 +1,26 @@
-const express=require('express');
-const {createFavourites,getAllFavourites,getFavouritesById,deleteFavourite}=require('../controllers/favouriteController');
-const router=express.Router();
+const express = require('express');
+const {
+    createFavourites,
+    getAllFavourites,
+    deleteFavourite,
+    createFavouriteListForUsers,
+} = require('../controllers/favouriteController');
+
+const advertisement=require('../controllers/advertisementController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-//Routes
+const router = express.Router();
+
 // Add favourite
-router.post('/:advertisementID', authMiddleware, createFavourites);
+router.post('/', authMiddleware, createFavourites);
+
+// Create favourite list for all users
+
 
 // Get all favourites
-router.get('/:userID',authMiddleware, getAllFavourites);
+router.get('/', authMiddleware, getAllFavourites);
 
 // Delete favourite
-router.delete('/:advertisementID',authMiddleware, deleteFavourite);
+router.delete('/:advertisementId', authMiddleware, deleteFavourite);
 
-module.exports=router;
+module.exports = router;
