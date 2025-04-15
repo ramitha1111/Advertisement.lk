@@ -1,6 +1,7 @@
 'use client'
 
 import { React, useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import loginImage from './assets/login-image.jpg';
 import {
   User,
@@ -15,65 +16,78 @@ import {
   Plus,
   Heart
 } from 'lucide-react'
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, Link, data } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
-import useUser from '../../hooks/useUser';
 import SettingsPage from './Settings'
-import AddAdvertisement from './AddAdvertisement';
+import useUser from '../../hooks/useUser'
 import { getUserById } from '../../api/userApi'
-import { useDispatch } from 'react-redux';
+
 
 const UserDashboard = () => {
+
   const { user, token } = useAuth();
-  const { fetchUser, clearUser } = useUser();
-  const location = useLocation();
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [userData, setUserData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch();
+  const { userData, fetchUser, clearUser } = useUser();
+
+  const dispatch = useDispatch()
+  const location = useLocation()
+
+  console.log(user.id)
+  console.log(token)
 
   // Extract the active tab from URL parameters
   useEffect(() => {
     // Get the section from URL query parameters
-    const searchParams = new URLSearchParams(location.search);
-    const section = searchParams.get('section');
+    const searchParams = new URLSearchParams(location.search)
+    const section = searchParams.get('section')
 
     // If section exists in URL, update the active tab
     if (section) {
-      setActiveTab(section);
+      dispatch({ type: 'userDashboard/setActiveTab', payload: section })
     }
-  }, [location.search]);
+  }, [location.search, dispatch])
 
-  // Fetch user data
+
   useEffect(() => {
     const fetchUserData = async () => {
-      setIsLoading(true);
+      if (!user?.id || !token) {
+        console.log("Missing user ID or token");
+        return;
+      }
+      
       try {
-        if (user?.id && token) {
-          const data = await getUserById(user.id, token);
-          setUserData(data.data);
-          dispatch(fetchUser({userData: data.data}))
+        console.log("Fetching user data for ID:", user.id);
+        const response = await getUserById(user.id, token);
+        console.log("API Response:", response);
+        
+        if (response) {
+          fetchUser(response);
+          console.log("User data updated in Redux");
+        } else {
+          console.error("Empty response from getUserById");
         }
       } catch (err) {
-        console.error(err?.response?.message || err.message);
-      } finally {
-        setIsLoading(false);
+        console.error("Error fetching user data:", err?.response?.message || err.message);
       }
     };
   
     fetchUserData();
-  }, [user?.id, token]);
+  }, [user?.id, token, fetchUser]);
+  
+  
 
-  console.log(user.id)
-  console.log(token)
-  console.log(userData)
+console.log(userData)
+  // Get active tab from Redux store
+  const activeTab = useSelector((state) => state.userDashboard.activeTab)
 
   // Rendering different content based on the active tab
   const renderContent = () => {
     switch (activeTab) {
       case 'add-new-ad':
         return (
-          <AddAdvertisement />
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Post a New Ad</h2>
+            <p className="text-gray-600 dark:text-gray-400">This feature will be implemented in a separate component.</p>
+          </div>
         )
       case 'my-ads':
         return (
@@ -108,14 +122,6 @@ const UserDashboard = () => {
           </div>
         )
     }
-  }
-
-  if (isLoading) {
-    return (
-      <div className="bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center">
-        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
-      </div>
-    );
   }
 
   return (
@@ -192,9 +198,11 @@ const UserDashboard = () => {
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
+
 
         {/* Dashboard navigation tabs - Updated with navigation based on URL parameters */}
         <div className="mb-8">
