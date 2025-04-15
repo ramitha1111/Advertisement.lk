@@ -26,6 +26,8 @@ exports.createUser = async (req, res) => {
       role: role || 'user', // Default role to 'user', admin can be set optionally
     });
 
+    // TODO: add all fields
+
     await newUser.save();
 
     res.status(201).json({
@@ -58,6 +60,13 @@ exports.updateUser = async (req, res) => {
     user.name = name || user.name;
     user.username = username || user.username;
     user.phone = phone || user.phone;
+    // TODO: add all fields
+
+    // TODO: Configure this
+    // Handle photo upload
+    if (req.file) {
+      user.photo = req.file.path; // Or save only filename if needed
+    }
 
     await user.save();
 
