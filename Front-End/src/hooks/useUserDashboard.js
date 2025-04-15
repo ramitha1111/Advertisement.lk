@@ -6,7 +6,7 @@ import {
   selectActiveTab,
   selectLoading,
   selectError
-} from '../slices/userDashboardSlice'
+} from '../store/userDashboardSlice'
 
 const useUserDashboard = () => {
   const dispatch = useDispatch()
