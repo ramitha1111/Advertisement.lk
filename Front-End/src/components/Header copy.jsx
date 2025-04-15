@@ -102,10 +102,11 @@ const Header = () => {
   ]
 
   const userOptions = [
-    { name: 'My Ads', href: '/user/dashboard?section=my-ads', icon: FileText },
-    { name: 'My Orders', href: '/user/dashboard?section=my-orders', icon: ShoppingBag },
-    { name: 'Settings', href: '/user/dashboard?section=settings', icon: Settings },
-    { name: 'Favorites', href: '/user/dashboard?section=favourites', icon: Heart }
+    { name: 'My Profile', href: '/profile', icon: User },
+    { name: 'My Ads', href: '/my-ads', icon: FileText },
+    { name: 'My Orders', href: '/my-orders', icon: ShoppingBag },
+    { name: 'Settings', href: '/settings', icon: Settings },
+    { name: 'Favorites', href: '/favorites', icon: Heart }
   ]
 
   return (

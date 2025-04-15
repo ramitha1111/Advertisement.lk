@@ -5,7 +5,7 @@ const useAuth = () => {
   const isLoggedIn = !!token;
   const isAdmin = user?.role === 'admin';
 
-  return { isLoggedIn, isAdmin, user };
+  return { isLoggedIn, isAdmin, user, token };
 };
 
 export default useAuth;
