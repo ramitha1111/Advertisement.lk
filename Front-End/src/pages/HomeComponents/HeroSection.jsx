@@ -32,11 +32,12 @@ const slides = [
 const HeroSlider = () => {
     const [current, setCurrent] = useState(0)
     const intervalRef = useRef(null)
+    const [fade, setFade] = useState(true)
 
     const startAutoSlide = () => {
         stopAutoSlide()
         intervalRef.current = setInterval(() => {
-            setCurrent((prev) => (prev + 1) % slides.length)
+            nextSlide()
         }, 7000)
     }
 
@@ -47,18 +48,27 @@ const HeroSlider = () => {
     }
 
     const nextSlide = () => {
-        setCurrent((prev) => (prev + 1) % slides.length)
-        startAutoSlide()
+        setFade(false)
+        setTimeout(() => {
+            setCurrent((prev) => (prev + 1) % slides.length)
+            setFade(true)
+        }, 300)
     }
 
     const prevSlide = () => {
-        setCurrent((prev) => (prev - 1 + slides.length) % slides.length)
-        startAutoSlide()
+        setFade(false)
+        setTimeout(() => {
+            setCurrent((prev) => (prev - 1 + slides.length) % slides.length)
+            setFade(true)
+        }, 300)
     }
 
     const goToSlide = (index) => {
-        setCurrent(index)
-        startAutoSlide()
+        setFade(false)
+        setTimeout(() => {
+            setCurrent(index)
+            setFade(true)
+        }, 300)
     }
 
     useEffect(() => {
@@ -70,7 +80,7 @@ const HeroSlider = () => {
         <div className="relative w-full h-[80vh] overflow-hidden">
             {/* Slide Images */}
             <div
-                className="flex w-full h-full transition-transform duration-700 ease-in-out"
+                className="flex w-full h-full transition-transform duration-1000 ease-in-out"
                 style={{ transform: `translateX(-${current * 100}%)` }}
             >
                 {slides.map((slide, index) => (
@@ -80,45 +90,55 @@ const HeroSlider = () => {
                             alt={`slide-${index}`}
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-center px-4">
-                            <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
-                                {slide.heading}
-                            </h1>
-                            <p className="mt-4 text-lg md:text-2xl text-gray-200 drop-shadow-md">
-                                {slide.subtext}
-                            </p>
-                            <button className="mt-6 px-6 py-3 bg-yellow-400 text-black font-semibold rounded-lg shadow hover:bg-yellow-300 transition">
-                                Get Started
-                            </button>
-                        </div>
+                        {/* Black overlay */}
+                        <div className="absolute inset-0 bg-black opacity-50" />
                     </div>
                 ))}
+            </div>
+
+            {/* Static Text & Button Overlay */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10">
+                <div
+                    className={`transition-opacity duration-500 ${
+                        fade ? 'opacity-100' : 'opacity-0'
+                    }`}
+                >
+                    <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
+                        {slides[current].heading}
+                    </h1>
+                    <p className="mt-4 text-lg md:text-2xl text-gray-200 drop-shadow-md">
+                        {slides[current].subtext}
+                    </p>
+                </div>
+                <button className="mt-6 px-6 py-3 bg-orange-500 text-gray-100 font-semibold rounded-lg shadow hover:bg-orange-600 transition z-20">
+                    Get Started
+                </button>
             </div>
 
             {/* Navigation Arrows */}
             <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 p-2 rounded-full text-white z-10"
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 p-2 rounded-full text-white z-20"
             >
                 <ChevronLeft size={28} />
             </button>
             <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 p-2 rounded-full text-white z-10"
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 p-2 rounded-full text-white z-20"
             >
                 <ChevronRight size={28} />
             </button>
 
             {/* Dots */}
-            <div className="absolute bottom-6 w-full flex justify-center gap-3 z-10">
+            <div className="absolute bottom-6 w-full flex justify-center gap-3 z-20">
                 {slides.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => goToSlide(index)}
                         className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 ${
                             current === index
-                                ? 'bg-yellow-400 scale-125'
-                                : 'bg-white bg-opacity-60 hover:bg-opacity-90'
+                                ? 'bg-orange-500 scale-125'
+                                : 'bg-orange-200 bg-opacity-60 hover:bg-opacity-90 hover:bg-orange-300'
                         }`}
                     />
                 ))}
