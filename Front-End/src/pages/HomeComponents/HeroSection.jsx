@@ -18,12 +18,12 @@ const slides = [
         subtext: 'Search, filter, and connect – all in one platform.',
     },
     {
-        image: 'https://cdn.pixabay.com/photo/2015/01/08/18/25/banner-593055_1280.jpg',
+        image: 'https://gingermediagroup.com/wp-content/uploads/2023/12/nature-scope-of-advertising.jpg',
         heading: 'Advertise Smarter',
         subtext: 'Powerful tools to get your ads seen by the right people.',
     },
     {
-        image: 'https://www.techprevue.com/wp-content/uploads/2017/04/what-is-online-advertising.jpg',
+        image: 'https://www.vistarmedia.com/hs-fs/hubfs/McDonald%E2%80%99s_%20Tempting%20your%20taste%20buds.png?width=919&height=460&name=McDonald%E2%80%99s_%20Tempting%20your%20taste%20buds.png',
         heading: 'Grow Your Reach',
         subtext: 'Join the top platform for local advertisements in Sri Lanka.',
     },
