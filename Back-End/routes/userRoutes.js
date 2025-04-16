@@ -1,4 +1,7 @@
 const express = require('express');
+const upload = require('../middlewares/uploadMiddleware');
+const { updateUser } = require('../controllers/userController');
+const authMiddleware = require('../middlewares/authMiddleware');
 const { 
   updateUser, 
   getUsers, 
@@ -33,5 +36,16 @@ router.get('/', authMiddleware, isAdmin, getUsers); // Only Admins can access th
 
 // Get user by ID
 router.get('/:id', authMiddleware, getUserById);
+
+// Upload profile image
+router.put(
+  '/update',
+  authMiddleware,
+  upload.fields([
+    { name: 'profileImage', maxCount: 1 },
+    { name: 'coverImage', maxCount: 1 }
+  ]),
+  updateUser
+);
 
 module.exports = router;

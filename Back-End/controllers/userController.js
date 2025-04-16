@@ -101,10 +101,15 @@ exports.updateUser = async (req, res) => {
 
     // TODO: Configure this
     // Handle photo upload
-    if (req.file) {
-      user.photo = req.file.path; // Or save only filename if needed
+    if (req.files) {
+      if (req.files.profileImage && req.files.profileImage[0]) {
+        user.profileImage = req.files.profileImage[0].path; // Save local path
+      }
+      if (req.files.coverImage && req.files.coverImage[0]) {
+        user.coverImage = req.files.coverImage[0].path;
+      }
     }
-    //updated the hashed password
+    //update the hashed password
     const { password } = req.body;
 
     if (password) {
@@ -122,6 +127,8 @@ exports.updateUser = async (req, res) => {
         email: user.email,
         phone: user.phone,
         role: user.role,
+        profileImage: user.profileImage,
+        coverImage: user.coverImage,
         emailVerified: user.emailVerified
       }
     });
