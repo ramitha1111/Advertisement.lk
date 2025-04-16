@@ -104,6 +104,13 @@ exports.updateUser = async (req, res) => {
     if (req.file) {
       user.photo = req.file.path; // Or save only filename if needed
     }
+    //updated the hashed password
+    const { password } = req.body;
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
 
     await user.save();
 
