@@ -205,3 +205,27 @@ exports.getUserById = async (req, res) => {
   }
 };
 
+// Get Users by Role
+exports.getUsersByRole = async (req, res) => {
+  const { role } = req.params;
+
+  // Validate role
+  const allowedRoles = ['user', 'admin'];
+  if (!allowedRoles.includes(role)) {
+    return res.status(400).json({ message: 'Invalid role' });
+  }
+
+  try {
+    const users = await Auth.find({ role }).select('-password -otp -resetPasswordToken -resetPasswordExpires');
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: `No users found with role: ${role}` });
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error in getUsersByRole:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+

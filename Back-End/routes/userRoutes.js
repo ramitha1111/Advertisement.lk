@@ -1,5 +1,6 @@
 const express = require('express');
 const upload = require('../middlewares/uploadMiddleware');
+const { getUsersByRole } = require('../controllers/userController');
 const { updateUser } = require('../controllers/userController');
 const authMiddleware = require('../middlewares/authMiddleware');
 const { 
@@ -47,5 +48,8 @@ router.put(
   ]),
   updateUser
 );
+
+// Get users by role
+router.get('/role/:role', getUsersByRole);
 
 module.exports = router;
