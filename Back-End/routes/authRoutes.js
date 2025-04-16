@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const { register, login, googleAuth } = require('../controllers/authController');
+const { register, login, sendPasswordResetEmail, resetPassword } = require('../controllers/authController');
 const { passwordResetOTP, verifyOTP } = require('../controllers/otpController');
 
 
@@ -15,16 +15,36 @@ router.post('/send-otp', passwordResetOTP); // sendOTP method should be defined 
 // Verify OTP
 router.post('/verify-otp', verifyOTP); // verifyOTP method should be defined in authController.js
 
+// Send Password Reset Email
+router.post('/forgot-password', sendPasswordResetEmail)
+
+// Reset Password
+router.post('/reset-password', resetPassword)
+
+
+
+
 // Login user
 router.post('/login', login);
 
-// Google Authentication route
+// routes.js
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-// Google Authentication callback route
-router.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }), 
-  googleAuth  // Callback method to handle the success and send JWT token to frontend
+router.get('/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    (req, res) => {
+        // Ensure req.user has both user and token properties
+        const { user, token } = req.user;
+        const encodedUser = encodeURIComponent(JSON.stringify(user));
+
+        // Redirect with consistent query parameters
+        res.redirect(`${process.env.CLIENT_URL}/google/callback?token=${token}&user=${encodedUser}`);
+    }
 );
+
+
+
+
+
 
 module.exports = router;

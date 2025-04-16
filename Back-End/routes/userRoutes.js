@@ -20,7 +20,7 @@ router.post('/', authMiddleware, isAdmin, createUser); // Only Admins can create
 //router.post('/admin', authMiddleware, isAdmin, createAdmin); // Only Admins can create other admins
 
 // Update user details
-router.put('/', authMiddleware, updateUser);
+router.put('/:id', authMiddleware, updateUser);
 
 // Delete user
 router.delete('/', authMiddleware, deleteUser);

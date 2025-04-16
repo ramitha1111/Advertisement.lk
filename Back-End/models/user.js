@@ -10,6 +10,12 @@ const userSchema = new Schema({
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   otp: { type: String }, // Field to store OTP
   emailVerified: { type: Boolean, default: false }, // Email verification status
+  googleId: { type: String }, // Google ID for OAuth
+
+  // Fields for password reset
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
+
 });
 
 const User = mongoose.model('User', userSchema);

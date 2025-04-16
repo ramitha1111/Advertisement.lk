@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Category = require('../models/category');
 
-// Create Category
+// Create Category with subcategories and features
 const createCategory = async (req, res) => {
     try {
-        const { name, description } = req.body;
+        const { name, subcategories, features } = req.body;
 
         if (!name) {
             return res.status(400).json({ message: 'Category name is required' });
@@ -15,7 +15,12 @@ const createCategory = async (req, res) => {
             return res.status(400).json({ message: 'Category already exists' });
         }
 
-        const category = new Category({ name, description });
+        const category = new Category({
+            name,
+            subcategories,
+            features
+        });
+
         await category.save();
 
         res.status(201).json({
@@ -27,6 +32,7 @@ const createCategory = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 // Get All Categories
 const getCategories = async (req, res) => {
@@ -60,16 +66,17 @@ const getCategory = async (req, res) => {
         // Return the category if found
         res.status(200).json(category);
     } catch (error) {
-        console.error('Error in getCategory:', error); // Log the error to the console
+        console.error('Error in getCategory:', error);
         res.status(500).json({ message: 'Server error' });
     }
 };
 
-// Update Category
+
+// Update Category with subcategories and features
 const updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description } = req.body;
+        const { name, subcategories, features } = req.body;
 
         // Validate ObjectId
         if (!mongoose.isValidObjectId(id)) {
@@ -78,7 +85,7 @@ const updateCategory = async (req, res) => {
 
         const updatedCategory = await Category.findByIdAndUpdate(
             id,
-            { name, description },
+            { name, subcategories, features },
             { new: true } // Return the updated document
         );
 
@@ -86,12 +93,16 @@ const updateCategory = async (req, res) => {
             return res.status(404).json({ message: 'Category not found' });
         }
 
-        res.status(200).json({ message: 'Category updated successfully', category: updatedCategory });
+        res.status(200).json({
+            message: 'Category updated successfully',
+            category: updatedCategory
+        });
     } catch (error) {
         console.error('Error in updateCategory:', error);
         res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 // Delete Category
 const deleteCategory = async (req, res) => {

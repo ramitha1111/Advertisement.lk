@@ -9,20 +9,24 @@ const advertisementSchema=new Schema({
     description:{type:String,required:true},
     price:{type:Number,required:true},
     categoryId:{type:String,required:true},
-    sellerId:{type:String,required:true},
+    subcategoryId:{type:String,required:true},
+    features:[{type:String,required:true}],
+    userId:{type:String,required:true},
     location:{type:String,required:true},
-    images:{type:String,required:true},
+    images:[{type:String}],
     videoUrl:{type:String,required:true},
     isBoosted:{type:Number,required:true},
+    boostedUntil: { type: Date },
     views:{type:String,required:true},
     status:{type:String,required:true},
     createdAt:{type:Date,required:true},
     updatedAt:{type:Date,required:true}
 
-
 })
+
 //Create a model
-const Advertisement=mongoose.model('Advertisement',advertisementSchema);
+const Advertisement = mongoose.models.Advertisement || mongoose.model('Advertisement', advertisementSchema);
+
 //Export the model
 module.exports=Advertisement;
 
