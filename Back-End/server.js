@@ -12,6 +12,7 @@ const contactRoutes = require("./routes/contactRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const path = require('path');
 
 require("dotenv").config();
 const session = require("express-session");
@@ -50,6 +51,11 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/checkout", checkoutRoutes)
 app.use("/api/payment", paymentRoutes);
+app.use("/uploads", express.static('uploads'));
+
+// Serve profile and cover image uploads as static files
+app.use('/uploads/profile_photos', express.static(path.join(__dirname, 'uploads/profile_photos')));
+app.use('/uploads/cover_photos', express.static(path.join(__dirname, 'uploads/cover_photos')));
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
