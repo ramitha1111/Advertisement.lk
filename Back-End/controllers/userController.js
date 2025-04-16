@@ -1,5 +1,6 @@
 const Auth = require('../models/user');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 // Create User
 exports.createUser = async (req, res) => {
@@ -18,13 +19,15 @@ exports.createUser = async (req, res) => {
     }
 
     // Create the new user
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = new Auth({
       name,
       username,
       email,
       googleId,
       phone,
-      password, // Ensure to hash the password before saving (using bcrypt or similar)
+      password: hashedPassword, // Ensure to hash the password before saving (using bcrypt or similar) - used bcrypt
       role: role || 'user', // Default role to 'user', admin can be set optionally
     });
 
