@@ -6,15 +6,15 @@ export default function HeroSection() {
     return (
         <div className="relative w-full min-h-[60vh] overflow-hidden bg-white">
             {/* Background wave pattern */}
-            <div className="absolute inset-0 z-0 h-full w-full bg-gradient-to-r from-white to-blue-50">
-                <img className="w-full h-full object-cover" src={WaveBackground} alt="WaveBackground.svg"/>
+            <div className="absolute inset-0 z-0 h-full w-full bg-gradient-to-r from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
+                <img className="w-full h-full object-cover dark:invert" src={WaveBackground} alt="WaveBackground.svg"/>
             </div>
 
             <div className="container mx-auto px-4 py-12 md:py-16 relative">
                 <div className="flex flex-col xl:flex-row items-center justify-center min-h-[60vh]">
                     {/* Text and Search - Full width on smaller screens, centered */}
                     <div className="w-full xl:w-1/2 z-10 mx-auto xl:mx-0 text-center xl:text-left">
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-700 mb-4">
+                        <h1 className="text-4xl md:text-5xl font-bold text-slate-700 dark:text-slate-200 mb-4">
                             Find Anything<br/>
                             Around <span className="text-orange-500">You.</span>
                         </h1>
@@ -33,7 +33,7 @@ export default function HeroSection() {
                                     </div>
                                     <input
                                         type="text"
-                                        className="pl-10 pr-3 py-3 w-full rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                                         placeholder="I'm looking for..."
                                     />
                                 </div>
@@ -48,7 +48,7 @@ export default function HeroSection() {
                                     </div>
                                     <input
                                         type="text"
-                                        className="pl-10 pr-3 py-3 w-full rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                                         placeholder="Location (e.g. Colombo)"
                                     />
                                 </div>
@@ -60,7 +60,7 @@ export default function HeroSection() {
                             </div>
 
                             {/* Popular searches */}
-                            <div className="mt-4 text-sm text-gray-600">
+                            <div className="mt-4 text-sm text-gray-600 dark:text-slate-400">
                                 <span className="font-medium">What's popular:</span>
                                 <span className="ml-2">
                                   <span className="mr-2">Real Estate,</span>
