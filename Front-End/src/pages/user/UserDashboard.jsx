@@ -22,10 +22,15 @@ import SettingsPage from './Settings'
 import AddAdvertisement from './AddAdvertisement';
 import { getUserById } from '../../api/userApi'
 import { useDispatch } from 'react-redux';
+<<<<<<< Updated upstream
 import MyAdvertisement from './MyAdvertisements';
 import Favourites from './Favourites';
 import MyOrders from './MyOrders';
 import MyPackages from './MyPackages';
+=======
+import NewPost from "./NewPost.jsx";
+import Example from "./Example.jsx";
+>>>>>>> Stashed changes
 
 const UserDashboard = () => {
   const { user, token } = useAuth();
@@ -77,11 +82,19 @@ const UserDashboard = () => {
     switch (activeTab) {
       case 'add-new-ad':
         return (
+<<<<<<< Updated upstream
           <AddAdvertisement />
         )
       case 'my-ads':
         return (
           <MyAdvertisement />
+=======
+          <NewPost/>
+        )
+      case 'my-ads':
+        return (
+          <Example/>
+>>>>>>> Stashed changes
         )
       case 'favourites':
         return (
