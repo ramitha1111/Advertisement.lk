@@ -20,6 +20,7 @@ const verifyPayment = async (req, res) => {
         if (paymentVerification.status === 'succeeded') {
             // Update order status to 'succeeded'
             order.paymentStatus = 'succeeded';
+            order.paymentId = paymentVerification.paymentId;
             order.paymentMethod = paymentVerification.method || 'unknown';
             await order.save();
 
