@@ -22,6 +22,10 @@ import SettingsPage from './Settings'
 import AddAdvertisement from './AddAdvertisement';
 import { getUserById } from '../../api/userApi'
 import { useDispatch } from 'react-redux';
+import MyAdvertisement from './MyAdvertisements';
+import Favourites from './Favourites';
+import MyOrders from './MyOrders';
+import MyPackages from './MyPackages';
 
 const UserDashboard = () => {
   const { user, token } = useAuth();
@@ -52,7 +56,7 @@ const UserDashboard = () => {
         if (user?.id && token) {
           const data = await getUserById(user.id, token);
           setUserData(data.data);
-          dispatch(fetchUser({userData: data.data}))
+          dispatch(fetchUser({ userData: data.data }))
         }
       } catch (err) {
         console.error(err?.response?.message || err.message);
@@ -60,7 +64,7 @@ const UserDashboard = () => {
         setIsLoading(false);
       }
     };
-  
+
     fetchUserData();
   }, [user?.id, token]);
 
@@ -77,24 +81,19 @@ const UserDashboard = () => {
         )
       case 'my-ads':
         return (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">My Ads</h2>
-            <p className="text-gray-600 dark:text-gray-400">This feature will be implemented in a separate component.</p>
-          </div>
+          <MyAdvertisement />
         )
       case 'favourites':
         return (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">My Favourites</h2>
-            <p className="text-gray-600 dark:text-gray-400">This feature will be implemented in a separate component.</p>
-          </div>
+          <Favourites />
+        )
+      case 'my-packages':
+        return (
+          <MyPackages />
         )
       case 'my-orders':
         return (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">My Orders</h2>
-            <p className="text-gray-600 dark:text-gray-400">This feature will be implemented in a separate component.</p>
-          </div>
+          <MyOrders />
         )
       case 'settings':
         return (
@@ -102,10 +101,7 @@ const UserDashboard = () => {
         )
       default:
         return (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Dashboard Overview</h2>
-            <p className="text-gray-600 dark:text-gray-400">Welcome to your dashboard. Select a tab to get started.</p>
-          </div>
+          <MyAdvertisement />
         )
     }
   }
@@ -201,15 +197,6 @@ const UserDashboard = () => {
           <div className="border-b border-gray-200 dark:border-gray-700">
             <nav className="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
               <Link
-                to="/user/dashboard?section=add-new-ad"
-                className={`${activeTab === 'add-new-ad'
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
-                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
-              >
-                <Plus size={16} className="mr-2" /> Add New Ad
-              </Link>
-              <Link
                 to="/user/dashboard?section=my-ads"
                 className={`${activeTab === 'my-ads'
                   ? 'border-primary text-primary'
@@ -219,6 +206,15 @@ const UserDashboard = () => {
                 <FileText size={16} className="mr-2" /> My Ads
               </Link>
               <Link
+                to="/user/dashboard?section=add-new-ad"
+                className={`${activeTab === 'add-new-ad'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
+                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              >
+                <Plus size={16} className="mr-2" /> Add New Ad
+              </Link>
+              <Link
                 to="/user/dashboard?section=favourites"
                 className={`${activeTab === 'favourites'
                   ? 'border-primary text-primary'
@@ -226,6 +222,15 @@ const UserDashboard = () => {
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
               >
                 <Heart size={16} className="mr-2" /> Favourites
+              </Link>
+              <Link
+                to="/user/dashboard?section=my-packages"
+                className={`${activeTab === 'my-packages'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
+                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              >
+                <Package size={16} className="mr-2" /> My Packages
               </Link>
               <Link
                 to="/user/dashboard?section=my-orders"
