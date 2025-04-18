@@ -33,6 +33,9 @@ app.use(session({ secret: process.env.JWT_SECRET, resave: false, saveUninitializ
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Uploads
+app.use('/assets/uploads', express.static('uploads'));
+
 // Passport configuration
 require("./config/passport")(passport);
 

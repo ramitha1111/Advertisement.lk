@@ -2,16 +2,14 @@ const express = require('express');
 const { createCategory, getCategories, getCategory, updateCategory, deleteCategory } = require('../controllers/categoryController');
 const { isAdmin } = require('../middlewares/roleMiddleware');
 const authMiddleware = require('../middlewares/authMiddleware');
+const upload = require('../middlewares/upload');
 
 const router = express.Router();
 
-router.post('/',authMiddleware, isAdmin, createCategory); // Only admins can create categories
-router.get('/', getCategories); // Anyone can get all categories
-router.get('/:id', getCategory); // Anyone can get a category by ID
-router.put('/:id', authMiddleware, isAdmin, updateCategory); // Only admins can update categories
-router.delete('/:id', authMiddleware, isAdmin, deleteCategory); // Only admins can delete categories
+router.post('/', authMiddleware, isAdmin, upload.single('categoryImage'), createCategory);
+router.get('/', getCategories);
+router.get('/:id', getCategory);
+router.put('/:id', authMiddleware, isAdmin, upload.single('categoryImage'), updateCategory);
+router.delete('/:id', authMiddleware, isAdmin, deleteCategory);
 
 module.exports = router;
-//Updated Electronics
-//Electronicssss
-//Fruits
