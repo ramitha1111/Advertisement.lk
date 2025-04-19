@@ -4,7 +4,7 @@ import WaveBackground from "./Images/WaveBackground.svg"
 
 export default function HeroSection() {
     return (
-        <div className="relative w-full min-h-[60vh] overflow-hidden bg-white">
+        <div className="relative w-full min-h-[80vh] overflow-hidden bg-white">
             {/* Background wave pattern */}
             <div className="absolute inset-0 z-0 h-full w-full bg-gradient-to-r from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
                 <img className="w-full h-full object-cover dark:invert" src={WaveBackground} alt="WaveBackground.svg"/>
@@ -33,7 +33,7 @@ export default function HeroSection() {
                                     </div>
                                     <input
                                         type="text"
-                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 hover:ring-2 hover:ring-orange-200 dark:hover:ring-orange-800"
                                         placeholder="I'm looking for..."
                                     />
                                 </div>
@@ -48,7 +48,7 @@ export default function HeroSection() {
                                     </div>
                                     <input
                                         type="text"
-                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 hover:ring-2 hover:ring-orange-200 dark:hover:ring-orange-800"
                                         placeholder="Location (e.g. Colombo)"
                                     />
                                 </div>
@@ -76,9 +76,9 @@ export default function HeroSection() {
                     <div className="hidden xl:block w-full xl:w-1/2 mt-12 xl:mt-0 relative z-0">
                         <div className="flex justify-center items-center">
                             {/* Image Container with adjusted spacing */}
-                            <div className="relative w-full h-96 flex justify-center">
+                            <div className="relative w-full h-[450px] flex justify-center">
                                 {/* Left image (Person in car) - adjusted positioning to overlap with search */}
-                                <div className="absolute left-0 w-[45%] h-full max-w-xs rounded-lg overflow-hidden shadow-lg transform xl:-rotate-2 -ml-6">
+                                <div className="absolute left-0 w-[50%] h-full max-w-xs rounded-lg overflow-hidden shadow-lg transform xl:-rotate-2 -ml-6">
                                     <img
                                         src="https://imgproxy.divecdn.com/WflyY0mKvoCC_NKALx6OER7ag35uerH-CoEd6szyv3o/g:ce/rs:fill:1200:675:1/Z3M6Ly9kaXZlc2l0ZS1zdG9yYWdlL2RpdmVpbWFnZS9HZXR0eUltYWdlcy0xNDQwMTQ5NzIzLmpwZw==.webp"
                                         alt="Person in car"
@@ -87,7 +87,7 @@ export default function HeroSection() {
                                 </div>
 
                                 {/* Right image (Person with laptop) - adjusted positioning to be closer */}
-                                <div className="absolute right-0 w-[45%] h-full max-w-xs rounded-lg overflow-hidden shadow-lg transform xl:rotate-2 -mr-6">
+                                <div className="absolute right-0 w-[50%] h-full max-w-xs rounded-lg overflow-hidden shadow-lg transform xl:rotate-2 -mr-6">
                                     <img
                                         src="https://newpathdigital.com/wp-content/uploads/2021/09/AdobeStock_349411371-1.jpeg"
                                         alt="Person with laptop"
