@@ -10,7 +10,7 @@ export default function HeroSection() {
                 <img className="w-full h-full object-cover dark:invert" src={WaveBackground} alt="WaveBackground.svg"/>
             </div>
 
-            <div className="container mx-auto px-4 py-12 md:py-16 relative">
+            <div className="max-w-7xl mx-auto px-4 py-12 md:py-16 relative">
                 <div className="flex flex-col xl:flex-row items-center justify-center min-h-[60vh]">
                     {/* Text and Search - Full width on smaller screens, centered */}
                     <div className="w-full xl:w-1/2 z-10 mx-auto xl:mx-0 text-center xl:text-left">
@@ -20,7 +20,7 @@ export default function HeroSection() {
                         </h1>
 
                         {/* Search Box with higher z-index - centered on smaller screens */}
-                        <div className="mt-8 relative z-20 max-w-2xl mx-auto xl:mx-0">
+                        <div className="mt-8 relative z-20 max-w-2xl mx-auto xl:mx-0 xl:pr-12">
                             <div className="flex flex-col sm:flex-row gap-2">
                                 <div className="flex-1 relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -33,7 +33,7 @@ export default function HeroSection() {
                                     </div>
                                     <input
                                         type="text"
-                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                                         placeholder="I'm looking for..."
                                     />
                                 </div>
@@ -48,7 +48,7 @@ export default function HeroSection() {
                                     </div>
                                     <input
                                         type="text"
-                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                                         placeholder="Location (e.g. Colombo)"
                                     />
                                 </div>
@@ -73,12 +73,12 @@ export default function HeroSection() {
                     </div>
 
                     {/* Right side - Side by side images - Hidden on screens smaller than 1280px */}
-                    <div className="hidden xl:block w-full xl:w-1/2 mt-12 xl:mt-0 relative z-10">
+                    <div className="hidden xl:block w-full xl:w-1/2 mt-12 xl:mt-0 relative z-0">
                         <div className="flex justify-center items-center">
-                            {/* Image Container */}
+                            {/* Image Container with adjusted spacing */}
                             <div className="relative w-full h-96 flex justify-center">
-                                {/* Left image (Person in car) */}
-                                <div className="absolute left-0 xl:left-10 w-1/2 h-full max-w-xs rounded-lg overflow-hidden shadow-lg transform xl:-rotate-2">
+                                {/* Left image (Person in car) - adjusted positioning to overlap with search */}
+                                <div className="absolute left-0 w-[45%] h-full max-w-xs rounded-lg overflow-hidden shadow-lg transform xl:-rotate-2 -ml-6">
                                     <img
                                         src="https://imgproxy.divecdn.com/WflyY0mKvoCC_NKALx6OER7ag35uerH-CoEd6szyv3o/g:ce/rs:fill:1200:675:1/Z3M6Ly9kaXZlc2l0ZS1zdG9yYWdlL2RpdmVpbWFnZS9HZXR0eUltYWdlcy0xNDQwMTQ5NzIzLmpwZw==.webp"
                                         alt="Person in car"
@@ -86,8 +86,8 @@ export default function HeroSection() {
                                     />
                                 </div>
 
-                                {/* Right image (Person with laptop) */}
-                                <div className="absolute right-0 xl:right-10 w-1/2 h-full max-w-xs rounded-lg overflow-hidden shadow-lg transform xl:rotate-2">
+                                {/* Right image (Person with laptop) - adjusted positioning to be closer */}
+                                <div className="absolute right-0 w-[45%] h-full max-w-xs rounded-lg overflow-hidden shadow-lg transform xl:rotate-2 -mr-6">
                                     <img
                                         src="https://newpathdigital.com/wp-content/uploads/2021/09/AdobeStock_349411371-1.jpeg"
                                         alt="Person with laptop"
