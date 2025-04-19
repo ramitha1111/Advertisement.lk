@@ -12,6 +12,7 @@ const contactRoutes = require("./routes/contactRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const compareRoute = require("./routes/compareRoute");
 
 require("dotenv").config();
 const session = require("express-session");
@@ -47,6 +48,7 @@ app.use("/api/packages", packageRoutes);
 app.use("/api/advertisements", advertisementRoutes)
 app.use("/api/favourites", favouritesRoutes)
 app.use("/api/contact", contactRoutes);
+app.use("/api/compare", compareRoute);
 //app.use("/api/orders", orderRoutes);
 app.use("/api/checkout", checkoutRoutes)
 app.use("/api/payment", paymentRoutes);

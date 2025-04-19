@@ -3,6 +3,7 @@ const { createCompare, getAllCompares, getCompareById, deleteCompare } = require
 const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
 
+
 //Routes
 // Add to compare
 router.post('/:advertisementID', authMiddleware, createCompare);
