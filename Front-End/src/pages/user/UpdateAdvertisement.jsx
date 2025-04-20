@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 
-const MyAdvertisement = () => {
+const UpdateAdvertisement = () => {
 //TODO 
 // Danindu
 return(
@@ -13,4 +13,4 @@ return(
   
 }
 
-export default MyAdvertisement
+export default UpdateAdvertisement
