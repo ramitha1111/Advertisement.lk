@@ -93,13 +93,18 @@ export const createAdvertisement = async (advertisementData, token) => {
     const response = await api.post("/advertisements/", advertisementData, {
         headers: {
             Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data', // Important for file uploads
         },
     });
 
 
 
+
     return response.data;
 };
+
+
+
 //get advertisements by filtering
 export const getAdvertisementsByFiltering = async (category, location, priceRange, token) => {
     const response = await api.get(`/advertisements/filter/${category}/${location}/${priceRange}`, {

@@ -16,10 +16,20 @@ const advertisementSlice = createSlice({
       state.advertisementData = [];
       localStorage.removeItem("advertisementData");
 
+
+
     },
-  },
+    // In your advertisementSlice.js
+
+      // ... existing reducers
+      addAdvertisement: (state, action) => {
+        state.advertisementData = [...state.advertisementData, action.payload];
+        localStorage.setItem("advertisementData", JSON.stringify(state.advertisementData));
+      },
+    }
+
 });
 
-export const { fetchAdvertisement, clearAdvertisement } = advertisementSlice.actions;
+export const { fetchAdvertisement, clearAdvertisement ,addAdvertisement} = advertisementSlice.actions;
 
 export default advertisementSlice.reducer;

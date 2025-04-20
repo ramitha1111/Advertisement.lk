@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
@@ -21,7 +21,7 @@ const CreateAd = () => {
 
     // 从 Redux 中获取用户 ID 和 token
     const { token } = useSelector((state) => state.auth);
-
+    const [imagePreviews, setImagePreviews] = useState([]);
     const categories = {
         Electronics: ['Mobile Phones', 'Laptops', 'Cameras'],
         Vehicles: ['Cars', 'Motorcycles', 'Bicycles'],
@@ -47,6 +47,21 @@ const CreateAd = () => {
         if (ad.featuredImage) {
             formData.append('featuredImage', ad.featuredImage);
         }
+        // In your component
+
+
+
+            // Create previews
+            const previews = files.map(file => URL.createObjectURL(file));
+            setImagePreviews(previews);
+        };
+
+// Don't forget to revoke object URLs when component unmounts
+        useEffect(() => {
+            return () => {
+                imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
+            };
+        }, [imagePreviews]);
         ad.images.forEach((image, index) => {
             formData.append(`images[${index}]`, image);
         });
