@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 
 
-const MyAdvertisement = () => {
+const UpdateUser = () => {
 //TODO 
 // Danindu
+// Later
 return(
     <div>
-        Isuru
+        Danindu
     </div>
 )
   
   
 }
 
-export default MyAdvertisement
+export default UpdateUser

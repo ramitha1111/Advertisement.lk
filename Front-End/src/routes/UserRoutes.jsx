@@ -6,6 +6,9 @@ import ProtectedRoutes from './ProtectedRoutes';
 import Checkout from '../pages/user/Checkout';
 import Payment from '../pages/user/Payment';
 import PaymentSuccess from '../pages/user/PaymentSuccess';
+import AddAdvertisement from '../pages/user/AddAdvertisement';
+import UpdateAdvertisement from '../pages/user/UpdateAdvertisement';
+import SelectPackage from '../pages/user/SelectPackage';
 
 const UserRoutes = () => {
   return (
@@ -41,6 +44,30 @@ const UserRoutes = () => {
           element={
             <ProtectedRoutes>
               <PaymentSuccess />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/add-advertisement"
+          element={
+            <ProtectedRoutes>
+              <AddAdvertisement />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/update-advertisement"
+          element={
+            <ProtectedRoutes>
+              <UpdateAdvertisement />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/select-package"
+          element={
+            <ProtectedRoutes>
+              <SelectPackage />
             </ProtectedRoutes>
           }
         />
