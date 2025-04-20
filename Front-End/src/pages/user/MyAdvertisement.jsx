@@ -1,7 +1,6 @@
 import React from 'react';
 import {Edit, ImageIcon, Trash2} from 'lucide-react';
 //Have to create on edite function
-import { useNavigate } from "react-router-dom";
                    const AdvertisementCard = ({ ad, onEdit, onDelete }) => {
 
 

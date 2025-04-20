@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState} from 'react'
 import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
 import {createAdvertisement} from "../../api/AdvertisementApi.js";
 import "../../hooks/useAuth.js";
 import {useSelector} from "react-redux"; // Import Quill styles
-const CreateAd = () => {
+const CreateAd =  () => {
     const [ad, setAd] = useState({
         title: '',
         description: '',
@@ -19,8 +19,8 @@ const CreateAd = () => {
         featuredImage: null,
     });
 
-    // 从 Redux 中获取用户 ID 和 token
-    const { token } = useSelector((state) => state.auth);
+    //
+    const {token} = useSelector((state) => state.auth);
     const [imagePreviews, setImagePreviews] = useState([]);
     const categories = {
         Electronics: ['Mobile Phones', 'Laptops', 'Cameras'],
@@ -29,15 +29,15 @@ const CreateAd = () => {
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setAd((prev) => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setAd((prev) => ({...prev, [name]: value}));
         if (name === 'category') {
-            setAd((prev) => ({ ...prev, subcategory: '' }));
+            setAd((prev) => ({...prev, subcategory: ''}));
         }
     };
 
     const handleDescriptionChange = (value) => {
-        setAd((prev) => ({ ...prev, description: value }));
+        setAd((prev) => ({...prev, description: value}));
     };
 
     const handlePost = async (e) => {
@@ -47,24 +47,14 @@ const CreateAd = () => {
         if (ad.featuredImage) {
             formData.append('featuredImage', ad.featuredImage);
         }
-        // In your component
 
-
-
-            // Create previews
-            const previews = files.map(file => URL.createObjectURL(file));
-            setImagePreviews(previews);
-        };
-
-// Don't forget to revoke object URLs when component unmounts
-        useEffect(() => {
-            return () => {
-                imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
-            };
-        }, [imagePreviews]);
         ad.images.forEach((image, index) => {
             formData.append(`images[${index}]`, image);
         });
+
+        const previews = ad.images.map(file => URL.createObjectURL(file));
+        setImagePreviews(previews);
+
         try {
             const response = await createAdvertisement(formData, token);
 
@@ -78,6 +68,7 @@ const CreateAd = () => {
             alert('An error occurred while creating the advertisement.');
         }
     };
+
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
