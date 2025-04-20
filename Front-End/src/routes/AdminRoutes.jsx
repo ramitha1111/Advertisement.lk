@@ -10,6 +10,7 @@ import AddUser from '../pages/admin/AddUser';
 import UpdateUser from '../pages/admin/UpdateUser';
 import Order from '../pages/admin/Order';
 import OrdersAdmin from '../pages/admin/OrdersAdmin';
+import Footer from '../components/Footer';
 
 const AdminRoutes = () => {
   return (
@@ -89,6 +90,7 @@ const AdminRoutes = () => {
           }
         />
       </Routes>
+      <Footer />
     </>
   );
 };

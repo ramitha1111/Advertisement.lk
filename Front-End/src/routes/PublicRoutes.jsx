@@ -1,6 +1,7 @@
 // routes/PublicRoutes.jsx
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
@@ -35,6 +36,7 @@ const PublicRoutes = () => {
         <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
         {/* Add other public routes here */}
       </Routes>
+      {!shouldHideHeader && <Footer />}
     </>
   )
 }

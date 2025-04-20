@@ -9,6 +9,7 @@ import PaymentSuccess from '../pages/user/PaymentSuccess';
 import AddAdvertisement from '../pages/user/AddAdvertisement';
 import UpdateAdvertisement from '../pages/user/UpdateAdvertisement';
 import SelectPackage from '../pages/user/SelectPackage';
+import Footer from '../components/Footer';
 
 const UserRoutes = () => {
   return (
@@ -72,6 +73,7 @@ const UserRoutes = () => {
           }
         />
       </Routes>
+      <Footer />
     </>
   );
 };
