@@ -1,7 +1,11 @@
 import React from 'react';
 import {Edit, ImageIcon, Trash2} from 'lucide-react';
-
+//Have to create on edite function
+import { useNavigate } from "react-router-dom";
                    const AdvertisementCard = ({ ad, onEdit, onDelete }) => {
+
+
+
                        return (
                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
                                {/* Top Section for Featured Image */}

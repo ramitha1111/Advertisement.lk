@@ -3,7 +3,7 @@ import AdvertisementCard from './MyAdvertisement.jsx';
 import {useNavigate} from "react-router-dom";
 
 const MyAdvertisements = () => {
-    const navigate=useNavigate()
+    const navigate=useNavigate();
     const advertisements = [
         {
             id: 1,
@@ -16,6 +16,7 @@ const MyAdvertisements = () => {
     ];
 
     const handleEdit = (id) => {
+
 
         navigate(`/edit_advertisement/${id}`);
 

@@ -1,6 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
+import { setError, setLoading } from "../../store/userDashboardSlice.js";
 
 const EditAdvertisement = ({ ad, onUpdate }) => {
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     title: ad.title || '',
     description: ad.description || '',
@@ -8,15 +11,49 @@ const EditAdvertisement = ({ ad, onUpdate }) => {
     location: ad.location || '',
     featuredImage: ad.featuredImage || null,
   });
-    useEffect(() => {
+  const [previewUrl, setPreviewUrl] = useState(
+    typeof ad.featuredImage === 'string' ? ad.featuredImage : null
+  );
+
+  useEffect(() => {
+    const fetchAdvertisement = async () => {
+      try {
+        const response = await fetch(`https://api.example.com/advertisements/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch advertisement');
+        }
+        const data = await response.json();
+        setFormData({
+          title: data.title || '',
+          description: data.description || '',
+          price: data.price || '',
+          location: data.location || '',
+          featuredImage: data.featuredImage || null,
+        });
+        setPreviewUrl(data.featuredImage || null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAdvertisement();
+  }, [id]);
+
+  useEffect(() => {
     let imageUrl;
-    if(formData.featuredImage instanceof File){
-        imageUrl=URL.createObjectURL(formData.featuredImage);
+
+    if (formData.featuredImage instanceof File) {
+      imageUrl = URL.createObjectURL(formData.featuredImage);
+      setPreviewUrl(imageUrl);
+    } else if (typeof formData.featuredImage === 'string') {
+      setPreviewUrl(formData.featuredImage);
     }
-    return ()=>{
-        if(imageUrl) URL.revokeObjectURL(imageUrl)
-    }
-    },[ formData.featuredImage]);
+
+    return () => {
+      if (imageUrl) URL.revokeObjectURL(imageUrl);
+    };
+  }, [formData.featuredImage]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -25,13 +62,22 @@ const EditAdvertisement = ({ ad, onUpdate }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setFormData((prev) => ({ ...prev, featuredImage: file }));
+    if (file) {
+      setFormData((prev) => ({ ...prev, featuredImage: file }));
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Call the onUpdate function with the updated data
-    onUpdate(formData);
+    const formDataToSend = new FormData();
+    formDataToSend.append('title', formData.title);
+    formDataToSend.append('description', formData.description);
+    formDataToSend.append('price', formData.price);
+    formDataToSend.append('location', formData.location);
+    formDataToSend.append('featuredImage', formData.featuredImage);
+
+    // Call the onUpdate function or send the data to the server
+    onUpdate(formDataToSend);
   };
 
   return (
@@ -97,10 +143,10 @@ const EditAdvertisement = ({ ad, onUpdate }) => {
           <label htmlFor="featuredImage" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Featured Image
           </label>
-          {formData.featuredImage && (
+          {previewUrl && (
             <div className="mb-4">
               <img
-                src={formData.featuredImage instanceof File ? URL.createObjectURL(formData.featuredImage) : formData.featuredImage}
+                src={previewUrl}
                 alt="Featured"
                 className="w-full h-48 object-cover rounded-md"
               />
@@ -111,6 +157,7 @@ const EditAdvertisement = ({ ad, onUpdate }) => {
             id="featuredImage"
             name="featuredImage"
             onChange={handleImageChange}
+            accept="image/*"
             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
           />
         </div>

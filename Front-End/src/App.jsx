@@ -24,7 +24,7 @@ const App = () => {
           <Route path="/user/*" element={<UserRoutes />} />
           <Route path="/admin/*" element={<AdminRoutes />} />
           <Route path={"/dashboard"} element={<Dashboard/>}/>
-          <Route path={"/edit_advertisement/:id"} element={<EditAdvertisement/>}/>
+
         </Routes>
       </AnimatePresence>
     </main>
