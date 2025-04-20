@@ -15,6 +15,7 @@ const advertisementSchema=new Schema({
     location:{type:String,required:true},
     images:[{type:String}],
     videoUrl:{type:String,required:true},
+    isVisible:{type:Number,required:true},
     isBoosted:{type:Number,required:true},
     boostedUntil: { type: Date },
     views:{type:String,required:true},
