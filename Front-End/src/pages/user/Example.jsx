@@ -1,45 +1,80 @@
-import React from 'react';
-import AdvertisementCard from './MyAdvertisement.jsx';
-import {useNavigate} from "react-router-dom";
+'use client';
 
-const MyAdvertisements = () => {
-    const navigate=useNavigate();
-    const advertisements = [
-        {
-            id: 1,
-            title: 'iPhone 13',
-            description: 'A brand new iPhone 13 for sale.',
-            price: 999,
-            location: 'New York',
-            featuredImage: null, // Replace with a File object or URL
-        },
-    ];
+                import { useEffect, useState } from 'react';
+                import AdvertisementCard from './MyAdvertisement.jsx';
+                import { useNavigate } from 'react-router-dom';
+                import useAuth from '../../hooks/useAuth.js';
+                import { getAdvertisementsByUserId } from '../../api/AdvertisementApi.js';
+                import { useDispatch } from 'react-redux';
+                import useAdvertisement from '../../hooks/useAdvertisement.js';
 
-    const handleEdit = (id) => {
+                const MyAdvertisements = () => {
+                    const navigate = useNavigate();
+                    const { user, token } = useAuth();
+                    const [isLoading, setIsLoading] = useState(true);
+                    const [advertisementData, setAdvertisementData] = useState([]);
+                    const { fetchAdvertisement, clearAdvertisement } = useAdvertisement();
+                    const dispatch = useDispatch();
 
+                    // 检查用户是否已登录
+                    useEffect(() => {
+                        if (!user || !token) {
+                            navigate('/login'); // 如果未登录，重定向到登录页面
+                        }
+                    }, [user, token, navigate]);
 
-        navigate(`/edit_advertisement/${id}`);
+                    // 加载广告数据
+                    useEffect(() => {
+                        const fetchAdvertisementsData = async () => {
+                            setIsLoading(true);
+                            try {
+                                if (user?.id && token) {
+                                    const data = await getAdvertisementsByUserId(token);
+                                    setAdvertisementData(data.data);
+                                    dispatch(fetchAdvertisement({ advertisementData: data.data }));
+                                }
+                            } catch (error) {
+                                console.error('Error fetching advertisements:', error);
+                            } finally {
+                                setIsLoading(false);
+                            }
+                        };
 
-    };
+                        if (user?.id && token) {
+                            fetchAdvertisementsData();
+                        }
+                    }, [user?.id, token, dispatch, fetchAdvertisement]);
 
-    const handleDelete = (id) => {
-        //Call the deleteAdvertisement End point the backend
-        alert(`Delete ad with ID: ${id}`);
-    };
+                    // 编辑广告
+                    const handleEdit = (id) => {
+                        navigate(`/edit_advertisement/${id}`);
+                    };
 
+                    // 删除广告
+                    const handleDelete = (id) => {
+                        alert(`Delete ad with ID: ${id}`);
+                    };
 
-    return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {advertisements.map((ad) => (
-                <AdvertisementCard
-                    key={ad.id}
-                    ad={ad}
-                    onEdit={() => handleEdit(ad.id)}
-                    onDelete={() => handleDelete(ad.id)}
-                />
-            ))}
-        </div>
-    );
-};
+                    if (isLoading) {
+                        return (
+                            <div className="flex justify-center items-center h-screen">
+                                <div className="loader">Loading...</div>
+                            </div>
+                        );
+                    }
 
-export default MyAdvertisements;
+                    return (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {advertisementData.map((ad) => (
+                                <AdvertisementCard
+                                    key={ad.id}
+                                    ad={ad}
+                                    onEdit={() => handleEdit(ad.id)}
+                                    onDelete={() => handleDelete(ad.id)}
+                                />
+                            ))}
+                        </div>
+                    );
+                };
+
+                export default MyAdvertisements;

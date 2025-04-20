@@ -30,7 +30,8 @@ exports.createAdvertisement = async (req, res) => {
         req.body.createdAt = new Date();
         req.body.updatedAt = req.body.createdAt;
         req.body.isBoosted = 0;
-console.log(req.user.userId);
+
+        console.log(req.user.userId);
 
         if (!validateData(req, res)) return; // Stop execution if validation fails
 
@@ -39,7 +40,7 @@ console.log(req.user.userId);
        //save advertisement in db
         await advertisement.save();
 
-        res.json({ message: "Advertisement created successfully" });
+        res.status(200).json({ message: "Advertisement created successfully" });
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }

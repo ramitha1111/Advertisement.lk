@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { Megaphone, DollarSign, MapPin, Mail, Phone, FileText } from 'lucide-react'
 import ReactQuill from 'react-quill';
 
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import 'react-quill/dist/quill.snow.css';
+import {createAdvertisement} from "../../api/AdvertisementApi.js";
+import "../../hooks/useAuth.js";
+import {useSelector} from "react-redux"; // Import Quill styles
 const CreateAd = () => {
     const [ad, setAd] = useState({
         title: '',
@@ -14,45 +16,72 @@ const CreateAd = () => {
         category: '',
         subcategory: '',
         images: [],
-        featuredImage: null
-    })
+        featuredImage: null,
+    });
+
+    // 从 Redux 中获取用户 ID 和 token
+    const { token } = useSelector((state) => state.auth);
 
     const categories = {
         Electronics: ['Mobile Phones', 'Laptops', 'Cameras'],
         Vehicles: ['Cars', 'Motorcycles', 'Bicycles'],
-        RealEstate: ['Houses', 'Apartments', 'Land']
+        RealEstate: ['Houses', 'Apartments', 'Land'],
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setAd(prev => ({ ...prev, [name]: value }))
+        const { name, value } = e.target;
+        setAd((prev) => ({ ...prev, [name]: value }));
         if (name === 'category') {
-            setAd(prev => ({ ...prev, subcategory: '' }));
+            setAd((prev) => ({ ...prev, subcategory: '' }));
         }
-    }
-    const handleDescriptionChange = (value) => {
-        setAd(prev => ({ ...prev, description: value }));
     };
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        // Submission logic here
-        alert('Advertisement created successfully!')
-    }
+
+    const handleDescriptionChange = (value) => {
+        setAd((prev) => ({ ...prev, description: value }));
+    };
+
+    const handlePost = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+
+        if (ad.featuredImage) {
+            formData.append('featuredImage', ad.featuredImage);
+        }
+        ad.images.forEach((image, index) => {
+            formData.append(`images[${index}]`, image);
+        });
+        try {
+            const response = await createAdvertisement(formData, token);
+
+            if (response.status === 200) {
+                alert('Advertisement created successfully!');
+            } else {
+                alert('Failed to create advertisement.');
+            }
+        } catch (error) {
+            console.error('Error creating advertisement:', error);
+            alert('An error occurred while creating the advertisement.');
+        }
+    };
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
-        setAd(prev => ({ ...prev, images: files }));
+        setAd((prev) => ({ ...prev, images: files }));
     };
 
     const handleFeaturedImageChange = (e) => {
         const file = e.target.files[0];
-        setAd(prev => ({ ...prev, featuredImage: file }));
+        setAd((prev) => ({ ...prev, featuredImage: file }));
     };
+
+
+
+
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Create Advertisement</h2>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handlePost} className="space-y-6">
                 <div>
                     <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Title
@@ -228,15 +257,18 @@ const CreateAd = () => {
 
                 <div className="flex justify-end">
                     <button
+                        onClick={handlePost}
                         type="submit"
                         className="px-6 py-2 bg-primary hover:bg-primary/90 text-white rounded-md"
                     >
-                        Post Ad
+                        Post
                     </button>
                 </div>
             </form>
         </div>
     )
 }
+
+
 
 export default CreateAd;
