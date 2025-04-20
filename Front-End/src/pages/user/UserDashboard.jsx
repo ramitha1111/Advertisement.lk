@@ -1,6 +1,6 @@
 'use client'
 
-import { React, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import loginImage from './assets/login-image.jpg';
 import {
   User,
@@ -19,13 +19,19 @@ import { useLocation, Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import useUser from '../../hooks/useUser';
 import SettingsPage from './Settings'
-import AddAdvertisement from './AddAdvertisement';
 import { getUserById } from '../../api/userApi'
 import { useDispatch } from 'react-redux';
-import MyAdvertisement from './MyAdvertisements';
+
+import MyAdvertisement from './MyAdvertisement';
 import Favourites from './Favourites';
 import MyOrders from './MyOrders';
 import MyPackages from './MyPackages';
+
+import NewPost from "./NewPost.jsx";
+import Example from "./Example.jsx";
+
+
+
 
 const UserDashboard = () => {
   const { user, token } = useAuth();
@@ -77,11 +83,14 @@ const UserDashboard = () => {
     switch (activeTab) {
       case 'add-new-ad':
         return (
-          <AddAdvertisement />
+            <NewPost />
+
         )
+
       case 'my-ads':
         return (
-          <MyAdvertisement />
+          <Example/>
+
         )
       case 'favourites':
         return (
