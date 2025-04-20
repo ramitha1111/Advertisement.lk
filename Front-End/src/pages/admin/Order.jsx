@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 
 
-const MyAdvertisement = () => {
+const Order = () => {
 //TODO 
 // Danindu
 return(
     <div>
-        Isuru
+        Ishara
     </div>
 )
   
   
 }
 
-export default MyAdvertisement
+export default Order

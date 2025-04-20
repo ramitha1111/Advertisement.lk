@@ -17,6 +17,8 @@ const storage = multer.diskStorage({
             folder = 'uploads/categoryImages/';
         } else if (file.fieldname === 'profileImage') {
             folder = 'uploads/profileImages/';
+        } else if (file.fieldname === 'advertisementImage') {
+            folder = 'uploads/advertisementImages/';
         }
         createFolder(folder);
         cb(null, folder);
