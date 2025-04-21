@@ -1,15 +1,17 @@
 const express = require('express');
-const { 
-  updateUser, 
-  getUsers, 
-  getUserById, 
-  deleteUser, 
-  createUser, 
+const upload = require('../middlewares/upload');
+const { getUsersByRole } = require('../controllers/userController');
+const authMiddleware = require('../middlewares/authMiddleware');
+const {
+  updateUser,
+  getUsers,
+  getUserById,
+  deleteUser,
+  createUser,
   createAdmin, // Add this import to create admin functionality
   getAdmins // Add this import for getting admins
 } = require('../controllers/userController'); // Ensure all functions are imported
 const { isAdmin } = require('../middlewares/roleMiddleware'); // Admin check
-const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
@@ -33,5 +35,19 @@ router.get('/', authMiddleware, isAdmin, getUsers); // Only Admins can access th
 
 // Get user by ID
 router.get('/:id', authMiddleware, getUserById);
+
+// Upload profile image
+router.put(
+  '/update',
+  authMiddleware,
+  upload.fields([
+    { name: 'profileImage', maxCount: 1 },
+    { name: 'coverImage', maxCount: 1 }
+  ]),
+  updateUser
+);
+
+// Get users by role
+router.get('/role/:role', getUsersByRole);
 
 module.exports = router;

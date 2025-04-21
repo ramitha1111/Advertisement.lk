@@ -1,25 +1,37 @@
-const express=require('express');
-
-const { createAdvertisement, getAllAdvertisements,updateAdvertisement, deleteAdvertisement,
-    getAdvertisementsByCategory,getAdvertisementsByUserId,
-    getAdvertisementsByAdvertisementId, getAdvertisementsBySearching, getRenewableAds, getAdvertisementsByFiltering
+const express = require('express');
+const {
+    createAdvertisement,
+    getAllAdvertisements,
+    getAdvertisementById,
+    updateAdvertisement,
+    deleteAdvertisement,
+    getAdvertisementsByCategory,
+    getAdvertisementsBySubcategory,
+    getAdvertisementsByUserId,
+    getAdvertisementsBySearching,
+    getAdvertisementsByFiltering,
+    getAdvertisementsByFavourite,
+    getUserIdByAdvertisementId,
+    getRenewableAds
 } = require('../controllers/advertisementController');
-const routes=express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
+const router = express.Router();
 
+// Public routes
+router.get('/', getAllAdvertisements); //
+router.get('/:id', getAdvertisementById); //
+router.get('/search/:search', getAdvertisementsBySearching); //
+router.get('/filter/:category?/:location?/:priceRange?', getAdvertisementsByFiltering);
+router.get('/category/:categoryId', getAdvertisementsByCategory); //
+router.get('/subcategory/:subcategoryId', getAdvertisementsBySubcategory);
 
-routes.post('/', authMiddleware,createAdvertisement); // Create advertisement
-routes.get('/', getAllAdvertisements); // Get all advertisements
+// Protected routes (require authentication)
+router.post('/', authMiddleware, createAdvertisement); //
+router.get('/user/:id', authMiddleware, getAdvertisementsByUserId); //
+router.put('/:id', authMiddleware, updateAdvertisement);
+router.delete('/:id', authMiddleware, deleteAdvertisement); //
+router.get('/favorites', authMiddleware, getAdvertisementsByFavourite);
+router.get('/renewable-ads', authMiddleware, getRenewableAds);
+router.get('/user-by-ad/:advertisementId', authMiddleware, getUserIdByAdvertisementId);
 
-routes.get('/user/',authMiddleware, getAdvertisementsByUserId); // Get a single advertisement by userID
-routes.put('/:id',authMiddleware, updateAdvertisement); // Update advertisement
-routes.delete('/info/:id',authMiddleware, deleteAdvertisement); // Delete advertisement
-routes.get('/categories/:categoryId',authMiddleware, getAdvertisementsByCategory);//Get advertisements by category
-routes.get('/:advertisementId',getAdvertisementsByAdvertisementId);//Get advertisements by id
-routes.get('/search/:search',getAdvertisementsBySearching);//Get advertisements by search
-routes.get("/filter/:category?/:location?/:priceRange?",authMiddleware, getAdvertisementsByFiltering); // Get advertisements by filter
-// routes.get('/search/:search', getAdvertisementsBySearching); // Get advertisements by search keyword
-routes.get('/renewable-ads', authMiddleware, getRenewableAds); // Get renewable advertisements
-
-
-module.exports=routes;
+module.exports = router;

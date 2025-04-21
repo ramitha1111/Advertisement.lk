@@ -47,7 +47,8 @@ const verifyPayment = async (req, res) => {
             await Advertisement.findByIdAndUpdate(
                 order.advertisementId,
                 {
-                    isBoosted: true,
+                    isBoosted: '1',
+                    isVisible: '1',
                     boostedUntil: boostedUntil,
                 },
                 { new: true, runValidators: false }

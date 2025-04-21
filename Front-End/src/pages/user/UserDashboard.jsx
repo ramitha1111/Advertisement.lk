@@ -27,8 +27,9 @@ import Favourites from './Favourites';
 import MyOrders from './MyOrders';
 import MyPackages from './MyPackages';
 
-import NewPost from "./NewPost.jsx";
-import Example from "./Example.jsx";
+import AddAdvertisement from "./AddAdvertisement";
+//import Example from "./Example.jsx";
+//import MyAdvertisements from './Example.jsx';
 
 
 
@@ -83,15 +84,12 @@ const UserDashboard = () => {
     switch (activeTab) {
       case 'add-new-ad':
         return (
-            <NewPost />
-
+          <AddAdvertisement />
         )
-
       case 'my-ads':
-        return (
-          <Example/>
-
-        )
+        // return (
+        //   //<MyAdvertisements />
+        // )
       case 'favourites':
         return (
           <Favourites />
