@@ -13,6 +13,8 @@ import GoogleCallback from '../googleLogin/GoogleCallback'
 import PageWrapper from '../components/PageWrapper'
 import NotFound from '../pages/NotFound'
 import Contact from '../pages/Contact'
+import About from '../pages/About'
+import Advertisements from '../pages/Advertisements'
 
 const PublicRoutes = () => {
   const location = useLocation()
@@ -36,6 +38,8 @@ const PublicRoutes = () => {
         <Route path="/unauthorized" element={<PageWrapper><Unauthorized /></PageWrapper>} />
         <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+        <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+        <Route path="/advertisements" element={<PageWrapper><Advertisements /></PageWrapper>} />
         {/* Add other public routes here */}
       </Routes>
       {!shouldHideHeader && <Footer />}

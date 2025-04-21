@@ -9,7 +9,7 @@ import PaymentSuccess from '../pages/user/PaymentSuccess';
 import UpdateAdvertisement from '../pages/user/UpdateAdvertisement';
 import SelectPackage from '../pages/user/SelectPackage';
 import Footer from '../components/Footer';
-import NewPost from "../pages/user/NewPost.jsx";
+import AddAdvertisement from "../pages/user/AddAdvertisement";
 
 const UserRoutes = () => {
   return (
@@ -52,7 +52,7 @@ const UserRoutes = () => {
           path="/add-advertisement"
           element={
             <ProtectedRoutes>
-            <NewPost />
+            <AddAdvertisement />
             </ProtectedRoutes>
           }
         />

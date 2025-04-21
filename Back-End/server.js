@@ -57,8 +57,9 @@ app.use("/api/payment", paymentRoutes);
 app.use("/uploads", express.static('uploads'));
 
 // Serve profile and cover image uploads as static files
-app.use('/uploads/profile_photos', express.static(path.join(__dirname, 'uploads/profile_photos')));
-app.use('/uploads/cover_photos', express.static(path.join(__dirname, 'uploads/cover_photos')));
+app.use('/assets/uploads/profile_photos', express.static(path.join(__dirname, 'uploads/profile_photos')));
+app.use('/assets/uploads/cover_photos', express.static(path.join(__dirname, 'uploads/cover_photos')));
+app.use('/assets/uploads/advertisementImages', express.static(path.join(__dirname, '/assets/uploads/advertisementImages')));
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

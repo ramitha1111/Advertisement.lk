@@ -1,247 +1,473 @@
 const mongoose = require("mongoose");
-const advertisementModel = require("../models/advertisement");
-const favourites = require("../models/favourites");
+const Advertisement = require("../models/Advertisement");
+const Category = require("../models/category");
+const User = require("../models/User");
+const Favourites = require("../models/favourites");
 const dayjs = require('dayjs');
 const Order = require('../models/Order');
-const Advertisement = require('../models/Advertisement');
+const upload = require('../middlewares/upload');
+
+// Multer middleware for image uploads
+const handleFileUploads = upload.fields([
+    { name: 'featuredImage', maxCount: 1 },
+    { name: 'images', maxCount: 5 }
+]);
 
 // Validate advertisement data
 const validateData = (req, res) => {
-    const { title, description, price, categoryId, location, images, videoUrl,subcategoryId } = req.body;
+    const {
+        title,
+        description,
+        price,
+        categoryId,
+        subcategoryId,
+        location,
+        videoUrl,
+        features
+    } = req.body;
 
     if (!title) return res.status(400).json({ message: "Title is required" });
     if (!description) return res.status(400).json({ message: "Description is required" });
     if (!price) return res.status(400).json({ message: "Price is required" });
     if (!categoryId) return res.status(400).json({ message: "Category is required" });
-
+    if (!subcategoryId) return res.status(400).json({ message: "Subcategory is required" });
     if (!location) return res.status(400).json({ message: "Location is required" });
-    if (!images) return res.status(400).json({ message: "Images are required" });
     if (!videoUrl) return res.status(400).json({ message: "Video URL is required" });
-    if(!subcategoryId) return res.status(400).json({ message: "Subcategory is required" });
+    //if (!features || !Array.isArray(features) || features.length === 0)
+        //return res.status(400).json({ message: "At least one feature is required" });
+
     return true;
 };
 
-// Create advertisement
-exports.createAdvertisement = async (req, res) => {
-    try {
-        // Check if the user is authenticated
-        req.body.userId=req.user.id;
-        //Those additional Values which kept in db as default value
-        req.body.createdAt = new Date();
-        req.body.updatedAt = req.body.createdAt;
-        req.body.isBoosted = 0;
+// Enrich advertisement with category and user details
+const enrichAdvertisement = async (ad) => {
+    const [category, user] = await Promise.all([
+        Category.findById(ad.categoryId).lean(),
+        User.findById(ad.userId).select('username firstName lastName profileImage email phone').lean()
+    ]);
 
-        console.log(req.user.userId);
-
-        if (!validateData(req, res)) return; // Stop execution if validation fails
-
-        const advertisement = new advertisementModel(req.body);
-
-       //save advertisement in db
-        await advertisement.save();
-
-        res.status(200).json({ message: "Advertisement created successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Server error", error });
-    }
+    return {
+        ...ad,
+        categoryDetails: category ? {
+            id: category._id,
+            categoryName: category.name
+        } : null,
+        userDetails: user ? {
+            userId: user._id,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            profileImage: user.profileImage,
+            email: user.email,
+            phone: user.phone
+        } : null
+    };
 };
+
+const path = require('path');
+
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+
+exports.createAdvertisement = [
+    handleFileUploads,
+    async (req, res) => {
+        try {
+            if (!req.files || !req.files.featuredImage) {
+                return res.status(400).json({ message: "Featured image is required" });
+            }
+
+            // Normalize and convert paths for frontend
+            const normalizePath = (filePath) => `${BASE_URL}/${filePath.replace(/\\/g, '/')}`;
+
+            req.body.featuredImage = normalizePath(req.files.featuredImage[0].path);
+            req.body.images = req.files.images
+                ? req.files.images.map(file => normalizePath(file.path))
+                : [];
+
+            req.body.userId = req.user.id;
+            req.body.createdAt = new Date();
+            req.body.updatedAt = req.body.createdAt;
+            req.body.isBoosted = 0;
+            req.body.views = "0";
+            req.body.status = "active";
+            req.body.isVisible = 1;
+
+            if (typeof req.body.features === 'string') {
+                try {
+                    req.body.features = JSON.parse(req.body.features);
+                } catch (e) {
+                    req.body.features = [req.body.features];
+                }
+            }
+
+            if (!validateData(req, res)) return;
+
+            const boostDurationMs = 3 * 24 * 60 * 60 * 1000;
+            req.body.boostedUntil = new Date(Date.now() + boostDurationMs);
+
+            const advertisement = new Advertisement(req.body);
+            await advertisement.save();
+
+            res.status(201).json({
+                message: "Advertisement created successfully",
+                advertisementId: advertisement._id
+            });
+        } catch (error) {
+            console.error('Error creating advertisement:', error);
+            res.status(500).json({ message: "Server error", error: error.message });
+        }
+    }
+];
+
 
 // Get advertisement by userId
 exports.getAdvertisementsByUserId = async (req, res) => {
     try {
-      // get the UserId by authMiddleware
+        // Get the UserId from authMiddleware
         const userId = req.user.id;
-        console.log(userId);
 
-        //find advertisements by userId
-        //It will return all advertisements of the user
-        const advertisements = await advertisementModel.find({ userId: userId});
-       //Pass the Parameter for filter the advertisement want to delete
+        // Find advertisements by userId
+        const advertisements = await Advertisement.find({ userId }).lean();
 
+        if (!advertisements || advertisements.length === 0) {
+            return res.status(404).json({ message: "No advertisements found for this user" });
+        }
 
-        //Delete the advertisement by advertisementId
+        // Enrich advertisements with category and user details
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
 
-
-        if (!advertisements) return res.status(404).json({ message: "Advertisement not found" });
-        // Check if the advertisement belongs to the user
-        console.log(advertisements.toString());
-        res.status(200).json(advertisements);
+        res.status(200).json(enrichedAds);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        console.error('Error getting user advertisements:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
 // Get all advertisements
 exports.getAllAdvertisements = async (req, res) => {
     try {
-        const advertisements = await advertisementModel.find();
-        res.status(200).json(advertisements);
+        const advertisements = await Advertisement.find().lean();
+
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
+
+        res.status(200).json(enrichedAds);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        console.error('Error getting all advertisements:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+// Get advertisement by ID
+exports.getAdvertisementById = async (req, res) => {
+    try {
+        const advertisementId = req.params.id;
+
+        // Find advertisement by ID
+        const advertisement = await Advertisement.findById(advertisementId).lean();
+
+        if (!advertisement) {
+            return res.status(404).json({ message: "Advertisement not found" });
+        }
+
+        // Increment view count
+        await Advertisement.findByIdAndUpdate(
+            advertisementId,
+            { $set: { views: (parseInt(advertisement.views) + 1).toString() } }
+        );
+
+        // Enrich advertisement with category and user details
+        const enrichedAd = await enrichAdvertisement(advertisement);
+
+        res.status(200).json(enrichedAd);
+    } catch (error) {
+        console.error('Error getting advertisement by ID:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
 // Update advertisement
-exports.updateAdvertisement = async (req, res) => {
-    try {
-        req.body.updatedAt = new Date();
-        if (!validateData(req, res)) return;
+exports.updateAdvertisement = [
+    handleFileUploads,
+    async (req, res) => {
+        try {
+            const advertisementId = req.params.id;
+            const userId = req.user.id;
 
-        const updatedAdvertisement = await advertisementModel.findByIdAndUpdate(req.id, req.body, { new: true });
-        if (!updatedAdvertisement) return res.status(404).json({ message: "Advertisement not found" });
+            // Find the advertisement by ID and user ID
+            const advertisement = await Advertisement.findOne({
+                _id: advertisementId,
+                userId
+            });
 
-        res.json({ message: "Advertisement updated successfully", advertisement: updatedAdvertisement });
-    } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+            if (!advertisement) {
+                return res.status(404).json({ message: "Advertisement not found or not owned by this user" });
+            }
+
+            req.body.updatedAt = new Date();
+
+            // Process file uploads if any
+            if (req.files) {
+                if (req.files.featuredImage) {
+                    req.body.featuredImage = req.files.featuredImage[0].path;
+                }
+
+                if (req.files.images && req.files.images.length > 0) {
+                    req.body.images = req.files.images.map(file => file.path);
+                }
+            }
+
+            // Parse features array if it's sent as JSON string
+            if (typeof req.body.features === 'string') {
+                try {
+                    req.body.features = JSON.parse(req.body.features);
+                } catch (e) {
+                    req.body.features = [req.body.features]; // Convert to array if single string
+                }
+            }
+
+            if (!validateData(req, res)) return; // Stop execution if validation fails
+
+            const updatedAdvertisement = await Advertisement.findByIdAndUpdate(
+                advertisementId,
+                { $set: req.body },
+                { new: true }
+            );
+
+            if (!updatedAdvertisement) {
+                return res.status(404).json({ message: "Advertisement not found" });
+            }
+
+            res.json({
+                message: "Advertisement updated successfully",
+                advertisement: updatedAdvertisement
+            });
+        } catch (error) {
+            console.error('Error updating advertisement:', error);
+            res.status(500).json({ message: "Server error", error: error.message });
+        }
     }
-};
+];
 
 // Delete advertisement
 exports.deleteAdvertisement = async (req, res) => {
     try {
-        const userId=req.user.id;
-        const advertisementId=req.params.id;
-        const advertisement = await advertisementModel.findOne({userId: userId,_id: advertisementId});
-        console.log(advertisement);
-        // Check if the advertisement belongs to the user
-        if (!advertisement) return res.status(404).json({ message: "Advertisement not found" });
+        const userId = req.user.id;
+        const advertisementId = req.params.id;
+
+        const advertisement = await Advertisement.findOne({
+            userId,
+            _id: advertisementId
+        });
+
+        if (!advertisement) {
+            return res.status(404).json({ message: "Advertisement not found or not owned by this user" });
+        }
+
         await advertisement.deleteOne();
+
         res.status(200).json({ message: "Advertisement deleted successfully" });
-        console.log(advertisement.toString());
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        console.error('Error deleting advertisement:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
 // Get advertisements by category
-const getCategery=require("./categoryController");
 exports.getAdvertisementsByCategory = async (req, res) => {
     try {
-        const id=req.params.categoryId;
-        //get the categories in to arrays
-        console.log(id);
-      let name="";
-        switch (id) {
-            //Fruits
-            case 1: name="Fruits";
-                    let advertisements = await advertisementModel.find({ name: name });
-                    res.status(200).json(advertisements.subCategories);
-                    return;
-            case 2: name="Electronics";
-                     advertisements = await advertisementModel.find({ name: name });
-                    res.status(200).json(advertisements.subCategories);
-                    return;
-            default:
-                return res.status(500).json("Error");
+        const categoryId = req.params.categoryId;
 
+        // Find advertisements by category ID
+        const advertisements = await Advertisement.find({
+            categoryId,
+            isVisible: 1
+        }).lean();
 
-
+        if (!advertisements || advertisements.length === 0) {
+            return res.status(404).json({ message: "No advertisements found for this category" });
         }
 
+        // Enrich advertisements with category and user details
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
 
+        res.status(200).json(enrichedAds);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        console.error('Error getting advertisements by category:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
-// Get advertisements by Advertisement ID
-exports.getAdvertisementsByAdvertisementId = async (req, res,next) => {
+// Get advertisements by subcategory
+exports.getAdvertisementsBySubcategory = async (req, res) => {
     try {
-        const advertisements = await advertisementModel.findById({ id: req.params.id });
-        next(advertisements);
+        const subcategoryId = req.params.subcategoryId;
 
+        // Find advertisements by subcategory ID
+        const advertisements = await Advertisement.find({
+            subcategoryId,
+            isVisible: 1
+        }).lean();
+
+        if (!advertisements || advertisements.length === 0) {
+            return res.status(404).json({ message: "No advertisements found for this subcategory" });
+        }
+
+        // Enrich advertisements with category and user details
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
+
+        res.status(200).json(enrichedAds);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        console.error('Error getting advertisements by subcategory:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
-// Get advertisements by search keyword (Debounced Search)
+// Get advertisements by search keyword
 exports.getAdvertisementsBySearching = async (req, res) => {
     try {
         const query = req.params.search;
-        if (!query) return res.json("Error!,No any data found");
-    //Get the InCaseSensitive items by using keyword
 
+        if (!query) {
+            return res.status(400).json({ message: "Search query is required" });
+        }
 
-        const advertisements = await advertisementModel.find({
+        // Find advertisements by title or description
+        const advertisements = await Advertisement.find({
             $or: [
                 { title: { $regex: query, $options: "i" } },
                 { description: { $regex: query, $options: "i" } },
             ],
-        }).limit(10); // Limit to 10 results
+            isVisible: 1
+        }).limit(10).lean();
 
+        if (!advertisements || advertisements.length === 0) {
+            return res.status(404).json({ message: "No advertisements found matching your search" });
+        }
 
+        // Enrich advertisements with category and user details
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
 
-        res.json({ advertisements });
+        res.status(200).json({ advertisements: enrichedAds });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        console.error('Error searching advertisements:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
-//Get Advertisement By Filtering
+
+// Get advertisements by filtering
 exports.getAdvertisementsByFiltering = async (req, res) => {
     try {
         const category = req.params.category;
         const location = req.params.location;
         const priceRange = req.params.priceRange;
-        console.log(category);
-        console.log(location);
-        console.log(priceRange);
 
+        const filters = { isVisible: 1 };
 
-        if (category || location || priceRange) {
-            const filters = {};
-
-            if (category) {
-                filters.categoryId = category;
-            }
-
-            if (location) {
-                filters.location = {$regex: location, $options: "i"}; // Case-insensitive search
-            }
-
-            if (priceRange) {
-                const [minPrice, maxPrice] = priceRange.split(",").map(Number);
-                filters.price = {$gte: minPrice, $lte: maxPrice};
-            }
-
-            const advertisements = await advertisementModel.find(filters);
-            res.status(200).json(advertisements);
+        if (category && category !== 'all') {
+            filters.categoryId = category;
         }
-    }
-        catch (e) {
-        console.error("Error fetching advertisements:", e);
-        res.status(500).json({ message: "Server error" });
-    }
 
+        if (location && location !== 'all') {
+            filters.location = { $regex: location, $options: "i" };
+        }
+
+        if (priceRange && priceRange !== 'all') {
+            const [minPrice, maxPrice] = priceRange.split(",").map(Number);
+            filters.price = { $gte: minPrice, $lte: maxPrice };
+        }
+
+        const advertisements = await Advertisement.find(filters).lean();
+
+        if (!advertisements || advertisements.length === 0) {
+            return res.status(404).json({ message: "No advertisements found matching your filters" });
+        }
+
+        // Enrich advertisements with category and user details
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
+
+        res.status(200).json(enrichedAds);
+    } catch (error) {
+        console.error('Error filtering advertisements:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
+};
 
 // Get advertisements by user's favorite list
 exports.getAdvertisementsByFavourite = async (req, res) => {
     try {
-        const favouriteAds = await favourites.findOne({ userId: req.params.userId });
-        if (!favouriteAds) return res.status(404).json({ message: "No favorites found for this user" });
+        const userId = req.user.id;
 
-        res.status(200).json(favouriteAds);
+        const userFavourites = await Favourites.findOne({ userId });
+
+        if (!userFavourites || !userFavourites.advertisements || userFavourites.advertisements.length === 0) {
+            return res.status(404).json({ message: "No favorites found for this user" });
+        }
+
+        // Find all advertisements in the user's favorites
+        const advertisements = await Advertisement.find({
+            _id: { $in: userFavourites.advertisements },
+            isVisible: 1
+        }).lean();
+
+        if (!advertisements || advertisements.length === 0) {
+            return res.status(404).json({ message: "No valid advertisements found in favorites" });
+        }
+
+        // Enrich advertisements with category and user details
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
+
+        res.status(200).json(enrichedAds);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        console.error('Error getting favorite advertisements:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+// Get userId from advertisementId
+exports.getUserIdByAdvertisementId = async (req, res) => {
+    try {
+        const advertisementId = req.params.advertisementId;
+
+        const advertisement = await Advertisement.findById(advertisementId);
+
+        if (!advertisement) {
+            return res.status(404).json({ message: "Advertisement not found" });
+        }
+
+        res.status(200).json({ userId: advertisement.userId });
+    } catch (error) {
+        console.error('Error getting user ID by advertisement ID:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
 // Get renewable ads
-
 exports.getRenewableAds = async (req, res) => {
-    const userId = req.user.id; // Extracted from token via authMiddleware
-
     try {
+        const userId = req.user.id;
+
         // Get orders for the current user
         const orders = await Order.find({ userId });
 
-        // Extract advertisementIds from orders and ensure they are ObjectIds
+        // Extract advertisementIds from orders
         const adIds = orders.map(order => order.advertisementId);
 
-        // Ensure adIds contains only valid ObjectId values
         if (!adIds.length) {
-            return res.status(400).json({ message: 'No advertisements found for this user' });
+            return res.status(404).json({ message: 'No advertisements found for this user' });
         }
 
         // Get the current time and the time 1 day from now
@@ -250,36 +476,21 @@ exports.getRenewableAds = async (req, res) => {
 
         // Find ads that are boosted and will expire in 1 day
         const renewableAds = await Advertisement.find({
-            _id: { $in: adIds },  // Ensure adIds are ObjectId types
-            isBoosted: 1,  // Ads that are boosted
+            _id: { $in: adIds },
+            isBoosted: 1,
             boostedUntil: {
                 $gte: tomorrowStart,
                 $lte: tomorrowEnd
             }
-        }).select('_id packageId boostedUntil'); // Select adId and packageId only
+        }).select('_id title featuredImage packageId boostedUntil').lean();
 
-        // Return the filtered ads
-        res.status(200).json({ renewableAds });
-    } catch (err) {
-        console.error('Error fetching renewable ads:', err);
-        res.status(500).json({ message: 'Failed to fetch renewable ads', error: err.message });
-    }
-};
-//get userId from advertisementId
-exports.getUserIdByAdvertisementId = async (req, res,next) => {
-    try {
-        const advertisementId = req.params.advertisementId;
-
-        // Find the advertisement by ID
-        const advertisement = await advertisementModel.findById(advertisementId);
-
-        if (!advertisement) {
-            return res.status(404).json({ message: "Advertisement not found" });
+        if (!renewableAds || renewableAds.length === 0) {
+            return res.status(404).json({ message: 'No renewable ads found' });
         }
 
-        // Return the userId associated with the advertisement
-      next();
+        res.status(200).json({ renewableAds });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        console.error('Error fetching renewable ads:', error);
+        res.status(500).json({ message: 'Failed to fetch renewable ads', error: error.message });
     }
 };

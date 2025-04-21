@@ -47,7 +47,8 @@ cron.schedule('0 8 * * *', async () => {
 
         for (const ad of expiredAds) {
             // Update ad
-            ad.isBoosted = false;
+            ad.isBoosted = '0';
+            ad.isVisible = '0';
             ad.boostedUntil = null;
             await ad.save();
 
