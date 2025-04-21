@@ -5,7 +5,7 @@ import { createAdvertisement } from "../../api/AdvertisementApi.js";
 import { getAllCategories } from "../../api/CategoryApi.js"; // Assuming this is your category API
 import { useSelector } from "react-redux";
 
-const CreateAd = () => {
+const AddAdvertisement = () => {
     const [ad, setAd] = useState({
         title: '',
         description: '',
@@ -191,7 +191,7 @@ const CreateAd = () => {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6 border-b pb-3">Create New Advertisement</h2>
             
             {error && (
@@ -464,4 +464,4 @@ const CreateAd = () => {
     );
 };
 
-export default CreateAd;
+export default AddAdvertisement;
