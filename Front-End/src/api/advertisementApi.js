@@ -1,6 +1,5 @@
 import api from "../axios.js";
 
-//new 
 
 // Get all advertisements
 export const getAllAdvertisements = async () => {
