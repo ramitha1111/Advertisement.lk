@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import loginImage from './assets/login-image.jpg';
+import { React, useState, useEffect } from 'react'
 import {
   User,
   Settings,
@@ -18,22 +17,16 @@ import {
 import { useLocation, Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import useUser from '../../hooks/useUser';
-import SettingsPage from './Settings'
+import SettingsPage from '../user/Settings'
+import CategoriesAdmin from './CategoriesAdmin';
 import { getUserById } from '../../api/userApi'
 import { useDispatch } from 'react-redux';
+import AdvertisementsAdmin from './AdvertisementsAdmin';
+import UsersAdmin from './UsersAdmin';
+import OrdersAdmin from './OrdersAdmin';
+import PackagesAdmin from './PackagesAdmin';
 
-import MyAdvertisement from './MyAdvertisement';
-import Favourites from './Favourites';
-import MyOrders from './MyOrders';
-import MyPackages from './MyPackages';
-
-import NewPost from "./NewPost.jsx";
-import Example from "./Example.jsx";
-
-
-
-
-const UserDashboard = () => {
+const AdminDashboard = () => {
   const { user, token } = useAuth();
   const { fetchUser, clearUser } = useUser();
   const location = useLocation();
@@ -81,28 +74,25 @@ const UserDashboard = () => {
   // Rendering different content based on the active tab
   const renderContent = () => {
     switch (activeTab) {
-      case 'add-new-ad':
+      case 'advertisements':
         return (
-            <NewPost />
-
+          <AdvertisementsAdmin />
         )
-
-      case 'my-ads':
+      case 'categories':
         return (
-          <Example/>
-
+          <CategoriesAdmin />
         )
-      case 'favourites':
+      case 'users':
         return (
-          <Favourites />
+          <UsersAdmin />
         )
-      case 'my-packages':
+      case 'packages':
         return (
-          <MyPackages />
+          <PackagesAdmin />
         )
-      case 'my-orders':
+      case 'orders':
         return (
-          <MyOrders />
+          <OrdersAdmin />
         )
       case 'settings':
         return (
@@ -110,7 +100,7 @@ const UserDashboard = () => {
         )
       default:
         return (
-          <MyAdvertisement />
+          <AdvertisementsAdmin />
         )
     }
   }
@@ -133,7 +123,7 @@ const UserDashboard = () => {
               {/* Profile image */}
               <div className="relative flex-shrink-0 self-start md:self-start">
                 <img
-                  src={loginImage}
+                  src={userData.profileImage || ''}
                   alt="Profile-image"
                   className="h-48 w-48 rounded-full object-cover border-4 border-gray-300 dark:border-gray-700"
                 />
@@ -163,36 +153,36 @@ const UserDashboard = () => {
               {/* Ad stats column */}
               <div className="w-full md:w-64 mt-8 md:mt-0 md:ml-6">
                 <div className="space-y-4">
-                  {/* Active Ads */}
+                  {/* Total Ads */}
                   <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <FileText size={18} className="text-green-600 dark:text-green-400" />
-                        <h3 className="ml-2 font-medium text-green-600 dark:text-green-400">Active Ads</h3>
+                        <h3 className="ml-2 font-medium text-green-600 dark:text-green-400">Total Ads</h3>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">1</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">10</p>
                     </div>
                   </div>
 
-                  {/* Expired Ads */}
+                  {/* Total Users */}
                   <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <FileText size={18} className="text-red-600 dark:text-red-400" />
-                        <h3 className="ml-2 font-medium text-red-600 dark:text-red-400">Expired Ads</h3>
+                        <h3 className="ml-2 font-medium text-red-600 dark:text-red-400">Total Users</h3>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">2</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">5</p>
                     </div>
                   </div>
 
-                  {/* Pending Ads */}
+                  {/* Total Orders */}
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <Bell size={18} className="text-yellow-600 dark:text-yellow-400" />
-                        <h3 className="ml-2 font-medium text-yellow-600 dark:text-yellow-400">Pending Ads</h3>
+                        <h3 className="ml-2 font-medium text-yellow-600 dark:text-yellow-400">Total Orders</h3>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">1</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">8</p>
                     </div>
                   </div>
                 </div>
@@ -206,49 +196,49 @@ const UserDashboard = () => {
           <div className="border-b border-gray-200 dark:border-gray-700">
             <nav className="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
               <Link
-                to="/user/dashboard?section=my-ads"
-                className={`${activeTab === 'my-ads'
+                to="/user/dashboard?section=advetisements"
+                className={`${activeTab === 'advetisements'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
               >
-                <FileText size={16} className="mr-2" /> My Ads
+                <FileText size={16} className="mr-2" /> Advetisements
               </Link>
               <Link
-                to="/user/dashboard?section=add-new-ad"
-                className={`${activeTab === 'add-new-ad'
+                to="/user/dashboard?section=categories"
+                className={`${activeTab === 'categories'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
               >
-                <Plus size={16} className="mr-2" /> Add New Ad
+                <Plus size={16} className="mr-2" /> Categories
               </Link>
               <Link
-                to="/user/dashboard?section=favourites"
-                className={`${activeTab === 'favourites'
+                to="/user/dashboard?section=users"
+                className={`${activeTab === 'users'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
               >
-                <Heart size={16} className="mr-2" /> Favourites
+                <User size={16} className="mr-2" /> Users
               </Link>
               <Link
-                to="/user/dashboard?section=my-packages"
-                className={`${activeTab === 'my-packages'
+                to="/user/dashboard?section=packages"
+                className={`${activeTab === 'packages'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
               >
-                <Package size={16} className="mr-2" /> My Packages
+                <Package size={16} className="mr-2" /> Packages
               </Link>
               <Link
-                to="/user/dashboard?section=my-orders"
-                className={`${activeTab === 'my-orders'
+                to="/user/dashboard?section=orders"
+                className={`${activeTab === 'orders'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
               >
-                <ShoppingBag size={16} className="mr-2" /> My Orders
+                <ShoppingBag size={16} className="mr-2" /> Orders
               </Link>
               <Link
                 to="/user/dashboard?section=settings"
@@ -310,4 +300,4 @@ function Mail(props) {
   );
 }
 
-export default UserDashboard
+export default AdminDashboard

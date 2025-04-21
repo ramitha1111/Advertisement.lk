@@ -8,7 +8,8 @@ const orderSchema = new mongoose.Schema({
     amount: { type: Number, required: true },
     paymentStatus: { type: String, default: 'pending' },
     paymentMethod: { type: String, default: 'credit_card' },
-    paymentIntentId: { type: String, required: true },
+    paymentIntentId: { type: String },
+    paymentId: {type: String},
     userDetails: {
         firstName: { type: String, required: true },
         lastName: { type: String, required: true },

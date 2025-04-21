@@ -46,7 +46,7 @@ const Header = () => {
       setHeaderHeight(height)
       document.body.style.paddingTop = `${height}px`
     }
-    
+
     // Recalculate on window resize
     const handleResize = () => {
       if (headerRef.current) {
@@ -55,7 +55,7 @@ const Header = () => {
         document.body.style.paddingTop = `${height}px`
       }
     }
-    
+
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
@@ -109,7 +109,7 @@ const Header = () => {
   ]
 
   return (
-    <header ref={headerRef} className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 z-10">
+    <header ref={headerRef} className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 z-50">
       {/* Top bar */}
       <div className="hidden md:block bg-gray-100 dark:bg-gray-800 py-2">
         <div className="mx-auto max-w-7xl px-8">
@@ -273,7 +273,7 @@ const Header = () => {
 
           {/* Post Ad Button */}
           <a
-            href="/post-ad"
+            href="/user/dashboard?section=add-new-ad"
             className="relative overflow-hidden group bg-primary hover:bg-primary/90 border border-primary dark:border-primary hover:border-primary text-white dark:hover:border-primary/90 px-6 py-2 rounded-md flex items-center"
           >
             <span className="relative z-10 flex items-center font-medium">
@@ -307,7 +307,7 @@ const Header = () => {
           {/* Post Ad button in mobile - full width */}
           <div className="mt-6">
             <a
-              href="/post-ad"
+              href="/user/dashboard?section=add-new-ad"
               className="relative overflow-hidden group bg-primary text-white px-4 py-2 rounded-md flex items-center justify-center w-full"
             >
               <span className="relative z-10 flex items-center font-medium">

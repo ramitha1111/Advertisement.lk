@@ -56,18 +56,6 @@ const Settings = () => {
             </button>
             
             <button
-              onClick={() => setActiveSection('notifications')}
-              className={`w-full flex items-center px-4 py-3 text-sm rounded-md ${
-                activeSection === 'notifications' 
-                  ? 'bg-primary/10 text-primary' 
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-              }`}
-            >
-              <Bell size={18} className="mr-3" />
-              Notifications
-            </button>
-            
-            <button
               onClick={() => setActiveSection('privacy')}
               className={`w-full flex items-center px-4 py-3 text-sm rounded-md ${
                 activeSection === 'privacy' 
@@ -81,7 +69,7 @@ const Settings = () => {
           </nav>
         </div>
         
-        {/* Settings content */}
+        {/* Profile Section */}
         <div className="p-6 flex-1">
           {activeSection === 'profile' && (
             <div>
@@ -144,6 +132,16 @@ const Settings = () => {
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
                     />
                   </div>
+
+
+
+                TODO
+                 Danindu
+                 add all the fields in user model
+                 first render them into input fields. then update. only changes fiels should be updated
+
+
+
                   
                   <div className="flex justify-end">
                     <button
@@ -157,25 +155,30 @@ const Settings = () => {
               </form>
             </div>
           )}
+
           
+          {/* Security Section */}
           {activeSection === 'security' && (
             <div>
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Security Settings</h2>
-              <p className="text-gray-600 dark:text-gray-400">Security settings content will be displayed here.</p>
+              
+              
+              TODO
+              Danindu
+              Add email and password reset options there. just redirect them to related pages.
+              
             </div>
           )}
           
-          {activeSection === 'notifications' && (
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Notification Preferences</h2>
-              <p className="text-gray-600 dark:text-gray-400">Notification settings content will be displayed here.</p>
-            </div>
-          )}
-          
+          {/* Privacy Section */}
           {activeSection === 'privacy' && (
             <div>
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Privacy Settings</h2>
-              <p className="text-gray-600 dark:text-gray-400">Privacy settings content will be displayed here.</p>
+              
+              ToDo
+              Danindu
+              Profile delete button goes there
+
             </div>
           )}
         </div>
