@@ -5,18 +5,17 @@ import {
   Search, 
   Filter, 
   ChevronDown, 
-  Map, 
-  Heart, 
-  MessageCircle, 
-  Tag,
   Loader
 } from 'lucide-react'
 import { 
   getAllAdvertisements, 
   getAdvertisementsByCategory,
-  searchAdvertisements
+  searchAdvertisements,
+  filterAdvertisements
 } from '../api/advertisementApi'
+import { getUsers } from '../api/userApi'
 import { getAllCategories } from '../api/categoryApi'
+import AdvertisementCard from '../components/AdvertisementCard'
 
 const Advertisements = () => {
   const [advertisements, setAdvertisements] = useState([])
@@ -25,7 +24,32 @@ const Advertisements = () => {
   const [error, setError] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedLocation, setSelectedLocation] = useState('')
+  const [selectedPriceRange, setSelectedPriceRange] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+
+  // Location options for Sri Lanka
+  const locationOptions = [
+    'All Locations',
+    'Colombo',
+    'Kandy',
+    'Galle',
+    'Jaffna',
+    'Negombo',
+    'Batticaloa',
+    'Trincomalee',
+    'Anuradhapura',
+    'Matara'
+  ]
+
+  // Price range options
+  const priceRangeOptions = [
+    { label: 'Any Price', value: '' },
+    { label: 'Under Rs. 5,000', value: '0-5000' },
+    { label: 'Rs. 5,000 - Rs. 15,000', value: '5000-15000' },
+    { label: 'Rs. 15,000 - Rs. 50,000', value: '15000-50000' },
+    { label: 'Over Rs. 50,000', value: '50000-9999999' }
+  ]
 
   // Load all advertisements and categories when the component mounts
   useEffect(() => {
@@ -52,24 +76,23 @@ const Advertisements = () => {
   // Handle search form submission
   const handleSearch = async (e) => {
     e.preventDefault()
-    if (!searchQuery.trim()) {
-      // If search is empty, fetch all ads
-      try {
-        setLoading(true)
-        const adsData = await getAllAdvertisements()
-        setAdvertisements(adsData)
-      } catch (err) {
-        setError('Failed to load advertisements. Please try again later.')
-        console.error('Error fetching advertisements:', err)
-      } finally {
-        setLoading(false)
-      }
-      return
-    }
-
+    
     try {
       setLoading(true)
-      const results = await searchAdvertisements(searchQuery)
+      let results
+      
+      if (!searchQuery.trim()) {
+        // If search is empty, fetch all ads or apply other filters
+        if (selectedCategory || selectedLocation !== 'All Locations' || selectedPriceRange) {
+          results = await applyFilters()
+        } else {
+          results = await getAllAdvertisements()
+        }
+      } else {
+        // Search by query
+        results = await searchAdvertisements(searchQuery)
+      }
+      
       setAdvertisements(results)
     } catch (err) {
       setError('Failed to search advertisements. Please try again later.')
@@ -79,32 +102,67 @@ const Advertisements = () => {
     }
   }
 
-  // Handle category filter change
-  const handleCategoryChange = async (categoryId) => {
-    setSelectedCategory(categoryId)
+  // Apply all filters
+  const applyFilters = async () => {
+    const category = selectedCategory || ''
+    const location = selectedLocation !== 'All Locations' ? selectedLocation : ''
+    const priceRange = selectedPriceRange || ''
+    
     try {
-      setLoading(true)
-      if (!categoryId) {
-        // If no category selected, fetch all ads
-        const adsData = await getAllAdvertisements()
-        setAdvertisements(adsData)
-      } else {
-        // Fetch ads by selected category
-        const adsData = await getAdvertisementsByCategory(categoryId)
-        setAdvertisements(adsData)
-      }
-    } catch (err) {
+      return await filterAdvertisements(category, location, priceRange)
+    } catch (error) {
+      console.error('Error applying filters:', error)
       setError('Failed to filter advertisements. Please try again later.')
-      console.error('Error filtering advertisements:', err)
-    } finally {
-      setLoading(false)
+      return []
     }
   }
 
-  // Toggle favorites (would need to be expanded with actual functionality)
-  const toggleFavorite = (adId) => {
-    console.log(`Toggling favorite for ad ${adId}`)
-    // Would need implementation with your API
+  // Handle category filter change
+  const handleCategoryChange = async (categoryId) => {
+    setSelectedCategory(categoryId)
+    await updateFilters(categoryId, selectedLocation, selectedPriceRange)
+  }
+  
+  // Handle location filter change
+  const handleLocationChange = async (location) => {
+    setSelectedLocation(location)
+    await updateFilters(selectedCategory, location, selectedPriceRange)
+  }
+  
+  // Handle price range filter change
+  const handlePriceRangeChange = async (priceRange) => {
+    setSelectedPriceRange(priceRange)
+    await updateFilters(selectedCategory, selectedLocation, priceRange)
+  }
+  
+  // Update filters and fetch filtered results
+  const updateFilters = async (category, location, priceRange) => {
+    try {
+      setLoading(true)
+      
+      if (!category && (location === 'All Locations' || !location) && !priceRange) {
+        // No filters applied, get all ads
+        const adsData = await getAllAdvertisements()
+        setAdvertisements(adsData)
+      } else if (category && (location === 'All Locations' || !location) && !priceRange) {
+        // Only category filter applied
+        const adsData = await getAdvertisementsByCategory(category)
+        setAdvertisements(adsData)
+      } else {
+        // Multiple filters applied
+        const categoryParam = category || ''
+        const locationParam = (location === 'All Locations' || !location) ? '' : location
+        const priceRangeParam = priceRange || ''
+        
+        const adsData = await filterAdvertisements(categoryParam, locationParam, priceRangeParam)
+        setAdvertisements(adsData)
+      }
+    } catch (err) {
+      setError('Failed to apply filters. Please try again later.')
+      console.error('Error updating filters:', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -175,20 +233,21 @@ const Advertisements = () => {
                 </select>
               </div>
               
-              {/* Additional filter options could be added here */}
               <div>
                 <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Location
                 </label>
                 <select
                   id="location"
+                  value={selectedLocation}
+                  onChange={(e) => handleLocationChange(e.target.value)}
                   className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                 >
-                  <option>All Locations</option>
-                  <option>Colombo</option>
-                  <option>Kandy</option>
-                  <option>Galle</option>
-                  <option>Jaffna</option>
+                  {locationOptions.map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
                 </select>
               </div>
               
@@ -198,13 +257,15 @@ const Advertisements = () => {
                 </label>
                 <select
                   id="price"
+                  value={selectedPriceRange}
+                  onChange={(e) => handlePriceRangeChange(e.target.value)}
                   className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                 >
-                  <option>Any Price</option>
-                  <option>Under Rs. 5,000</option>
-                  <option>Rs. 5,000 - Rs. 15,000</option>
-                  <option>Rs. 15,000 - Rs. 50,000</option>
-                  <option>Over Rs. 50,000</option>
+                  {priceRangeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -248,96 +309,16 @@ const Advertisements = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {advertisements.map((ad) => (
-              <div 
+              <AdvertisementCard 
                 key={ad._id} 
-                className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden transition-all hover:shadow-lg"
-              >
-                {/* Ad Image */}
-                <div className="relative h-48 bg-gray-200 dark:bg-gray-700">
-                  {ad.images && ad.images.length > 0 ? (
-                    <img 
-                      src={ad.images[0]} 
-                      alt={ad.title} 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
-                      No image available
-                    </div>
-                  )}
-                  <button 
-                    onClick={() => toggleFavorite(ad._id)} 
-                    className="absolute top-2 right-2 p-1.5 rounded-full bg-white dark:bg-gray-800 shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    <Heart className={`h-5 w-5 ${ad.isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
-                  </button>
-                </div>
-                
-                {/* Ad Content */}
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300">
-                      {ad.category ? ad.category.name : 'Uncategorized'}
-                    </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {new Date(ad.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                    <a href={`/advertisements/${ad._id}`} className="hover:text-primary">
-                      {ad.title}
-                    </a>
-                  </h3>
-                  
-                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-2 line-clamp-2">
-                    {ad.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-lg text-primary">
-                      Rs. {ad.price.toLocaleString()}
-                    </span>
-                    <div className="flex items-center text-gray-500 dark:text-gray-400">
-                      <Map className="h-4 w-4 mr-1" />
-                      <span className="text-sm">{ad.location}</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Ad Footer */}
-                <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-3 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 mr-2">
-                      {ad.user && ad.user.avatar ? (
-                        <img 
-                          src={ad.user.avatar} 
-                          alt={ad.user.name} 
-                          className="w-full h-full rounded-full"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <span className="text-xs font-medium">{ad.user && ad.user.name ? ad.user.name.charAt(0) : '?'}</span>
-                        </div>
-                      )}
-                    </div>
-                    <span>{ad.user ? ad.user.name : 'Anonymous'}</span>
-                  </div>
-
-                  <a
-                    href={`/advertisements/${ad._id}`}
-                    className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80"
-                  >
-                    <MessageCircle className="h-4 w-4 mr-1" />
-                    Contact
-                  </a>
-                </div>
-              </div>
+                ad={ad} 
+                categories={categories}
+              />
             ))}
           </div>
         )}
 
-        {/* Pagination could be added here */}
+        {/* Pagination */}
         {!loading && advertisements.length > 0 && (
           <div className="mt-8 flex justify-center">
             <nav className="inline-flex rounded-md shadow-sm">

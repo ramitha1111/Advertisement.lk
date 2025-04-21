@@ -4,6 +4,8 @@ const favourites = require("../models/favourites");
 const dayjs = require('dayjs');
 const Order = require('../models/Order');
 const Advertisement = require('../models/Advertisement');
+const categoryModel = require('../models/category');
+const userModel = require('../models/user');
 
 // Validate advertisement data
 const validateData = (req, res) => {
@@ -30,9 +32,12 @@ exports.createAdvertisement = async (req, res) => {
         req.body.createdAt = new Date();
         req.body.updatedAt = req.body.createdAt;
         req.body.isBoosted = 0;
-console.log(req.user.userId);
 
         if (!validateData(req, res)) return; // Stop execution if validation fails
+
+        // Calculate boostedUntil
+        const boostDurationMs = 3 * 24 * 60 * 60 * 1000;
+        req.body.boostedUntil = new Date(Date.now() + boostDurationMs);
 
         const advertisement = new advertisementModel(req.body);
 
@@ -73,12 +78,41 @@ exports.getAdvertisementsByUserId = async (req, res) => {
 // Get all advertisements
 exports.getAllAdvertisements = async (req, res) => {
     try {
-        const advertisements = await advertisementModel.find();
-        res.status(200).json(advertisements);
+        const advertisements = await advertisementModel.find().lean();
+
+        const enrichedAds = await Promise.all(
+            advertisements.map(async (ad) => {
+                const [category, user] = await Promise.all([
+                    categoryModel.findById(ad.categoryId).lean(),
+                    userModel.findById(ad.userId).select('username firstName lastName profileImage email phone').lean()
+                ]);
+
+                return {
+                    ...ad,
+                    categoryDetails: category ? {
+                        id: category._id,
+                        categoryName: category.categoryName
+                    } : null,
+                    userDetails: user ? {
+                        userId: user._id,
+                        username: user.username,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        profileImage: user.profileImage,
+                        email: user.email,
+                        phone: user.phone
+                    } : null
+                };
+            })
+        );
+
+        res.status(200).json(enrichedAds);
     } catch (error) {
+        console.error("Error fetching advertisements:", error);
         res.status(500).json({ message: "Server error", error });
     }
 };
+
 
 // Update advertisement
 exports.updateAdvertisement = async (req, res) => {
