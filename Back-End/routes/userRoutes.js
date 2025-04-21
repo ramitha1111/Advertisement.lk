@@ -1,19 +1,17 @@
 const express = require('express');
-const upload = require('../middlewares/uploadMiddleware');
+const upload = require('../middlewares/upload');
 const { getUsersByRole } = require('../controllers/userController');
-const { updateUser } = require('../controllers/userController');
 const authMiddleware = require('../middlewares/authMiddleware');
-const { 
-  updateUser, 
-  getUsers, 
-  getUserById, 
-  deleteUser, 
-  createUser, 
+const {
+  updateUser,
+  getUsers,
+  getUserById,
+  deleteUser,
+  createUser,
   createAdmin, // Add this import to create admin functionality
   getAdmins // Add this import for getting admins
 } = require('../controllers/userController'); // Ensure all functions are imported
 const { isAdmin } = require('../middlewares/roleMiddleware'); // Admin check
-const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
