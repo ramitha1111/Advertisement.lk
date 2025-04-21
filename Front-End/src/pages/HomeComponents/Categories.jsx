@@ -8,6 +8,7 @@ import {
     Briefcase,
     ArrowRight
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CategoryTile = ({ icon: Icon, title, onClick }) => {
     return (
@@ -65,6 +66,7 @@ const ScrollAnimatedSection = ({ children }) => {
 };
 
 const Categories = () => {
+    const navigate = useNavigate(); // Hook for navigation
     const categories = [
         { title: 'Fashion', icon: ShoppingBag, path: '/category/fashion' },
         { title: 'Health & Beauty', icon: Sparkles, path: '/category/health-beauty' },
@@ -75,6 +77,7 @@ const Categories = () => {
 
     const handleNavigation = (path) => {
         console.log(`Navigating to: ${path}`);
+        navigate(path)
     };
 
     return (
