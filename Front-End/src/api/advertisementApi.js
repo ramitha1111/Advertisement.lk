@@ -1,30 +1,14 @@
-import api from '../axios';
+import api from "../axios.js";
 
-// Create Advertisement (requires authentication)
-export const createAdvertisement = async (adData, token) => {
-  const response = await api.post('/advertisements', adData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return response.data;
-};
-
-// Get All Advertisements (public)
+// ✅ Get all advertisements
 export const getAllAdvertisements = async () => {
-  const response = await api.get('/advertisements');
+  const response = await api.get("/advertisements");
   return response.data;
 };
 
-// Get Advertisement by ID (public)
-export const getAdvertisementById = async (id) => {
-  const response = await api.get(`/advertisements/id/${id}`);
-  return response.data;
-};
-
-// Get Advertisements by User ID (requires authentication)
+// ✅ Get advertisements by logged-in user
 export const getAdvertisementsByUser = async (token) => {
-  const response = await api.get('/advertisements/user', {
+  const response = await api.get("/advertisements/user", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -32,9 +16,26 @@ export const getAdvertisementsByUser = async (token) => {
   return response.data;
 };
 
-// Update Advertisement (requires authentication)
-export const updateAdvertisement = async (id, adData, token) => {
-  const response = await api.put(`/advertisements/${id}`, adData, {
+// ✅ Get single advertisement by ID
+export const getAdvertisementById = async (advertisementId) => {
+  const response = await api.get(`/advertisements/${advertisementId}`);
+  return response.data;
+};
+
+// ✅ Create new advertisement (with image)
+export const createAdvertisement = async (advertisementData, token) => {
+  const response = await api.post("/advertisements", advertisementData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data", // Important for image uploads
+    },
+  });
+  return response.data;
+};
+
+// ✅ Update advertisement
+export const updateAdvertisement = async (advertisementId, advertisementData, token) => {
+  const response = await api.put(`/advertisements/${advertisementId}`, advertisementData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -42,9 +43,9 @@ export const updateAdvertisement = async (id, adData, token) => {
   return response.data;
 };
 
-// Delete Advertisement (requires authentication)
-export const deleteAdvertisement = async (id, token) => {
-  const response = await api.delete(`/advertisements/${id}`, {
+// ✅ Delete advertisement
+export const deleteAdvertisement = async (advertisementId, token) => {
+  const response = await api.delete(`/advertisements/${advertisementId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -52,33 +53,27 @@ export const deleteAdvertisement = async (id, token) => {
   return response.data;
 };
 
-// Get Advertisements by Category (public)
+// ✅ Get advertisements by category ID
 export const getAdvertisementsByCategory = async (categoryId) => {
-  const response = await api.get(`/advertisements/category/${categoryId}`);
+  const response = await api.get(`/advertisements/categories/${categoryId}`);
   return response.data;
 };
 
-// Search Advertisements (public)
-export const searchAdvertisements = async (searchQuery) => {
-  const response = await api.get(`/advertisements/search/${searchQuery}`);
+// ✅ Search advertisements (by keyword)
+export const getAdvertisementsBySearch = async (searchKeyword) => {
+  const response = await api.get(`/advertisements/search/${searchKeyword}`);
   return response.data;
 };
 
-// Filter Advertisements (public)
-export const filterAdvertisements = async (category, location, priceRange) => {
+// ✅ Filter advertisements by category, location, and price range
+export const getAdvertisementsByFilter = async (category, location, priceRange) => {
   const response = await api.get(`/advertisements/filter/${category}/${location}/${priceRange}`);
   return response.data;
 };
 
-// Get Favourite Advertisements by User ID (public or private depending on route protection)
-export const getFavouriteAdvertisements = async (userId) => {
-  const response = await api.get(`/advertisements/favourites/${userId}`);
-  return response.data;
-};
-
-// Get Renewable Advertisements (requires authentication)
+// ✅ Get advertisements eligible for renewal
 export const getRenewableAdvertisements = async (token) => {
-  const response = await api.get('/advertisements/renewable', {
+  const response = await api.get("/advertisements/renewable-ads", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
