@@ -79,30 +79,33 @@ const AddAdvertisement = () => {
     };
 
     const handleImagesChange = (e) => {
-        const files = Array.from(e.target.files);
-        
-        // Check if user is trying to upload more than 5 images
-        if (files.length > 5) {
-            setError('You can upload a maximum of 5 images');
-            return;
+        const newFiles = Array.from(e.target.files);
+        const currentImages = ad.images || [];
+      
+        // Combine existing and new files
+        const combinedFiles = [...currentImages, ...newFiles];
+      
+        if (combinedFiles.length > 5) {
+          setError('You can upload a maximum of 5 images');
+          return;
         }
-        
-        // Check if all files are images
-        const allImages = files.every(file => file.type.startsWith('image/'));
+      
+        // Check all are images
+        const allImages = combinedFiles.every(file => file.type.startsWith('image/'));
         if (!allImages) {
-            setError('All files must be images (JPEG, PNG, etc.)');
-            return;
+          setError('All files must be images (JPEG, PNG, etc.)');
+          return;
         }
-        
-        setAd(prev => ({ ...prev, images: files }));
-        
-        // Create preview URLs
-        const previews = files.map(file => URL.createObjectURL(file));
+      
+        setAd(prev => ({ ...prev, images: combinedFiles }));
+      
+        // Generate previews
+        const previews = combinedFiles.map(file => URL.createObjectURL(file));
         setImagesPreviews(previews);
-        
-        // Clear any previous errors
+      
         setError('');
-    };
+      };
+      
 
     const handleRemoveImage = (index) => {
         // Create new arrays without the image at the specified index
