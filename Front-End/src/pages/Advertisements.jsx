@@ -10,10 +10,9 @@ import {
 import { 
   getAllAdvertisements, 
   getAdvertisementsByCategory,
-  searchAdvertisements,
-  filterAdvertisements
+  getAdvertisementsBySearch,
+  getAdvertisementsByFilter
 } from '../api/advertisementApi'
-import { getUsers } from '../api/userApi'
 import { getAllCategories } from '../api/categoryApi'
 import AdvertisementCard from '../components/AdvertisementCard'
 
@@ -24,7 +23,7 @@ const Advertisements = () => {
   const [error, setError] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
-  const [selectedLocation, setSelectedLocation] = useState('')
+  const [selectedLocation, setSelectedLocation] = useState('All Locations')
   const [selectedPriceRange, setSelectedPriceRange] = useState('')
   const [showFilters, setShowFilters] = useState(false)
 
@@ -45,10 +44,10 @@ const Advertisements = () => {
   // Price range options
   const priceRangeOptions = [
     { label: 'Any Price', value: '' },
-    { label: 'Under Rs. 5,000', value: '0-5000' },
-    { label: 'Rs. 5,000 - Rs. 15,000', value: '5000-15000' },
-    { label: 'Rs. 15,000 - Rs. 50,000', value: '15000-50000' },
-    { label: 'Over Rs. 50,000', value: '50000-9999999' }
+    { label: 'Under Rs. 5,000', value: '0,5000' },
+    { label: 'Rs. 5,000 - Rs. 15,000', value: '5000,15000' },
+    { label: 'Rs. 15,000 - Rs. 50,000', value: '15000,50000' },
+    { label: 'Over Rs. 50,000', value: '50000,9999999' }
   ]
 
   // Load all advertisements and categories when the component mounts
@@ -90,7 +89,7 @@ const Advertisements = () => {
         }
       } else {
         // Search by query
-        results = await searchAdvertisements(searchQuery)
+        results = await getAdvertisementsBySearch(searchQuery)
       }
       
       setAdvertisements(results)
@@ -109,7 +108,7 @@ const Advertisements = () => {
     const priceRange = selectedPriceRange || ''
     
     try {
-      return await filterAdvertisements(category, location, priceRange)
+      return await getAdvertisementsByFilter(category, location, priceRange)
     } catch (error) {
       console.error('Error applying filters:', error)
       setError('Failed to filter advertisements. Please try again later.')
@@ -139,6 +138,7 @@ const Advertisements = () => {
   const updateFilters = async (category, location, priceRange) => {
     try {
       setLoading(true)
+      console.log('Updating filters:', { category, location, priceRange })
       
       if (!category && (location === 'All Locations' || !location) && !priceRange) {
         // No filters applied, get all ads
@@ -154,11 +154,11 @@ const Advertisements = () => {
         const locationParam = (location === 'All Locations' || !location) ? '' : location
         const priceRangeParam = priceRange || ''
         
-        const adsData = await filterAdvertisements(categoryParam, locationParam, priceRangeParam)
+        const adsData = await getAdvertisementsByFilter(categoryParam, locationParam, priceRangeParam)
         setAdvertisements(adsData)
       }
     } catch (err) {
-      setError('Failed to apply filters. Please try again later.')
+      setError('No advertisements found!')
       console.error('Error updating filters:', err)
     } finally {
       setLoading(false)
@@ -308,17 +308,16 @@ const Advertisements = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {advertisements.map((ad) => (
+            {advertisements.slice().reverse().map((ad) => (
               <AdvertisementCard 
                 key={ad._id} 
                 ad={ad} 
-                categories={categories}
               />
             ))}
           </div>
         )}
 
-        {/* Pagination */}
+        {/* Pagination
         {!loading && advertisements.length > 0 && (
           <div className="mt-8 flex justify-center">
             <nav className="inline-flex rounded-md shadow-sm">
@@ -339,7 +338,7 @@ const Advertisements = () => {
               </a>
             </nav>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   )
