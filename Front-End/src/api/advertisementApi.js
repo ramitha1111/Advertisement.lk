@@ -56,14 +56,14 @@ export const deleteAdvertisement = async (advertisementId, token) => {
 
 // Get advertisements by category ID
 export const getAdvertisementsByCategory = async (categoryId) => {
-  const response = await api.get(`/advertisements/categories/${categoryId}`);
+  const response = await api.get(`/advertisements/category/${categoryId}`);
   return response.data;
 };
 
 // Search advertisements (by keyword)
 export const getAdvertisementsBySearch = async (searchKeyword) => {
   const response = await api.get(`/advertisements/search/${searchKeyword}`);
-  return response.data;
+  return response.data.advertisements;
 };
 
 // Filter advertisements by category, location, and price range

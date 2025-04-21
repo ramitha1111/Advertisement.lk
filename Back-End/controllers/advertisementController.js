@@ -64,21 +64,26 @@ const enrichAdvertisement = async (ad) => {
     };
 };
 
-// Create advertisement
+const path = require('path');
+
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+
 exports.createAdvertisement = [
     handleFileUploads,
     async (req, res) => {
         try {
-            // Process file uploads
             if (!req.files || !req.files.featuredImage) {
                 return res.status(400).json({ message: "Featured image is required" });
             }
 
-            // Add file paths to req.body
-            req.body.featuredImage = req.files.featuredImage[0].path;
-            req.body.images = req.files.images ? req.files.images.map(file => file.path) : [];
+            // Normalize and convert paths for frontend
+            const normalizePath = (filePath) => `${BASE_URL}/${filePath.replace(/\\/g, '/')}`;
 
-            // Set default values
+            req.body.featuredImage = normalizePath(req.files.featuredImage[0].path);
+            req.body.images = req.files.images
+                ? req.files.images.map(file => normalizePath(file.path))
+                : [];
+
             req.body.userId = req.user.id;
             req.body.createdAt = new Date();
             req.body.updatedAt = req.body.createdAt;
@@ -87,24 +92,20 @@ exports.createAdvertisement = [
             req.body.status = "active";
             req.body.isVisible = 1;
 
-            // Parse features array if it's sent as JSON string
             if (typeof req.body.features === 'string') {
                 try {
                     req.body.features = JSON.parse(req.body.features);
                 } catch (e) {
-                    req.body.features = [req.body.features]; // Convert to array if single string
+                    req.body.features = [req.body.features];
                 }
             }
 
-            if (!validateData(req, res)) return; // Stop execution if validation fails
+            if (!validateData(req, res)) return;
 
-            // Calculate boostedUntil
             const boostDurationMs = 3 * 24 * 60 * 60 * 1000;
             req.body.boostedUntil = new Date(Date.now() + boostDurationMs);
 
             const advertisement = new Advertisement(req.body);
-
-            //save advertisement in db
             await advertisement.save();
 
             res.status(201).json({
@@ -117,6 +118,7 @@ exports.createAdvertisement = [
         }
     }
 ];
+
 
 // Get advertisement by userId
 exports.getAdvertisementsByUserId = async (req, res) => {
