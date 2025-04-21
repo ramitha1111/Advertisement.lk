@@ -1,48 +1,53 @@
 const express = require('express');
-const {
-    createAdvertisement,
-    getAllAdvertisements,
-    updateAdvertisement,
-    deleteAdvertisement,
-    getAdvertisementsByCategory,
-    getAdvertisementsByUserId,
-    getAdvertisementsByAdvertisementId,
-    getAdvertisementsBySearching,
-    getRenewableAds,
-    getAdvertisementsByFiltering,
-    getUserIdByAdvertisementId
-} = require('../controllers/advertisementController');
+const upload = require('../middlewares/upload');
+const { getUsersByRole } = require('../controllers/userController');
 const authMiddleware = require('../middlewares/authMiddleware');
-const routes = express.Router();
+const {
+  updateUser,
+  getUsers,
+  getUserById,
+  deleteUser,
+  createUser,
+  createAdmin, // Add this import to create admin functionality
+  getAdmins // Add this import for getting admins
+} = require('../controllers/userController'); // Ensure all functions are imported
+const { isAdmin } = require('../middlewares/roleMiddleware'); // Admin check
 
-// Create advertisement
-routes.post('/', authMiddleware, createAdvertisement);
+const router = express.Router();
 
-// Get all advertisements
-routes.get('/', getAllAdvertisements);
+// Create user - Accessible by admin only
+router.post('/', authMiddleware, isAdmin, createUser); // Only Admins can create normal users
 
-// Get advertisements by user ID (protected route)
-routes.get('/user', authMiddleware, getAdvertisementsByUserId);
+// Create admin - Accessible by admin only
+//router.post('/admin', authMiddleware, isAdmin, createAdmin); // Only Admins can create other admins
 
-// Update advertisement (protected)
-routes.put('/:id', authMiddleware, updateAdvertisement);
+// Update user details
+router.put('/:id', authMiddleware, updateUser);
 
-// Delete advertisement (protected)
-routes.delete('/:id', authMiddleware, deleteAdvertisement);
+// Delete user
+router.delete('/', authMiddleware, deleteUser);
 
-// Get advertisements by category
-routes.get('/categories/:categoryId', getAdvertisementsByCategory);
+// Get all users - Only accessible to admins
+router.get('/', authMiddleware, isAdmin, getUsers); // Only Admins can access this route
 
-// Get advertisements by search keyword
-routes.get('/search/:search', getAdvertisementsBySearching);
+// Get all admins - Only accessible to admins
+//router.get('/admins', authMiddleware, isAdmin, getAdmins); // Only Admins can access this route
 
-// Get advertisements by filter parameters
-routes.get('/filter/:category?/:location?/:priceRange?', getAdvertisementsByFiltering);
+// Get user by ID
+router.get('/:id', authMiddleware, getUserById);
 
-// Get renewable advertisements (protected)
-routes.get('/renewable-ads', authMiddleware, getRenewableAds);
+// Upload profile image
+router.put(
+  '/update',
+  authMiddleware,
+  upload.fields([
+    { name: 'profileImage', maxCount: 1 },
+    { name: 'coverImage', maxCount: 1 }
+  ]),
+  updateUser
+);
 
-// Get user ID by advertisement ID
-routes.get('/user-by-ad/:advertisementId', getUserIdByAdvertisementId);
+// Get users by role
+router.get('/role/:role', getUsersByRole);
 
-module.exports = routes;
+module.exports = router;
