@@ -1,13 +1,14 @@
 const Auth = require('../models/user');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 // Create User
 exports.createUser = async (req, res) => {
-  const { name, username, phone, password, role } = req.body;
+  const { name, username, email, phone, password, role, googleId } = req.body;
 
-  // Ensure that the request contains the necessary fields
-  if (!name || !username || !phone || !password) {
-    return res.status(400).json({ message: 'Name, username, phone, and password are required' });
+  // Ensure that the request contains the necessary fields - done
+  if (!name || !username || !email || !phone || !password) {
+    return res.status(400).json({ message: 'All required fields must be provided' });
   }
 
   try {
@@ -18,21 +19,31 @@ exports.createUser = async (req, res) => {
     }
 
     // Create the new user
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = new Auth({
       name,
       username,
+      email,
+      googleId,
       phone,
-      password, // Ensure to hash the password before saving (using bcrypt or similar)
+      password: hashedPassword, // Ensure to hash the password before saving (using bcrypt or similar) - used bcrypt
       role: role || 'user', // Default role to 'user', admin can be set optionally
     });
 
-    // TODO: add all fields
+    // TODO: add all fields - done
 
     await newUser.save();
 
     res.status(201).json({
       message: 'User created successfully',
-      user: { name: newUser.name, username: newUser.username, phone: newUser.phone }
+      user: {
+        name: newUser.name,
+        username: newUser.username,
+        email: newUser.email,
+        phone: newUser.phone,
+        role: newUser.role,
+      },
     });
   } catch (error) {
     console.error('Error in createUser:', error);
@@ -42,8 +53,18 @@ exports.createUser = async (req, res) => {
 
 // Update User
 exports.updateUser = async (req, res) => {
-  const { name, username, phone,  } = req.body;
   const userId = req.user._id; // Assuming the user ID is stored in `req.user` after authentication
+  const {
+    name,
+    username,
+    email,
+    phone,
+    role,
+    googleId,
+    emailVerified,
+    resetPasswordToken,
+    resetPasswordExpires
+  } = req.body;
 
   try {
     let user = await Auth.findById(userId);
@@ -52,27 +73,64 @@ exports.updateUser = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const existingUsername = await Auth.findOne({ username });
-    if (existingUsername && existingUsername._id.toString() !== userId) {
-      return res.status(400).json({ message: 'Username already taken' });
+    // Check for duplicate username or email
+    if (username && username !== user.username) {
+      const existing = await Auth.findOne({ username });
+      if (existing && existing._id.toString() !== userId) {
+        return res.status(400).json({ message: 'Username already taken' });
+      }
+    }
+
+    if (email && email !== user.email) {
+      const existingEmail = await Auth.findOne({ email });
+      if (existingEmail && existingEmail._id.toString() !== userId) {
+        return res.status(400).json({ message: 'Email already taken' });
+      }
     }
 
     user.name = name || user.name;
     user.username = username || user.username;
+    user.email = email || user.email;
     user.phone = phone || user.phone;
-    // TODO: add all fields
+    user.role = role || user.role;
+    user.googleId = googleId || user.googleId;
+    user.emailVerified = emailVerified !== undefined ? emailVerified : user.emailVerified;
+    user.resetPasswordToken = resetPasswordToken || user.resetPasswordToken;
+    user.resetPasswordExpires = resetPasswordExpires || user.resetPasswordExpires;
+    // TODO: add all fields - done
 
     // TODO: Configure this
     // Handle photo upload
-    if (req.file) {
-      user.photo = req.file.path; // Or save only filename if needed
+    if (req.files) {
+      if (req.files.profileImage && req.files.profileImage[0]) {
+        user.profileImage = req.files.profileImage[0].path; // Save local path
+      }
+      if (req.files.coverImage && req.files.coverImage[0]) {
+        user.coverImage = req.files.coverImage[0].path;
+      }
+    }
+    //update the hashed password
+    const { password } = req.body;
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
     }
 
     await user.save();
 
     res.status(200).json({
       message: 'User updated successfully',
-      user: { name: user.name, username: user.username, phone: user.phone }
+      user: {
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        profileImage: user.profileImage,
+        coverImage: user.coverImage,
+        emailVerified: user.emailVerified
+      }
     });
   } catch (error) {
     console.error('Error in updateUser:', error);
@@ -143,6 +201,30 @@ exports.getUserById = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     console.error('Error in getUserById:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Get Users by Role
+exports.getUsersByRole = async (req, res) => {
+  const { role } = req.params;
+
+  // Validate role
+  const allowedRoles = ['user', 'admin'];
+  if (!allowedRoles.includes(role)) {
+    return res.status(400).json({ message: 'Invalid role' });
+  }
+
+  try {
+    const users = await Auth.find({ role }).select('-password -otp -resetPasswordToken -resetPasswordExpires');
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: `No users found with role: ${role}` });
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error in getUsersByRole:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
