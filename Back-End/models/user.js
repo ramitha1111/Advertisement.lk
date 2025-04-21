@@ -13,6 +13,8 @@ const userSchema = new Schema({
   otp: { type: String }, // Field to store OTP
   emailVerified: { type: Boolean, default: false }, // Email verification status
   googleId: { type: String }, // Google ID for OAuth
+  profileImage: { type: String },
+  coverImage: { type: String },
 
 
   // Fields for password reset

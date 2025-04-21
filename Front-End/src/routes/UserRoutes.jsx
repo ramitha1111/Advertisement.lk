@@ -6,10 +6,10 @@ import ProtectedRoutes from './ProtectedRoutes';
 import Checkout from '../pages/user/Checkout';
 import Payment from '../pages/user/Payment';
 import PaymentSuccess from '../pages/user/PaymentSuccess';
-import AddAdvertisement from '../pages/user/AddAdvertisement';
 import UpdateAdvertisement from '../pages/user/UpdateAdvertisement';
 import SelectPackage from '../pages/user/SelectPackage';
 import Footer from '../components/Footer';
+import NewPost from "../pages/user/NewPost.jsx";
 
 const UserRoutes = () => {
   return (
@@ -52,7 +52,7 @@ const UserRoutes = () => {
           path="/add-advertisement"
           element={
             <ProtectedRoutes>
-              <AddAdvertisement />
+            <NewPost />
             </ProtectedRoutes>
           }
         />

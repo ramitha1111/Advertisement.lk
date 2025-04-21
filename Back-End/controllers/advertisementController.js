@@ -4,8 +4,6 @@ const favourites = require("../models/favourites");
 const dayjs = require('dayjs');
 const Order = require('../models/Order');
 const Advertisement = require('../models/Advertisement');
-const categoryModel = require('../models/category');
-const userModel = require('../models/user');
 
 // Validate advertisement data
 const validateData = (req, res) => {
@@ -32,6 +30,8 @@ exports.createAdvertisement = async (req, res) => {
         req.body.createdAt = new Date();
         req.body.updatedAt = req.body.createdAt;
         req.body.isBoosted = 0;
+
+        console.log(req.user.userId);
 
         if (!validateData(req, res)) return; // Stop execution if validation fails
 
@@ -108,11 +108,9 @@ exports.getAllAdvertisements = async (req, res) => {
 
         res.status(200).json(enrichedAds);
     } catch (error) {
-        console.error("Error fetching advertisements:", error);
         res.status(500).json({ message: "Server error", error });
     }
 };
-
 
 // Update advertisement
 exports.updateAdvertisement = async (req, res) => {
