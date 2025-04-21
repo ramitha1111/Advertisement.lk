@@ -11,28 +11,26 @@ import {
 
 const CategoryTile = ({ icon: Icon, title, onClick }) => {
     return (
-        <div className="aspect-square bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col">
-            {/* Icon with minimal spacing */}
-            <div className="flex justify-center items-center h-1/2 pt-4 xl:pt-1">
-                <Icon className="h-12 w-12 text-blue-600 dark:text-blue-400" strokeWidth={1.5} />
+        <div className="max-w-[180px] min-w-[180px] max-h-[180px] min-h-[180px] bg-white hover:bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col justify-center items-center p-2 transition-all duration-500">
+            {/* Icon */}
+            <div className="mb-2">
+                <Icon className="h-14 w-14 text-blue-600 dark:text-blue-400" strokeWidth={1.5} />
             </div>
 
-            {/* Title directly below icon with minimal gap */}
-            <div className="text-center px-2">
-                <h3 className="text-sm font-medium text-gray-800 dark:text-gray-100">{title}</h3>
-            </div>
+            {/* Title */}
+            <h3 className="text-lg font-medium text-gray-800 dark:text-gray-100 text-center mb-2 mt-1">
+                {title}
+            </h3>
 
-            {/* Button at bottom with minimal spacing */}
-            <div className="flex justify-center items-end flex-grow pb-4">
-                <motion.button
-                    onClick={onClick}
-                    className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                >
-                    <ArrowRight className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                </motion.button>
-            </div>
+            {/* Button */}
+            <motion.button
+                onClick={onClick}
+                className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+            >
+                <ArrowRight className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            </motion.button>
         </div>
     );
 };
@@ -82,12 +80,13 @@ const Categories = () => {
     return (
         <div className="py-6 lg:py-4 bg-gray-50 dark:bg-gray-900">
             <div className="container mx-auto px-4 lg:px-2">
-                <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-3 text-center">
+                <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-3 text-center pt-3 pb-4">
                     Explore Categories
                 </h2>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-2">
-                    {categories.map((category, index) => (
+                {/* Flex layout with fixed tile sizes and center alignment */}
+                <div className="flex flex-wrap justify-center gap-4 sm:gap-4">
+                    {categories.map((category) => (
                         <ScrollAnimatedSection key={category.title}>
                             <CategoryTile
                                 icon={category.icon}
@@ -98,7 +97,7 @@ const Categories = () => {
                     ))}
                 </div>
 
-                <div className="text-center mt-3 lg:mt-1">
+                <div className="text-center mt-5 mb-1">
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                         Discover some great stuff & services you're looking for
                     </p>
