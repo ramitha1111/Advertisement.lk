@@ -22,7 +22,7 @@ router.get('/', getAllAdvertisements); //
 router.get('/:id', getAdvertisementById); //
 router.get('/search/:search', getAdvertisementsBySearching); //
 router.get('/filter/:category?/:location?/:priceRange?', getAdvertisementsByFiltering);
-router.get('/category/:categoryId', getAdvertisementsByCategory); //
+router.get('/categories/:categoryId', getAdvertisementsByCategory); //
 router.get('/subcategory/:subcategoryId', getAdvertisementsBySubcategory);
 
 // Protected routes (require authentication)

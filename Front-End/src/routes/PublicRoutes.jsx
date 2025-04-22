@@ -16,6 +16,7 @@ import Contact from '../pages/Contact'
 import About from '../pages/About'
 import Advertisements from '../pages/Advertisements'
 import Categories from '../pages/Categories'
+import AdsByCategory from '../pages/AdsByCategory'
 
 const PublicRoutes = () => {
   const location = useLocation()
@@ -42,6 +43,7 @@ const PublicRoutes = () => {
         <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
         <Route path="/advertisements" element={<PageWrapper><Advertisements /></PageWrapper>} />
         <Route path="/categories" element={<PageWrapper><Categories /></PageWrapper>} />
+        <Route path="/categories/:id" element={<PageWrapper><AdsByCategory /></PageWrapper>} />
         {/* Add other public routes here */}
       </Routes>
       {!shouldHideHeader && <Footer />}

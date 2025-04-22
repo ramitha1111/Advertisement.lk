@@ -71,7 +71,7 @@ const CategoryCard = ({ category, isAdmin, onDelete }) => {
         
         <div className="flex justify-between mt-4">
             <Link 
-              to={`/categories/${category.name}`} 
+              to={`/categories/${category._id}`} 
               className="bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded w-full text-center"
             >
               View Advertisements

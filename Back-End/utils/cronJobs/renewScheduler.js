@@ -50,6 +50,7 @@ cron.schedule('0 8 * * *', async () => {
             ad.isBoosted = '0';
             ad.isVisible = '0';
             ad.boostedUntil = null;
+            ad.packageId = null;
             await ad.save();
 
             // Send expiration email
