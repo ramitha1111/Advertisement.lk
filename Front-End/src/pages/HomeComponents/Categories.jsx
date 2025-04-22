@@ -15,7 +15,7 @@ const CategoryTile = ({ icon: Icon, title, onClick }) => {
         <div className="max-w-[180px] min-w-[180px] max-h-[180px] min-h-[180px] bg-white hover:bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col justify-center items-center p-2 transition-all duration-500">
             {/* Icon */}
             <div className="mb-2">
-                <Icon className="h-14 w-14 text-blue-600 dark:text-blue-400" strokeWidth={1.5} />
+                <Icon className="h-14 w-14 text-orange-600 dark:text-orange-400" strokeWidth={1.5} />
             </div>
 
             {/* Title */}
@@ -26,11 +26,11 @@ const CategoryTile = ({ icon: Icon, title, onClick }) => {
             {/* Button */}
             <motion.button
                 onClick={onClick}
-                className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full"
+                className="inline-flex items-center justify-center w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
             >
-                <ArrowRight className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <ArrowRight className="h-4 w-4 text-orange-600 dark:text-orange-400" />
             </motion.button>
         </div>
     );
