@@ -121,29 +121,30 @@ exports.createAdvertisement = [
 
 
 // Get advertisement by userId
+
+
 exports.getAdvertisementsByUserId = async (req, res) => {
+    const userId = req.user.id;
+    console.log("userId", userId);
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+
     try {
-        // Get the UserId from authMiddleware
-        const userId = req.user.id;
-
-        // Find advertisements by userId
-        const advertisements = await Advertisement.find({ userId }).lean();
-
-        if (!advertisements || advertisements.length === 0) {
-            return res.status(404).json({ message: "No advertisements found for this user" });
-        }
-
-        // Enrich advertisements with category and user details
-        const enrichedAds = await Promise.all(
+        const advertisements = await Advertisement.find({ userId: userId });
+        const enrichedAdvertisement = await Promise.all(
             advertisements.map(ad => enrichAdvertisement(ad))
         );
 
-        res.status(200).json(enrichedAds);
+
+        res.status(200).json(enrichedAdvertisement);
+        console.log("advertisements", enrichedAdvertisement);
     } catch (error) {
-        console.error('Error getting user advertisements:', error);
+        console.error("Error getting advertisements by user ID:", error);
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
 
 // Get all advertisements
 exports.getAllAdvertisements = async (req, res) => {
