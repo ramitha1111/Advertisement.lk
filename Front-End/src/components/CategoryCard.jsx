@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ConfirmationDialog from './ConfimationDialog';
+import ConfirmationDialog from './ConfirmationDialog';
 
 const CategoryCard = ({ category, isAdmin, onDelete }) => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);

@@ -60,8 +60,8 @@ const UserDashboard = () => {
     const fetchUserData = async () => {
       setIsLoading(true);
       try {
-        if (user?.id && token) {
-          const data = await getUserById(user.id, token);
+        if (user?.id || user._id && token) {
+          const data = await getUserById(user.id || user._id, token);
           setUserData(data.data);
           dispatch(fetchUser({ userData: data.data }))
         }
