@@ -8,8 +8,8 @@ export const getAllAdvertisements = async () => {
 };
 
 // Get advertisements by logged-in user
-export const getAdvertisementsByUser = async (userId, token) => {
-  const response = await api.get(`/advertisements/user/${userId}`, {
+export const getAdvertisementsByUser = async (token) => {
+  const response = await api.get("/advertisements/user", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
