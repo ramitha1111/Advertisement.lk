@@ -93,7 +93,8 @@ const Header = () => {
     { name: 'Home', href: '/' },
     { name: 'About Us', href: '/about' },
     { name: 'Contact Us', href: '/contact' },
-    { name: 'Advertisements', href: '/advertisements' }
+    { name: 'Advertisements', href: '/advertisements' },
+    { name: 'Categories', href: '/categories' }
   ]
 
   const guestOptions = [
@@ -106,6 +107,13 @@ const Header = () => {
     { name: 'My Orders', href: '/user/dashboard?section=my-orders', icon: ShoppingBag },
     { name: 'Settings', href: '/user/dashboard?section=settings', icon: Settings },
     { name: 'Favorites', href: '/user/dashboard?section=favourites', icon: Heart }
+  ]
+
+  const adminOptions = [
+    { name: 'Ads', href: '/user/dashboard?section=advertisements-admin', icon: FileText },
+    { name: 'Orders', href: '/user/dashboard?section=orders-admin', icon: ShoppingBag },
+    { name: 'Settings', href: '/user/dashboard?section=settings-admin', icon: Settings },
+    { name: 'Users', href: '/user/dashboard?section=users-admin', icon: User }
   ]
 
   return (

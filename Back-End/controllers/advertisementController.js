@@ -7,6 +7,7 @@ const dayjs = require('dayjs');
 const Order = require('../models/Order');
 const upload = require('../middlewares/upload');
 
+
 // Multer middleware for image uploads
 const handleFileUploads = upload.fields([
     { name: 'featuredImage', maxCount: 1 },
