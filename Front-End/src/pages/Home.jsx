@@ -1,6 +1,6 @@
 import React from 'react';
 import HeroSection from "./HomeComponents/HeroSection.jsx";
-import Categories from "./HomeComponents/Categories.jsx";
+import Categories from "./HomeComponents/CategoriesHome.jsx";
 
 const Home = () => {
     return (

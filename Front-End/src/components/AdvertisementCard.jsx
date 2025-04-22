@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react'
-import { ArrowBigRight, ArrowRight, Map, MessageCircle } from 'lucide-react'
+import PropTypes from 'prop-types'
+import { ArrowRight, Map } from 'lucide-react'
 
 const AdvertisementCard = ({ ad }) => {
   // No need to find category name as it's now included in the response
@@ -85,6 +86,26 @@ const AdvertisementCard = ({ ad }) => {
       </div>
     </div>
   )
+}
+AdvertisementCard.propTypes = {
+  ad: PropTypes.shape({
+    categoryId: PropTypes.string,
+    categoryDetails: PropTypes.shape({
+      categoryName: PropTypes.string.isRequired,
+    }),
+    featuredImage: PropTypes.string,
+    images: PropTypes.arrayOf(PropTypes.string),
+    createdAt: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    location: PropTypes.string.isRequired,
+    userId: PropTypes.string,
+    userDetails: PropTypes.shape({
+      profileImage: PropTypes.string,
+      username: PropTypes.string,
+    }),
+  }).isRequired,
 }
 
 export default AdvertisementCard

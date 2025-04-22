@@ -11,6 +11,7 @@ import UpdateUser from '../pages/admin/UpdateUser';
 import Order from '../pages/admin/Order';
 import OrdersAdmin from '../pages/admin/OrdersAdmin';
 import Footer from '../components/Footer';
+import CategoryAdmin from '../pages/admin/CategoryAdmin';
 
 const AdminRoutes = () => {
   return (
@@ -26,6 +27,14 @@ const AdminRoutes = () => {
           }
         />
         <Route
+          path="/category-admin/:id"
+          element={
+            <ProtectedRoutes adminOnly={true}>
+              <CategoryAdmin />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
           path="/add-category"
           element={
             <ProtectedRoutes adminOnly={true}>
@@ -34,7 +43,7 @@ const AdminRoutes = () => {
           }
         />
         <Route
-          path="/update-category"
+          path="/update-category/:id"
           element={
             <ProtectedRoutes adminOnly={true}>
               <UpdateCategory />

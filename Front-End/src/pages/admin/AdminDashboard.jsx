@@ -74,27 +74,27 @@ const AdminDashboard = () => {
   // Rendering different content based on the active tab
   const renderContent = () => {
     switch (activeTab) {
-      case 'advertisements':
+      case 'advertisements-admin':
         return (
           <AdvertisementsAdmin />
         )
-      case 'categories':
+      case 'categories-admin':
         return (
           <CategoriesAdmin />
         )
-      case 'users':
+      case 'users-admin':
         return (
           <UsersAdmin />
         )
-      case 'packages':
+      case 'packages-admin':
         return (
           <PackagesAdmin />
         )
-      case 'orders':
+      case 'orders-admin':
         return (
           <OrdersAdmin />
         )
-      case 'settings':
+      case 'settings-admin':
         return (
           <SettingsPage />
         )
@@ -196,8 +196,8 @@ const AdminDashboard = () => {
           <div className="border-b border-gray-200 dark:border-gray-700">
             <nav className="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
               <Link
-                to="/user/dashboard?section=advetisements"
-                className={`${activeTab === 'advetisements'
+                to="/admin/dashboard?section=advetisements-admin"
+                className={`${activeTab === 'advetisements-admin'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
@@ -205,8 +205,8 @@ const AdminDashboard = () => {
                 <FileText size={16} className="mr-2" /> Advetisements
               </Link>
               <Link
-                to="/user/dashboard?section=categories"
-                className={`${activeTab === 'categories'
+                to="/admin/dashboard?section=categories-admin"
+                className={`${activeTab === 'categories-admin'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
@@ -214,8 +214,8 @@ const AdminDashboard = () => {
                 <Plus size={16} className="mr-2" /> Categories
               </Link>
               <Link
-                to="/user/dashboard?section=users"
-                className={`${activeTab === 'users'
+                to="/admin/dashboard?section=users-admin"
+                className={`${activeTab === 'users-admin'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
@@ -223,8 +223,8 @@ const AdminDashboard = () => {
                 <User size={16} className="mr-2" /> Users
               </Link>
               <Link
-                to="/user/dashboard?section=packages"
-                className={`${activeTab === 'packages'
+                to="/admin/dashboard?section=packages-admin"
+                className={`${activeTab === 'packages-admin'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
@@ -232,8 +232,8 @@ const AdminDashboard = () => {
                 <Package size={16} className="mr-2" /> Packages
               </Link>
               <Link
-                to="/user/dashboard?section=orders"
-                className={`${activeTab === 'orders'
+                to="/admin/dashboard?section=orders-admin"
+                className={`${activeTab === 'orders-admin'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
@@ -241,8 +241,8 @@ const AdminDashboard = () => {
                 <ShoppingBag size={16} className="mr-2" /> Orders
               </Link>
               <Link
-                to="/user/dashboard?section=settings"
-                className={`${activeTab === 'settings'
+                to="/admin/dashboard?section=settings-admin"
+                className={`${activeTab === 'settings-admin'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
