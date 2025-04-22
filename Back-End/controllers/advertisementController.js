@@ -134,7 +134,7 @@ exports.createAdvertisement = [
 exports.getAdvertisementsByUserId = async (req, res) => {
     try {
         // Get the UserId from authMiddleware
-        const userId = req.user.id;
+        const userId = req.params.id;
 
         // Find advertisements by userId
         const advertisements = await Advertisement.find({ userId }).lean();
