@@ -1,6 +1,7 @@
 'use client'
 
 import { React, useState, useEffect } from 'react'
+import blankProfileImage from '../../assets/blank-profile-picture.jpg';
 import {
   User,
   Settings,
@@ -123,7 +124,7 @@ const AdminDashboard = () => {
               {/* Profile image */}
               <div className="relative flex-shrink-0 self-start md:self-start">
                 <img
-                  src={userData.profileImage || ''}
+                  src={userData.profileImage || blankProfileImage}
                   alt="Profile-image"
                   className="h-48 w-48 rounded-full object-cover border-4 border-gray-300 dark:border-gray-700"
                 />
@@ -131,7 +132,7 @@ const AdminDashboard = () => {
 
               {/* User details section */}
               <div className="flex-1 mt-6 md:-mt-6 md:ml-6 flex flex-col justify-center">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{userData.name}</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{userData.firstName} {userData.lastName}</h1>
 
                 {/* Details under the name */}
                 <div className="mt-2 text-sm text-gray-600 dark:text-gray-400 space-y-2">

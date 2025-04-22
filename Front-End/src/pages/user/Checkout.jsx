@@ -8,7 +8,7 @@ const Checkout = () => {
     const navigate = useNavigate()
     const advertisementId = localStorage.getItem('advertisementId');
     const packageId = localStorage.getItem('packageId');
-    const amount = localStorage.getItem('amount');
+    const price = localStorage.getItem('price');
     const packageName = localStorage.getItem('packageName');
     const { token } = useSelector((state) => state.auth);
 
@@ -26,10 +26,10 @@ const Checkout = () => {
         zip: '',
         phone: '',
         email: '',
-        advertisementId: '67eac07472ef1855a972dc04',
-        packageId: '67e8ebfac5e7d739b8fbe824',
-        packageName: 'Basic',
-        amount: '100',
+        advertisementId,
+        packageId,
+        packageName,
+        amount: price
     })
 
     const handleInputChange = (e) => {
@@ -43,6 +43,7 @@ const Checkout = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        console.log('Form Data:', formData)
         setLoading(true)
         setError(null)
 
