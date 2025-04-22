@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getCategoryById, deleteCategory } from '../../api/CategoryApi';
 import { useSelector } from 'react-redux';
-import ConfirmationDialog from '../../components/ConfimationDialog';
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 
 const CategoryAdmin = () => {
   const { id } = useParams();

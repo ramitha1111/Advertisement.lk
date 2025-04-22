@@ -132,25 +132,26 @@ exports.updateUser = [
 
 // Delete User
 exports.deleteUser = async (req, res) => {
-  const userId = req.user._id; // The user ID is attached to req.user after authentication
+  const userId = req.params.id; // Ensure optional chaining in case req.user is undefined
+
+  if (!userId) {
+    return res.status(401).json({ message: 'Unauthorized: User ID missing' });
+  }
 
   try {
-    // Find the user by ID
-    const user = await Auth.findById(userId);
+    const deletedUser = await Auth.findByIdAndDelete(userId);
 
-    if (!user) {
+    if (!deletedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    // Delete the user
-    await user.remove();
 
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
     console.error('Error in deleteUser:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
 
 // Get All Users
 exports.getUsers = async (req, res) => {

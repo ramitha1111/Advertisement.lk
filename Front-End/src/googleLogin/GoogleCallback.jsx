@@ -22,12 +22,14 @@ const GoogleCallback = () => {
         // Use consistent key names across application
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(decodedUser));
-        
+        localStorage.setItem('userId', decodedUser._id);
+
+        console.log(localStorage.getItem('userId'));
         // Update Redux state
-        dispatch(loginSuccess({ token, user: decodedUser }));
+        dispatch(loginSuccess({ token: token, user: decodedUser }));
         
         // Redirect to dashboard with leading slash
-        navigate('/users/dashboard');
+        navigate('/');
       } catch (err) {
         console.error('Error processing login data:', err);
         setError('Failed to process login data');

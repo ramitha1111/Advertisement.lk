@@ -25,7 +25,7 @@ router.post('/', authMiddleware, isAdmin, createUser); // Only Admins can create
 router.put('/:id', authMiddleware, updateUser);
 
 // Delete user
-router.delete('/', authMiddleware, deleteUser);
+router.delete('/:id', authMiddleware, deleteUser);
 
 // Get all users - Only accessible to admins
 router.get('/', authMiddleware, isAdmin, getUsers); // Only Admins can access this route
