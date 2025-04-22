@@ -4,6 +4,8 @@ const favourites = require("../models/favourites");
 const dayjs = require('dayjs');
 const Order = require('../models/Order');
 const Advertisement = require('../models/Advertisement');
+const { sendNotification } = require('../utils/socketNotifier');
+
 
 // Validate advertisement data
 const validateData = (req, res) => {
@@ -38,6 +40,13 @@ console.log(req.user.userId);
 
        //save advertisement in db
         await advertisement.save();
+        await sendNotification(
+            req.user._id,  // assuming JWT middleware sets req.user
+            'Ad Posted',
+            'Your advertisement has been successfully posted.',
+            'success'
+          );
+          
 
         res.json({ message: "Advertisement created successfully" });
     } catch (error) {
@@ -88,6 +97,13 @@ exports.updateAdvertisement = async (req, res) => {
 
         const updatedAdvertisement = await advertisementModel.findByIdAndUpdate(req.id, req.body, { new: true });
         if (!updatedAdvertisement) return res.status(404).json({ message: "Advertisement not found" });
+        await sendNotification(
+            req.user._id,
+            'Ad Updated',
+            'Your advertisement has been updated successfully.',
+            'info'
+          );
+          
 
         res.json({ message: "Advertisement updated successfully", advertisement: updatedAdvertisement });
     } catch (error) {
@@ -105,11 +121,19 @@ exports.deleteAdvertisement = async (req, res) => {
         // Check if the advertisement belongs to the user
         if (!advertisement) return res.status(404).json({ message: "Advertisement not found" });
         await advertisement.deleteOne();
+        await sendNotification(
+            req.user._id,
+            'Ad Deleted',
+            'Your advertisement has been deleted.',
+            'warning'
+          );
         res.status(200).json({ message: "Advertisement deleted successfully" });
         console.log(advertisement.toString());
     } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }
+    
+      
 };
 
 // Get advertisements by category

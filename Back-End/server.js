@@ -13,6 +13,9 @@ const orderRoutes = require("./routes/orderRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const compareRoute = require("./routes/compareRoute");
+const notificationRoutes = require('./routes/notificationRoutes');
+const http = require("http");
+const socketIo = require("socket.io");
 
 require("dotenv").config();
 const session = require("express-session");
@@ -21,6 +24,35 @@ const {checkout} = require("./controllers/checkoutController");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const server = http.createServer(app);
+
+const io = socketIo(server, {
+  cors: {
+    origin: '*', // Set your frontend origin
+    methods: ['GET', 'POST']
+  }
+});
+// Socket connections
+const connectedUsers = new Map();
+
+io.on('connection', (socket) => {
+  console.log('New socket connected:', socket.id);
+
+  socket.on('register', (userId) => {
+    connectedUsers.set(userId, socket.id);
+    console.log(`User ${userId} registered with socket ${socket.id}`);
+  });
+
+  socket.on('disconnect', () => {
+    for (let [userId, socketId] of connectedUsers) {
+      if (socketId === socket.id) {
+        connectedUsers.delete(userId);
+        break;
+      }
+    }
+    console.log('Socket disconnected:', socket.id);
+  });
+});
 
 // CORS configuration
 app.use(cors({
@@ -52,7 +84,10 @@ app.use("/api/compare", compareRoute);
 //app.use("/api/orders", orderRoutes);
 app.use("/api/checkout", checkoutRoutes)
 app.use("/api/payment", paymentRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+module.exports = { app, server, io, connectedUsers };

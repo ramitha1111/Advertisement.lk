@@ -1,8 +1,10 @@
 const Order = require('../models/Order');
 const Advertisement = require('../models/Advertisement');
-const Package = require('../models/Package');
+const Package = require('../models/Package'); //showing some error on this line, please check it 
 const paymentGateway = require('../utils/mockPaymentgateway');
 const { generateInvoiceWithParams } = require('../utils/invoiceSend');
+const { sendNotification } = require('../utils/socketNotifier');
+
 
 const verifyPayment = async (req, res) => {
     const { paymentId, orderId } = req.body;
@@ -55,6 +57,9 @@ const verifyPayment = async (req, res) => {
             // Await the result of invoice generation
             const invoiceResponse = await generateInvoiceWithParams(orderId);
             console.log(invoiceResponse.message); // Log success message
+            // notification 
+            await sendNotification(order.userId, 'Payment Successful', 'Your premium package is now active.', 'success');
+
 
             // Return response
             res.status(200).json({
