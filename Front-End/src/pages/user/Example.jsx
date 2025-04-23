@@ -1,19 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import AdvertisementCard from './MyAdvertisement.jsx';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth.js';
 import { getAdvertisementsByUser } from '../../api/advertisementApi.js';
-import { useDispatch } from 'react-redux';
-import useAdvertisement from '../../hooks/useAdvertisement.js';
+
+import {useDispatch} from "react-redux";
+import {fetchAdvertisement} from "../../store/advertisementSlice.js";
+import EditAdvertisement from "./EditeAdvertisement.jsx";
 
 const MyAdvertisements = () => {
     const navigate = useNavigate();
     const { user, token } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     const [advertisementData, setAdvertisementData] = useState([]);
-    const { fetchAdvertisement } = useAdvertisement();
     const dispatch = useDispatch();
 
     // Redirect to login if user is not authenticated
@@ -24,33 +25,42 @@ const MyAdvertisements = () => {
     }, [user, token, navigate]);
 
     // Fetch advertisements created by the current user
-    useEffect(() => {
-        const fetchAdvertisementsData = async () => {
+
+
+
+
+
+
+
+
+        const fetchAdvertisementsData =useCallback (async (user,token) => {
             setIsLoading(true);
             try {
                 if (token) {
-                    const data = await getAdvertisementsByUser(token);
+                    const data = await getAdvertisementsByUser(token,user.id);
                     setAdvertisementData(data || []);
-                    console.log('User ID:',data);
-                    dispatch(fetchAdvertisement({ advertisementData: data || [] }));
+
+                    dispatch(fetchAdvertisement( { advertisementData: data || [] }));
+
                 }
             } catch (error) {
                 console.error('Error fetching advertisements:', error);
-                alert('Failed to load advertisements. Please try again later.');
             } finally {
                 setIsLoading(false);
             }
-        };
-
+        }, [dispatch]);
+    useEffect(() => {
         if (user?.id && token) {
-            fetchAdvertisementsData();
+            fetchAdvertisementsData(user,token);
         }
 
-    }, [user?.id, token, dispatch, fetchAdvertisement]);
+    }, [user, token, fetchAdvertisementsData]);
 
-    const handleEdit = (id) => {
-        navigate(`/edit_advertisement/${id}`);
-    };
+    const handleEdit = (item) => (
+       navigate(<EditAdvertisement
+           item={item}
+       />)
+    );
 
     const handleDelete = (id) => {
         // TODO: Replace alert with actual delete functionality
@@ -61,19 +71,20 @@ const MyAdvertisements = () => {
         return (
             <div className="flex justify-center items-center h-screen">
                 <div className="loader">Loading...</div>
+
             </div>
         );
     }
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-            {advertisementData.length > 0 ? (
-                advertisementData.map((ad) => (
+            {advertisementData?.length > 0 ? (
+                advertisementData?.map((item) => (
                     <AdvertisementCard
-                        key={ad.id}
-                        ad={ad}
-                        onEdit={() => handleEdit(ad.id)}
-                        onDelete={() => handleDelete(ad.id)}
+                        Key={item?._doc?._id}
+                        item={item?._doc}
+                        onEdit={() => handleEdit(item?._doc)}
+                        onDelete={() => handleDelete(item?._doc)}
                     />
                 ))
             ) : (

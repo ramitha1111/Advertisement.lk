@@ -89,7 +89,7 @@ const UserDashboard = () => {
         )
       case 'my-ads':
         return (
-            <Example/>
+        <Example />
         )
       case 'favourites':
         return (
@@ -109,7 +109,7 @@ const UserDashboard = () => {
         )
       default:
         return (
-          <MyAdvertisement />
+          console.log('No section selected')
         )
     }
   }

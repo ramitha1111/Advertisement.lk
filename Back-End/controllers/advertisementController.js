@@ -124,7 +124,7 @@ exports.createAdvertisement = [
 
 
 exports.getAdvertisementsByUserId = async (req, res) => {
-    const userId = req.user.id;
+    const userId = req.params.id;
     console.log("userId", userId);
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ message: "Invalid user ID" });
