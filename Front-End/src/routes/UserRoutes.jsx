@@ -57,7 +57,7 @@ const UserRoutes = () => {
           }
         />
         <Route
-          path="/update-advertisement"
+          path="/update-advertisement/:id"
           element={
             <ProtectedRoutes>
               <UpdateAdvertisement />

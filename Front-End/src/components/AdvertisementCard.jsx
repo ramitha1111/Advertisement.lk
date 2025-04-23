@@ -61,19 +61,19 @@ const AdvertisementCard = ({ ad }) => {
       <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-3 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
         <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
           <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 mr-2">
-            {ad.userId && ad.userDetails.profileImage ? (
+            {ad.userId && ad.userDetails?.profileImage ? (
               <img 
-                src={ad.userDetails.profileImage} 
-                alt={ad.userDetails.username} 
+                src={ad.userDetails?.profileImage} 
+                alt={ad.userDetails?.username} 
                 className="w-full h-full rounded-full"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <span className="text-xs font-medium">{ad.userId && ad.userDetails.username ? ad.userDetails.username.charAt(0) : '?'}</span>
+                <span className="text-xs font-medium">{ad.userId && ad.userDetails?.username ? ad.userDetails.username.charAt(0) : '?'}</span>
               </div>
             )}
           </div>
-          <span>{ad.userId ? ad.userDetails.username : 'Anonymous'}</span>
+          <span>{ad.userId ? ad.userDetails?.username : 'Anonymous'}</span>
         </div>
 
         <a
