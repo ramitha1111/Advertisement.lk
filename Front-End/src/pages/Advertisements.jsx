@@ -12,7 +12,7 @@ import {
   getAdvertisementsByCategory,
   getAdvertisementsBySearch,
   getAdvertisementsByFilter
-} from '../api/advertisementApi'
+} from '../api/advertisementApi.js'
 import { getAllCategories } from '../api/categoryApi'
 import AdvertisementCard from '../components/AdvertisementCard'
 

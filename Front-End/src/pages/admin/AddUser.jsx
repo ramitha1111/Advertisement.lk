@@ -6,7 +6,7 @@ const AddUser = () => {
 // Danindu
 return(
     <div>
-        Danindu
+       Danindu
     </div>
 )
   
