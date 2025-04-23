@@ -24,7 +24,7 @@ const UserAdmin = () => {
               <p>{user.email}</p>
             </div>
             {/* Buttons for Edit/Delete */}
-          </li>
+          /*</li>
         ))}
       </ul>
     </div>
@@ -32,3 +32,4 @@ const UserAdmin = () => {
 };
 
 export default UserAdmin;
+
