@@ -1,54 +1,76 @@
-import React from 'react';
-import { Edit, ImageIcon, Trash2 } from 'lucide-react';
-//Have to create on edite function
-const AdvertisementCard = ({ ad, onEdit, onDelete }) => {
+'use client'
+
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Edit, ImageIcon, Trash2, MapPin } from 'lucide-react'
+
+const AdvertisementCard = ({ item, onEdit, onDelete }) => {
     return (
-        // <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-        //     {/* Top Section for Featured Image */}
-        //     {/* <div className="mb-6">
-        //         {ad.featuredImage ? (
-        //             <img
-        //                 src={URL.createObjectURL(ad.featuredImage)}
-        //                 alt="Featured"
-        //                 className="w-full h-64 object-cover rounded-md border border-gray-300 dark:border-gray-600"
-        //             />
-        //         ) : (
-        //             <div className="w-full h-64 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-md border border-gray-300 dark:border-gray-600">
-        //                 <ImageIcon size={48} className="text-gray-400 dark:text-gray-500" />
-        //             </div>)}
-        //     </div> */}
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow p-5 space-y-5 border border-gray-100 dark:border-gray-700">
+            {/* Image */}
+            <div className="relative h-56 bg-gradient-to-tr from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-xl overflow-hidden flex items-center justify-center">
+                {item?.featuredImage ? (
+                    <img
+                        src={item?.featuredImage}
+                        alt={item?.title}
+                        className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+                    />
+                ) : (
+                    <ImageIcon className="text-gray-400 dark:text-gray-500 w-14 h-14" />
+                )}
+            </div>
 
-        //     {/* Advertisement Details */}
-        //     <div className="space-y-4">
-        //         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{ad.title}</h3>
-        //         <p className="text-sm text-gray-600 dark:text-gray-400">{ad.description}</p>
-        //         <p className="text-sm text-gray-600 dark:text-gray-400">
-        //             <strong>Price:</strong> ${ad.price}
-        //         </p>
-        //         <p className="text-sm text-gray-600 dark:text-gray-400">
-        //             <strong>Location:</strong> {ad.location}
-        //         </p>
-        //     </div>
+            {/* Content */}
+            <div className="space-y-2">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+                    {item?.title}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {item?.description || 'No description provided.'}
+                </p>
 
-        //     {/* Edit/Delete Buttons */}
-        //     <div className="mt-6 flex justify-end space-x-4">
-        //         <button
-        //             onClick={onEdit}
-        //             className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:outline-none"
+                <div className="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300">
+          <span className="font-semibold text-lg text-primary">
+            Rs. {item?.price?.toLocaleString()}
+          </span>
+                    <div className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        <span>{item?.location}</span>
+                    </div>
+                </div>
+            </div>
 
-        //         >
-        //             <Edit size={16} className="inline-block mr-2" /> Edit
-        //         </button>
-        //         <button
-        //             onClick={onDelete}
-        //             className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:ring-2 focus:ring-red-400 focus:outline-none"
-        //         >
-        //             <Trash2 size={16} className="inline-block mr-2" /> Delete
-        //         </button>
-        //     </div>
-        // </div>
-        <div></div>
-    );
-};
+            {/* Actions */}
+            <div className="pt-4 flex justify-end gap-4 border-t border-gray-200 dark:border-gray-700 mt-2">
+                <button
+                    onClick={onEdit}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                    <Edit size={16} />
+                    Edit
+                </button>
+                <button
+                    onClick={onDelete}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+                >
+                    <Trash2 size={16} />
+                    Delete
+                </button>
+            </div>
+        </div>
+    )
+}
 
-export default AdvertisementCard;
+AdvertisementCard.propTypes = {
+    item: PropTypes.shape({
+        featuredImage: PropTypes.string,
+        title: PropTypes.string.isRequired,
+        description: PropTypes.string,
+        price: PropTypes.number.isRequired,
+        location: PropTypes.string,
+    }).isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+}
+
+export default AdvertisementCard

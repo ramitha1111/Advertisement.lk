@@ -6,20 +6,13 @@
 /* src/index.css */
 body {
     font-family: 'Red Hat Display', sans-serif;
-}
+  }
 
-/* Or if you use Tailwind's `@layer` directive for custom styling: */
-@layer base {
+  /* Or if you use Tailwind's `@layer` directive for custom styling: */
+  @layer base {
     body {
-        font-family: 'Red Hat Display', sans-serif;
+      font-family: 'Red Hat Display', sans-serif;
     }
-}
+  }
 
-/* Hide scrollbars */
-.hide-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-.hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
+

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Loader } from 'lucide-react'
-import { getAdvertisementsByCategory } from '../api/advertisementApi'
+import { getAdvertisementsByCategory } from '../api/advertisementApi.js'
 import { getCategoryById } from '../api/categoryApi'
 import AdvertisementCard from '../components/AdvertisementCard'
 
