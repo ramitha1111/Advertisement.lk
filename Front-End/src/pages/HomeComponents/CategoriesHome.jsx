@@ -15,7 +15,7 @@ const CategoryTile = ({ icon: Icon, title, onClick }) => {
         <div className="max-w-[180px] min-w-[180px] max-h-[180px] min-h-[180px] bg-white hover:bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col justify-center items-center p-2 transition-all duration-500">
             {/* Icon */}
             <div className="mb-2">
-                <Icon className="h-14 w-14 text-blue-600 dark:text-blue-400" strokeWidth={1.5} />
+                <Icon className="h-14 w-14 text-orange-600 dark:text-orange-400" strokeWidth={1.5} />
             </div>
 
             {/* Title */}
@@ -26,11 +26,11 @@ const CategoryTile = ({ icon: Icon, title, onClick }) => {
             {/* Button */}
             <motion.button
                 onClick={onClick}
-                className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full"
+                className="inline-flex items-center justify-center w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-full"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
             >
-                <ArrowRight className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <ArrowRight className="h-6 w-6 text-orange-600 dark:text-orange-400" />
             </motion.button>
         </div>
     );
@@ -83,7 +83,7 @@ const Categories = () => {
     return (
         <div className="py-6 lg:py-4 bg-gray-50 dark:bg-gray-900">
             <div className="container mx-auto px-4 lg:px-2">
-                <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-3 text-center pt-3 pb-4">
+                <h2 className="text-5xl font-bold text-gray-800 dark:text-white mb-3 text-center pt-5 pb-6">
                     Explore Categories
                 </h2>
 
@@ -100,7 +100,7 @@ const Categories = () => {
                     ))}
                 </div>
 
-                <div className="text-center mt-5 mb-1">
+                <div className="text-center mt-6 mb-2">
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                         Discover some great stuff & services you're looking for
                     </p>
