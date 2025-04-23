@@ -10,6 +10,7 @@ import UpdateAdvertisement from '../pages/user/UpdateAdvertisement';
 import SelectPackage from '../pages/user/SelectPackage';
 import Footer from '../components/Footer';
 import AddAdvertisement from "../pages/user/AddAdvertisement";
+import Compare from '../pages/Compare'
 
 const UserRoutes = () => {
   return (
@@ -72,6 +73,13 @@ const UserRoutes = () => {
             </ProtectedRoutes>
           }
         />
+        <Route 
+          path="/compare" 
+          element={
+            <ProtectedRoutes>
+              <Compare />
+            </ProtectedRoutes>
+          } />
       </Routes>
       <Footer />
     </>
