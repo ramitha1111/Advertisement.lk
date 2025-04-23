@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { createAdvertisement } from "../../api/AdvertisementApi.js";
+import { createAdvertisement } from "../../api/advertisementApi.js";
 import { getAllCategories } from "../../api/CategoryApi.js"; // Assuming this is your category API
 import { useSelector } from "react-redux";
 
