@@ -7,7 +7,7 @@ const UpdateUser = () => {
 // Later
 return(
     <div>
-        Danindu
+       Danindu
     </div>
 )
   
