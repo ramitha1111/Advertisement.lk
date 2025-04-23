@@ -11,12 +11,13 @@ export const getAllFavourites = async (token) => {
 };
 
 export const createFavourite = async (advertisementId, token) => {
-  const response = await api.put(`/favourites/${advertisementId}`, {
+    console.log("id " ,advertisementId, " token " , token)
+  const response = await api.post(`/favourites/${advertisementId}`, {}, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data;
+  return response;
 };
 
 export const deleteFavourite = async (advertisementId, token) => {

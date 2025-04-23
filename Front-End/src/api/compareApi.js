@@ -11,7 +11,7 @@ export const getAllCompares = async (token) => {
 };
 
 export const createCompare = async (advertisementId, token) => {
-  const response = await api.put(`/compare/${advertisementId}`, {
+  const response = await api.post(`/compare/${advertisementId}`, {}, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
