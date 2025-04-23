@@ -12,7 +12,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const router = express.Router();
 
 // Add favourite
-router.post('/', authMiddleware, createFavourites);
+router.post('/:id', authMiddleware, createFavourites);
 
 // Create favourite list for all users
 
@@ -21,6 +21,6 @@ router.post('/', authMiddleware, createFavourites);
 router.get('/', authMiddleware, getAllFavourites);
 
 // Delete favourite
-router.delete('/:advertisementId', authMiddleware, deleteFavourite);
+router.delete('/:id', authMiddleware, deleteFavourite);
 
 module.exports = router;
