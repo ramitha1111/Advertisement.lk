@@ -50,6 +50,7 @@ const verifyPayment = async (req, res) => {
                     isBoosted: '1',
                     isVisible: '1',
                     boostedUntil: boostedUntil,
+                    packageId: order.packageId,
                 },
                 { new: true, runValidators: false }
             );

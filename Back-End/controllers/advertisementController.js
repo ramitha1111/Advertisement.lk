@@ -6,6 +6,8 @@ const Favourites = require("../models/favourites");
 const dayjs = require('dayjs');
 const Order = require('../models/Order');
 const upload = require('../middlewares/upload');
+const Package = require('../models/Package');
+
 
 // Multer middleware for image uploads
 const handleFileUploads = upload.fields([
@@ -23,7 +25,8 @@ const validateData = (req, res) => {
         subcategoryId,
         location,
         videoUrl,
-        features
+        features,
+        packageId
     } = req.body;
 
     if (!title) return res.status(400).json({ message: "Title is required" });
@@ -41,9 +44,10 @@ const validateData = (req, res) => {
 
 // Enrich advertisement with category and user details
 const enrichAdvertisement = async (ad) => {
-    const [category, user] = await Promise.all([
+    const [category, user, package] = await Promise.all([
         Category.findById(ad.categoryId).lean(),
-        User.findById(ad.userId).select('username firstName lastName profileImage email phone').lean()
+        User.findById(ad.userId).select('username firstName lastName profileImage email phone').lean(),
+        Package.findById(ad.packageId).lean()
     ]);
 
     return {
@@ -60,6 +64,12 @@ const enrichAdvertisement = async (ad) => {
             profileImage: user.profileImage,
             email: user.email,
             phone: user.phone
+        } : null,
+        packageDetails: package ? {
+            packageId: package._id,
+            packageName: package.name,
+            duration: package.duration,
+            price: package.price
         } : null
     };
 };
@@ -124,7 +134,7 @@ exports.createAdvertisement = [
 exports.getAdvertisementsByUserId = async (req, res) => {
     try {
         // Get the UserId from authMiddleware
-        const userId = req.user.id;
+        const userId = req.params.id;
 
         // Find advertisements by userId
         const advertisements = await Advertisement.find({ userId }).lean();

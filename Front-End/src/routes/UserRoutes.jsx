@@ -65,7 +65,7 @@ const UserRoutes = () => {
           }
         />
         <Route
-          path="/select-package"
+          path="/select-package/:id"
           element={
             <ProtectedRoutes>
               <SelectPackage />

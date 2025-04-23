@@ -16,6 +16,7 @@ import {
   FileText,
   ShoppingBag,
   LogOut,
+  Bell,
   Facebook,
   Twitter,
   Linkedin,
@@ -91,9 +92,10 @@ const Header = () => {
 
   const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'About Us', href: '/about' },
-    { name: 'Contact Us', href: '/contact' },
-    { name: 'Advertisements', href: '/advertisements' }
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
+    { name: 'Ads', href: '/advertisements' },
+    { name: 'Categories', href: '/categories' }
   ]
 
   const guestOptions = [
@@ -105,7 +107,16 @@ const Header = () => {
     { name: 'My Ads', href: '/user/dashboard?section=my-ads', icon: FileText },
     { name: 'My Orders', href: '/user/dashboard?section=my-orders', icon: ShoppingBag },
     { name: 'Settings', href: '/user/dashboard?section=settings', icon: Settings },
-    { name: 'Favorites', href: '/user/dashboard?section=favourites', icon: Heart }
+    { name: 'Favorites', href: '/user/dashboard?section=favourites', icon: Heart },
+    { name: 'Notifications', href: '/notifications', icon: Bell }
+  ]
+
+  const adminOptions = [
+    { name: 'Ads', href: '/admin/dashboard?section=advertisements-admin', icon: FileText },
+    { name: 'Orders', href: '/admin/dashboard?section=orders-admin', icon: ShoppingBag },
+    { name: 'Settings', href: '/admin/dashboard?section=settings-admin', icon: Settings },
+    { name: 'Users', href: '/admin/dashboard?section=users-admin', icon: User },
+    { name: 'Notifications', href: '/notifications', icon: Bell }
   ]
 
   return (
@@ -163,7 +174,7 @@ const Header = () => {
         </div>
 
         {/* Desktop navigation - hidden until width >= 1280px (xl breakpoint) */}
-        <div className="hidden xl:flex xl:gap-x-12">
+        <div className="hidden xl:flex xl:gap-x-10">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -212,40 +223,82 @@ const Header = () => {
                   >
                     <div className="p-4">
                       {isLoggedIn ? (
-                        <>
-                          {userOptions.map((option) => (
-                            <div
-                              key={option.name}
-                              className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700"
-                            >
+                        isAdmin ? (
+                          <>
+                            {/* Admin Options */}
+                            {adminOptions.map((option) => (
+                              <div
+                                key={option.name}
+                                className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700"
+                              >
+                                <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 dark:bg-gray-900 group-hover:bg-white dark:group-hover:bg-gray-800">
+                                  <option.icon className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary" />
+                                </div>
+                                <div className="flex-auto">
+                                  <a href={option.href} className="block font-semibold text-gray-900 dark:text-white">
+                                    {option.name}
+                                    <span className="absolute inset-0" />
+                                  </a>
+                                </div>
+                              </div>
+                            ))}
+
+                            {/* Logout */}
+                            <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700">
                               <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 dark:bg-gray-900 group-hover:bg-white dark:group-hover:bg-gray-800">
-                                <option.icon className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary" />
+                                <LogOut className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary" />
                               </div>
                               <div className="flex-auto">
-                                <a href={option.href} className="block font-semibold text-gray-900 dark:text-white">
-                                  {option.name}
+                                <button
+                                  onClick={handleLogout}
+                                  className="block w-full text-left font-semibold text-gray-900 dark:text-white"
+                                >
+                                  Logout
                                   <span className="absolute inset-0" />
-                                </a>
+                                </button>
                               </div>
                             </div>
-                          ))}
-                          <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 dark:bg-gray-900 group-hover:bg-white dark:group-hover:bg-gray-800">
-                              <LogOut className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary" />
-                            </div>
-                            <div className="flex-auto">
-                              <button
-                                onClick={handleLogout}
-                                className="block w-full text-left font-semibold text-gray-900 dark:text-white"
+                          </>
+                        ) : (
+                          <>
+                            {/* User Options */}
+                            {userOptions.map((option) => (
+                              <div
+                                key={option.name}
+                                className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700"
                               >
-                                Logout
-                                <span className="absolute inset-0" />
-                              </button>
+                                <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 dark:bg-gray-900 group-hover:bg-white dark:group-hover:bg-gray-800">
+                                  <option.icon className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary" />
+                                </div>
+                                <div className="flex-auto">
+                                  <a href={option.href} className="block font-semibold text-gray-900 dark:text-white">
+                                    {option.name}
+                                    <span className="absolute inset-0" />
+                                  </a>
+                                </div>
+                              </div>
+                            ))}
+
+                            {/* Logout */}
+                            <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700">
+                              <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 dark:bg-gray-900 group-hover:bg-white dark:group-hover:bg-gray-800">
+                                <LogOut className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary" />
+                              </div>
+                              <div className="flex-auto">
+                                <button
+                                  onClick={handleLogout}
+                                  className="block w-full text-left font-semibold text-gray-900 dark:text-white"
+                                >
+                                  Logout
+                                  <span className="absolute inset-0" />
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        </>
+                          </>
+                        )
                       ) : (
                         <>
+                          {/* Guest Options */}
                           {guestOptions.map((option) => (
                             <div
                               key={option.name}
@@ -264,6 +317,7 @@ const Header = () => {
                           ))}
                         </>
                       )}
+
                     </div>
                   </PopoverPanel>
                 </div>
@@ -288,7 +342,7 @@ const Header = () => {
       {/* Mobile menu - using xl instead of lg */}
       <Dialog as="div" className="xl:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-100 bg-black bg-opacity-50" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white dark:bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white dark:bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <a href="/" className="text-xl font-bold tracking-tight">
               <span className="text-black dark:text-white">ADvertise</span>
@@ -337,7 +391,7 @@ const Header = () => {
               <div className="py-6">
                 {isLoggedIn ? (
                   <>
-                    {userOptions.map((option) => (
+                    {(isAdmin ? adminOptions : userOptions).map((option) => (
                       <a
                         key={option.name}
                         href={option.href}
@@ -347,6 +401,7 @@ const Header = () => {
                         {option.name}
                       </a>
                     ))}
+
                     <button
                       onClick={handleLogout}
                       className="-mx-3 flex w-full items-center rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -369,6 +424,7 @@ const Header = () => {
                     ))}
                   </>
                 )}
+
               </div>
 
               {/* Theme Toggle */}

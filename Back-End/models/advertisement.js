@@ -18,6 +18,7 @@ const advertisementSchema=new Schema({
     videoUrl:{type:String,required:true},
     isVisible:{type:Number,required:true},
     isBoosted:{type:Number,required:true},
+    packageId:{type:String},
     boostedUntil: { type: Date },
     views:{type:String,required:true},
     status:{type:String,required:true},

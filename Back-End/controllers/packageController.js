@@ -22,7 +22,8 @@ exports.createPackage = async (req, res) => {
 exports.getPackageById = async (req, res) => {
     try {
         const packageId = req.params.id;
-        res.status(200).json({ message: 'Package ID', packageId });
+        const package = await Package.findById(packageId);
+        res.status(200).json(package);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
