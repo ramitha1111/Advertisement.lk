@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/', authMiddleware, getAllOrders);
 
 // User routes
-router.get('/my-orders', authMiddleware, getUserOrders);
+router.get('/users/:id', authMiddleware, getUserOrders);
 router.get('/:id', authMiddleware, getOrderById);
 
 module.exports = router;

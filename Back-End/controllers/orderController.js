@@ -3,7 +3,7 @@ const Order = require('../models/order');
 // Get all orders for the logged-in user
 exports.getUserOrders = async (req, res) => {
     try {
-        const orders = await Order.find({ userId: req.user._id });
+        const orders = await Order.find({ userId: req.params.id });
         res.status(200).json(orders);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching orders', error: err });
