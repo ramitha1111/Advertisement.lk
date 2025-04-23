@@ -76,10 +76,6 @@ const UserDashboard = () => {
     fetchUserData();
   }, [user?.id, token]);
 
-  console.log(user.id)
-  console.log(token)
-  console.log(userData)
-
   // Rendering different content based on the active tab
   const renderContent = () => {
     switch (activeTab) {
