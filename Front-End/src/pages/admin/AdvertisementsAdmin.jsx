@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdvertisementCard from '../../components/AdvertisementCard';
-import { getAllAdvertisements } from '../../api/advertisementApi';
+import { getAllAdvertisements } from '../../api/advertisementApi.js';
 
 const AdvertisementsAdmin = () => {
   const [advertisements, setAdvertisements] = useState([]);

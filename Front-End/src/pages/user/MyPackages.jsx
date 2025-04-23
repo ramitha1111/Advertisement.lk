@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Package } from 'lucide-react';
-import { getAdvertisementsByUser } from '../../api/advertisementApi';
+import { getAdvertisementsByUser } from '../../api/advertisementApi.js';
 import useAuth from '../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 

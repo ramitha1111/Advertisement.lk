@@ -1,43 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
+import updateAdvertisement from "./UpdateAdvertisement.jsx";
 
-const EditAdvertisement = ({ ad, onUpdate }) => {
+const EditAdvertisement = ({ item }) => {
   const { id } = useParams();
   const [formData, setFormData] = useState({
-    title: ad.title || '',
-    description: ad.description || '',
-    price: ad.price || '',
-    location: ad.location || '',
-    featuredImage: ad.featuredImage || null,
+    title: item?.title || '',
+    description: item?.description || '',
+    price: item?.price || '',
+    location: item?.location || '',
+    featuredImage: item?.featuredImage || null,
   });
   const [previewUrl, setPreviewUrl] = useState(
-    typeof ad.featuredImage === 'string' ? ad.featuredImage : null
+    typeof item?.featuredImage === 'string' ? item.featuredImage : null
   );
-
-  useEffect(() => {
-    const fetchAdvertisement = async () => {
-      try {
-        const response = await fetch(`https://api.example.com/advertisements/${id}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch advertisement');
-        }
-        const data = await response.json();
-        setFormData({
-          title: data.title || '',
-          description: data.description || '',
-          price: data.price || '',
-          location: data.location || '',
-          featuredImage: data.featuredImage || null,
-        });
-        setPreviewUrl(data.featuredImage || null);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAdvertisement();
-  }, [id]);
 
   useEffect(() => {
     let imageUrl;
@@ -75,8 +51,12 @@ const EditAdvertisement = ({ ad, onUpdate }) => {
     formDataToSend.append('location', formData.location);
     formDataToSend.append('featuredImage', formData.featuredImage);
 
-    // Call the onUpdate function or send the data to the server
-    onUpdate(formDataToSend);
+    try {
+      const response = await updateAdvertisement(id, formDataToSend);
+      console.log('Advertisement updated successfully:', response);
+    } catch (error) {
+      console.error('Error updating advertisement:', error);
+    }
   };
 
   return (

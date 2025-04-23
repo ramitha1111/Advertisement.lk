@@ -28,6 +28,7 @@ import MyOrders from './MyOrders';
 import MyPackages from './MyPackages';
 
 import AddAdvertisement from "./AddAdvertisement";
+import Example from "./Example.jsx";
 //import Example from "./Example.jsx";
 //import MyAdvertisements from './Example.jsx';
 
@@ -87,9 +88,9 @@ const UserDashboard = () => {
           <AddAdvertisement />
         )
       case 'my-ads':
-        // return (
-        //   //<MyAdvertisements />
-        // )
+        return (
+        <Example />
+        )
       case 'favourites':
         return (
           <Favourites />
@@ -108,7 +109,7 @@ const UserDashboard = () => {
         )
       default:
         return (
-          <MyAdvertisement />
+          console.log('No section selected')
         )
     }
   }
