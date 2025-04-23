@@ -160,6 +160,10 @@ const Advertisement = () => {
         navigate(`/user/update-advertisement/${id}`)
     }
 
+    const handleNavigationToAdvertiser = () => {
+        navigate(`/advertiser/${advertisement.userId}`)
+    }
+
     // Share functionality
     const handleShare = () => {
         if (navigator.share) {
@@ -434,7 +438,7 @@ const Advertisement = () => {
                                 </div>
 
                                 <button
-                                        onClick={handleBoost}
+                                        onClick={handleNavigationToAdvertiser}
                                         className=" mt-6 px-4 py-2 max-h-10 w-full text-center bg-primary text-white rounded-md hover:bg-primary"
                                     >
                                         More Ads from Seller

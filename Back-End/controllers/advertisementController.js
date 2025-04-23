@@ -63,7 +63,7 @@ const enrichAdvertisement = async (ad) => {
             lastName: user.lastName,
             profileImage: user.profileImage,
             email: user.email,
-            phone: user.phone
+            phone: user.phone,
         } : null,
         packageDetails: package ? {
             packageId: package._id,

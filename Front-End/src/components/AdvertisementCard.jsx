@@ -77,7 +77,7 @@ const AdvertisementCard = ({ ad }) => {
         </div>
 
         <a
-          href={`/advertisements?ad-id=${ad._id}`}
+          href={`/advertisement/${ad._id}`}
           className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80"
         >
           <ArrowRight className="h-4 w-4 mr-1" />
