@@ -266,15 +266,18 @@ exports.updateAdvertisement = [
 exports.deleteAdvertisement = async (req, res) => {
     try {
         const userId = req.user.id;
+        const userRole = req.user.role; // assuming role is available in req.user
         const advertisementId = req.params.id;
 
-        const advertisement = await Advertisement.findOne({
-            userId,
-            _id: advertisementId
-        });
+        // If the user is an admin, find the ad by ID only
+        const query = userRole === 'admin'
+            ? { _id: advertisementId }
+            : { _id: advertisementId, userId };
+
+        const advertisement = await Advertisement.findOne(query);
 
         if (!advertisement) {
-            return res.status(404).json({ message: "Advertisement not found or not owned by this user" });
+            return res.status(404).json({ message: "Advertisement not found or not accessible" });
         }
 
         await advertisement.deleteOne();
@@ -285,6 +288,7 @@ exports.deleteAdvertisement = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
 
 // Get advertisements by category
 exports.getAdvertisementsByCategory = async (req, res) => {
