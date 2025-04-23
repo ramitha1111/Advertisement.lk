@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { updateAdvertisement, getAdvertisementById } from "../../api/AdvertisementApi.js";
+import { updateAdvertisement, getAdvertisementById } from "../../api/advertisementApi.js";
 import { getAllCategories } from "../../api/CategoryApi.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";

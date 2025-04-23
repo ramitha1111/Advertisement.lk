@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import {
     getAdvertisementById,
-} from '../api/AdvertisementApi'
+} from '../api/advertisementApi'
 import {
     createFavourite,
     deleteFavourite,
