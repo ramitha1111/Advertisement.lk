@@ -6,6 +6,8 @@ const Favourites = require("../models/favourites");
 const dayjs = require('dayjs');
 const Order = require('../models/Order');
 const upload = require('../middlewares/upload');
+const Package = require('../models/Package');
+
 
 // Multer middleware for image uploads
 const handleFileUploads = upload.fields([
@@ -23,7 +25,8 @@ const validateData = (req, res) => {
         subcategoryId,
         location,
         videoUrl,
-        features
+        features,
+        packageId
     } = req.body;
 
     if (!title) return res.status(400).json({ message: "Title is required" });
@@ -41,9 +44,10 @@ const validateData = (req, res) => {
 
 // Enrich advertisement with category and user details
 const enrichAdvertisement = async (ad) => {
-    const [category, user] = await Promise.all([
+    const [category, user, package] = await Promise.all([
         Category.findById(ad.categoryId).lean(),
-        User.findById(ad.userId).select('username firstName lastName profileImage email phone').lean()
+        User.findById(ad.userId).select('username firstName lastName profileImage email phone').lean(),
+        Package.findById(ad.packageId).lean()
     ]);
 
     return {
@@ -59,7 +63,13 @@ const enrichAdvertisement = async (ad) => {
             lastName: user.lastName,
             profileImage: user.profileImage,
             email: user.email,
-            phone: user.phone
+            phone: user.phone,
+        } : null,
+        packageDetails: package ? {
+            packageId: package._id,
+            packageName: package.name,
+            duration: package.duration,
+            price: package.price
         } : null
     };
 };
@@ -121,30 +131,29 @@ exports.createAdvertisement = [
 
 
 // Get advertisement by userId
-
-
 exports.getAdvertisementsByUserId = async (req, res) => {
-    const userId = req.params.id;
-    console.log("userId", userId);
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return res.status(400).json({ message: "Invalid user ID" });
-    }
-
     try {
-        const advertisements = await Advertisement.find({ userId: userId });
-        const enrichedAdvertisement = await Promise.all(
+        // Get the UserId from authMiddleware
+        const userId = req.params.id;
+
+        // Find advertisements by userId
+        const advertisements = await Advertisement.find({ userId }).lean();
+
+        if (!advertisements || advertisements.length === 0) {
+            return res.status(404).json({ message: "No advertisements found for this user" });
+        }
+
+        // Enrich advertisements with category and user details
+        const enrichedAds = await Promise.all(
             advertisements.map(ad => enrichAdvertisement(ad))
         );
 
-
-        res.status(200).json(enrichedAdvertisement);
-        console.log("advertisements", enrichedAdvertisement);
+        res.status(200).json(enrichedAds);
     } catch (error) {
-        console.error("Error getting advertisements by user ID:", error);
+        console.error('Error getting user advertisements:', error);
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
-
 
 // Get all advertisements
 exports.getAllAdvertisements = async (req, res) => {
@@ -257,15 +266,18 @@ exports.updateAdvertisement = [
 exports.deleteAdvertisement = async (req, res) => {
     try {
         const userId = req.user.id;
+        const userRole = req.user.role; // assuming role is available in req.user
         const advertisementId = req.params.id;
 
-        const advertisement = await Advertisement.findOne({
-            userId,
-            _id: advertisementId
-        });
+        // If the user is an admin, find the ad by ID only
+        const query = userRole === 'admin'
+            ? { _id: advertisementId }
+            : { _id: advertisementId, userId };
+
+        const advertisement = await Advertisement.findOne(query);
 
         if (!advertisement) {
-            return res.status(404).json({ message: "Advertisement not found or not owned by this user" });
+            return res.status(404).json({ message: "Advertisement not found or not accessible" });
         }
 
         await advertisement.deleteOne();
@@ -276,6 +288,7 @@ exports.deleteAdvertisement = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
 
 // Get advertisements by category
 exports.getAdvertisementsByCategory = async (req, res) => {

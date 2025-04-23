@@ -8,6 +8,7 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const packageRoutes = require("./routes/packageRoutes");
 const advertisementRoutes = require("./routes/AdvertisementRoutes")
 const favouritesRoutes = require("./routes/favouritesRoutes");
+const compareRoutes = require("./routes/compareRoute");
 const contactRoutes = require("./routes/contactRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
@@ -50,6 +51,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/packages", packageRoutes);
 app.use("/api/advertisements", advertisementRoutes)
 app.use("/api/favourites", favouritesRoutes)
+app.use("/api/compare", compareRoutes)
 app.use("/api/contact", contactRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/checkout", checkoutRoutes)

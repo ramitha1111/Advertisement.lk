@@ -12,7 +12,7 @@ import {
   getAdvertisementsByCategory,
   getAdvertisementsBySearch,
   getAdvertisementsByFilter
-} from '../api/advertisementApi'
+} from '../api/advertisementApi.js'
 import { getAllCategories } from '../api/categoryApi'
 import AdvertisementCard from '../components/AdvertisementCard'
 
@@ -92,9 +92,11 @@ const Advertisements = () => {
         results = await getAdvertisementsBySearch(searchQuery)
       }
       
-      setAdvertisements(results)
+      setAdvertisements(results.advertisements)
+      console.log(results)
     } catch (err) {
-      setError('Failed to search advertisements. Please try again later.')
+      setError('No advertisements found!')
+      setAdvertisements([])
       console.error('Error searching advertisements:', err)
     } finally {
       setLoading(false)

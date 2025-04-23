@@ -22,7 +22,8 @@ module.exports = (passport) => {
                 if (!user) {
                   // If no user is found with the same email, create a new user
                   user = new Auth({
-                    name: profile.displayName,
+                    firstName: profile.displayName.trim().split(' ')[0],
+                    lastName: profile.displayName.trim().split(' ').slice(1).join(' '),
                     email: profile.emails[0].value,
                     username: profile.emails[0].value.split("@")[0],
                     phone: "N/A",

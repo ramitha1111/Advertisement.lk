@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react'
-import { ArrowBigRight, ArrowRight, Map, MessageCircle } from 'lucide-react'
+import PropTypes from 'prop-types'
+import { ArrowRight, Map } from 'lucide-react'
 
 const AdvertisementCard = ({ ad }) => {
   // No need to find category name as it's now included in the response
@@ -60,23 +61,23 @@ const AdvertisementCard = ({ ad }) => {
       <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-3 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
         <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
           <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 mr-2">
-            {ad.userId && ad.userDetails.profileImage ? (
+            {ad.userId && ad.userDetails?.profileImage ? (
               <img 
-                src={ad.userDetails.profileImage} 
-                alt={ad.userDetails.username} 
+                src={ad.userDetails?.profileImage} 
+                alt={ad.userDetails?.username} 
                 className="w-full h-full rounded-full"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <span className="text-xs font-medium">{ad.userId && ad.userDetails.username ? ad.userDetails.username.charAt(0) : '?'}</span>
+                <span className="text-xs font-medium">{ad.userId && ad.userDetails?.username ? ad.userDetails.username.charAt(0) : '?'}</span>
               </div>
             )}
           </div>
-          <span>{ad.userId ? ad.userDetails.username : 'Anonymous'}</span>
+          <span>{ad.userId ? ad.userDetails?.username : 'Anonymous'}</span>
         </div>
 
         <a
-          href={`/advertisements?ad-id=${ad._id}`}
+          href={`/advertisement/${ad._id}`}
           className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80"
         >
           <ArrowRight className="h-4 w-4 mr-1" />
@@ -85,6 +86,26 @@ const AdvertisementCard = ({ ad }) => {
       </div>
     </div>
   )
+}
+AdvertisementCard.propTypes = {
+  ad: PropTypes.shape({
+    categoryId: PropTypes.string,
+    categoryDetails: PropTypes.shape({
+      categoryName: PropTypes.string.isRequired,
+    }),
+    featuredImage: PropTypes.string,
+    images: PropTypes.arrayOf(PropTypes.string),
+    createdAt: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    location: PropTypes.string.isRequired,
+    userId: PropTypes.string,
+    userDetails: PropTypes.shape({
+      profileImage: PropTypes.string,
+      username: PropTypes.string,
+    }),
+  }).isRequired,
 }
 
 export default AdvertisementCard

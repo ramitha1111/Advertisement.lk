@@ -1,164 +1,157 @@
 const Auth = require('../models/user');
 const mongoose = require('mongoose');
+
+const path = require('path');
 const bcrypt = require('bcrypt');
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+const upload = require('../middlewares/upload');
 
-// Create User
-exports.createUser = async (req, res) => {
-  const { name, username, email, phone, password, role, googleId } = req.body;
+// Multer middleware for image uploads
+const handleFileUploads = upload.fields([
+  { name: 'profileImage', maxCount: 1 },
+  { name: 'coverImage', maxCount: 1 }
+]);
 
-  // Ensure that the request contains the necessary fields - done
-  if (!name || !username || !email || !phone || !password) {
-    return res.status(400).json({ message: 'All required fields must be provided' });
-  }
+// Normalize and convert paths for frontend
+const normalizePath = (filePath) => `${BASE_URL}/${filePath.replace(/\\/g, '/')}`;
 
-  try {
-    // Check if the username already exists
-    const existingUsername = await Auth.findOne({ username });
-    if (existingUsername) {
-      return res.status(400).json({ message: 'Username already taken' });
-    }
+exports.createUser = [
+  handleFileUploads, // Assuming this handles 'profileImage' and 'coverImage' fields
+  async (req, res) => {
+    try {
+      const { name, username, email, phone, password, role } = req.body;
 
-    // Create the new user
-    const hashedPassword = await bcrypt.hash(password, 10);
+      if (!name || !username || !email || !phone || !password) {
+        return res.status(400).json({ message: 'All required fields must be provided' });
+      }
 
-    const newUser = new Auth({
-      name,
-      username,
-      email,
-      googleId,
-      phone,
-      password: hashedPassword, // Ensure to hash the password before saving (using bcrypt or similar) - used bcrypt
-      role: role || 'user', // Default role to 'user', admin can be set optionally
-    });
-
-    // TODO: add all fields - done
-
-    await newUser.save();
-
-    res.status(201).json({
-      message: 'User created successfully',
-      user: {
-        name: newUser.name,
-        username: newUser.username,
-        email: newUser.email,
-        phone: newUser.phone,
-        role: newUser.role,
-      },
-    });
-  } catch (error) {
-    console.error('Error in createUser:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-// Update User
-exports.updateUser = async (req, res) => {
-  const userId = req.user._id; // Assuming the user ID is stored in `req.user` after authentication
-  const {
-    name,
-    username,
-    email,
-    phone,
-    role,
-    googleId,
-    emailVerified,
-    resetPasswordToken,
-    resetPasswordExpires
-  } = req.body;
-
-  try {
-    let user = await Auth.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Check for duplicate username or email
-    if (username && username !== user.username) {
-      const existing = await Auth.findOne({ username });
-      if (existing && existing._id.toString() !== userId) {
+      const existingUsername = await Auth.findOne({ username });
+      if (existingUsername) {
         return res.status(400).json({ message: 'Username already taken' });
       }
-    }
 
-    if (email && email !== user.email) {
-      const existingEmail = await Auth.findOne({ email });
-      if (existingEmail && existingEmail._id.toString() !== userId) {
-        return res.status(400).json({ message: 'Email already taken' });
-      }
-    }
-
-    user.name = name || user.name;
-    user.username = username || user.username;
-    user.email = email || user.email;
-    user.phone = phone || user.phone;
-    user.role = role || user.role;
-    user.googleId = googleId || user.googleId;
-    user.emailVerified = emailVerified !== undefined ? emailVerified : user.emailVerified;
-    user.resetPasswordToken = resetPasswordToken || user.resetPasswordToken;
-    user.resetPasswordExpires = resetPasswordExpires || user.resetPasswordExpires;
-    // TODO: add all fields - done
-
-    // TODO: Configure this
-    // Handle photo upload
-    if (req.files) {
-      if (req.files.profileImage && req.files.profileImage[0]) {
-        user.profileImage = req.files.profileImage[0].path; // Save local path
-      }
-      if (req.files.coverImage && req.files.coverImage[0]) {
-        user.coverImage = req.files.coverImage[0].path;
-      }
-    }
-    //update the hashed password
-    const { password } = req.body;
-
-    if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
-      user.password = hashedPassword;
+
+      const profileImage = req.files?.profileImage
+          ? normalizePath(req.files.profileImage[0].path)
+          : null;
+
+      const coverImage = req.files?.coverImage
+          ? normalizePath(req.files.coverImage[0].path)
+          : null;
+
+      const newUser = new Auth({
+        name,
+        username,
+        email,
+        phone,
+        password: hashedPassword,
+        role: role || 'user',
+        profileImage,
+        coverImage,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+
+      await newUser.save();
+
+      res.status(201).json({
+        message: 'User created successfully',
+        user: {
+          id: newUser._id,
+          name: newUser.name,
+          username: newUser.username,
+          email: newUser.email,
+          phone: newUser.phone,
+          role: newUser.role,
+          profileImage: newUser.profileImage,
+          coverImage: newUser.coverImage
+        }
+      });
+    } catch (error) {
+      console.error('Error in createUser:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
     }
-
-    await user.save();
-
-    res.status(200).json({
-      message: 'User updated successfully',
-      user: {
-        name: user.name,
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        profileImage: user.profileImage,
-        coverImage: user.coverImage,
-        emailVerified: user.emailVerified
-      }
-    });
-  } catch (error) {
-    console.error('Error in updateUser:', error);
-    res.status(500).json({ message: 'Server error' });
   }
-};
+];
+
+
+// Update user
+exports.updateUser = [
+  handleFileUploads, // Should handle 'profileImage' and 'coverImage'
+  async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const { name, username, email, phone, role } = req.body;
+
+      const user = await Auth.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Update fields if they are present
+      if (name) user.name = name;
+      if (username) user.username = username;
+      if (email) user.email = email;
+      if (phone) user.phone = phone;
+      if (role) user.role = role;
+
+      // Handle new profile and cover images
+      if (req.files?.profileImage) {
+        user.profileImage = normalizePath(req.files.profileImage[0].path);
+      }
+
+      if (req.files?.coverImage) {
+        user.coverImage = normalizePath(req.files.coverImage[0].path);
+      }
+
+      user.updatedAt = new Date();
+
+      await user.save();
+
+      res.status(200).json({
+        message: 'User updated successfully',
+        user: {
+          id: user._id,
+          name: user.name,
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          role: user.role,
+          profileImage: user.profileImage,
+          coverImage: user.coverImage
+        }
+      });
+    } catch (error) {
+      console.error('Error updating user:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  }
+];
+
 
 // Delete User
 exports.deleteUser = async (req, res) => {
-  const userId = req.user._id; // The user ID is attached to req.user after authentication
+  const userId = req.params.id; // Ensure optional chaining in case req.user is undefined
+
+  if (!userId) {
+    return res.status(401).json({ message: 'Unauthorized: User ID missing' });
+  }
 
   try {
-    // Find the user by ID
-    const user = await Auth.findById(userId);
+    const deletedUser = await Auth.findByIdAndDelete(userId);
 
-    if (!user) {
+    if (!deletedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    // Delete the user
-    await user.remove();
 
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
     console.error('Error in deleteUser:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
 
 // Get All Users
 exports.getUsers = async (req, res) => {

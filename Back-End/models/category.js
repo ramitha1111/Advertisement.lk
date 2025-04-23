@@ -15,7 +15,6 @@ const categorySchema = new mongoose.Schema({
     features: [{
         name: {
             type: String,
-            required: true
         }
     }],
     categoryImage: {

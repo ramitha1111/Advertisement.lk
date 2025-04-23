@@ -8,7 +8,11 @@ export const getAllAdvertisements = async () => {
 };
 
 // Get advertisements by logged-in user
-export const getAdvertisementsByUser = async (token,userId) => {
+
+
+
+export const getAdvertisementsByUser = async (userId, token) => {
+
   const response = await api.get(`/advertisements/user/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -56,14 +60,14 @@ export const deleteAdvertisement = async (advertisementId, token) => {
 
 // Get advertisements by category ID
 export const getAdvertisementsByCategory = async (categoryId) => {
-  const response = await api.get(`/advertisements/category/${categoryId}`);
+  const response = await api.get(`/advertisements/categories/${categoryId}`);
   return response.data;
 };
 
 // Search advertisements (by keyword)
 export const getAdvertisementsBySearch = async (searchKeyword) => {
   const response = await api.get(`/advertisements/search/${searchKeyword}`);
-  return response.data.advertisements;
+  return response.data;
 };
 
 // Filter advertisements by category, location, and price range
