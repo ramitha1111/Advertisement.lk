@@ -1,7 +1,7 @@
 const CompareList = require('../models/compare');
 
 // Add Advertisement to Compare List
-const addToCompareList = async (req, res) => {
+const createCompare = async (req, res) => {
     try {
         // Extract userId from auth token (set by authMiddleware)
         const userId = req.user.id;
@@ -25,7 +25,7 @@ const addToCompareList = async (req, res) => {
 };
 
 // Remove Advertisement from Compare List
-const removeFromCompareList = async (req, res) => {
+const deleteCompare = async (req, res) => {
     try {
         // Extract userId from auth token (set by authMiddleware)
         const userId = req.user.id;
@@ -45,7 +45,7 @@ const removeFromCompareList = async (req, res) => {
 };
 
 // Get Compared Ads for a User
-const getComparedAds = async (req, res) => {
+const getAllCompares = async (req, res) => {
     try {
         // Extract userId from auth token (set by authMiddleware)
         const userId = req.user.id;
@@ -63,7 +63,7 @@ const getComparedAds = async (req, res) => {
 };
 
 module.exports = {
-    addToCompareList,
-    removeFromCompareList,
-    getComparedAds
+    createCompare,
+    deleteCompare,
+    getAllCompares
 };
