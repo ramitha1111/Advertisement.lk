@@ -1,12 +1,5 @@
-'use client'
-
-import React, {useState, useEffect} from 'react'
-import {
-    Search,
-    Filter,
-    ChevronDown,
-    Loader
-} from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Loader } from 'lucide-react'
 import {
     getAllAdvertisements,
     getAdvertisementsByCategory,
@@ -14,8 +7,7 @@ import {
     getAdvertisementsByFilter
 
 } from '../../api/advertisementApi'
-import {getAllCategories} from '../../api/categoryApi'
-
+import { getAllCategories } from '../../api/categoryApi'
 import AdvertisementCard from '../../components/AdvertisementCard'
 
 const LatestAdvertisements = () => {
@@ -43,11 +35,11 @@ const LatestAdvertisements = () => {
     ]
 
     const priceRangeOptions = [
-        {label: 'Any Price', value: ''},
-        {label: 'Under Rs. 5,000', value: '0,5000'},
-        {label: 'Rs. 5,000 - Rs. 15,000', value: '5000,15000'},
-        {label: 'Rs. 15,000 - Rs. 50,000', value: '15000,50000'},
-        {label: 'Over Rs. 50,000', value: '50000,9999999'}
+        { label: 'Any Price', value: '' },
+        { label: 'Under Rs. 5,000', value: '0,5000' },
+        { label: 'Rs. 5,000 - Rs. 15,000', value: '5000,15000' },
+        { label: 'Rs. 15,000 - Rs. 50,000', value: '15000,50000' },
+        { label: 'Over Rs. 50,000', value: '50000,9999999' }
     ]
 
     useEffect(() => {
@@ -60,7 +52,7 @@ const LatestAdvertisements = () => {
                 ])
                 const latestAds = adsData
                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                    .slice(0, 6)
+                    .slice(0, 9)
 
                 setAdvertisements(latestAds)
                 setCategories(categoriesData)
@@ -176,71 +168,35 @@ const LatestAdvertisements = () => {
                 </div>
             )}
 
-            {loading && (
+            {loading ? (
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex justify-center">
                     <div className="flex items-center justify-center">
-                        <Loader className="h-8 w-8 text-primary animate-spin"/>
+                        <Loader className="h-8 w-8 text-primary animate-spin" />
                         <span className="ml-2 text-gray-700 dark:text-gray-300">Loading advertisements...</span>
                     </div>
                 </div>
-            )}
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative">
-                {!loading && advertisements.length === 0 ? (
-                    <div className="text-center py-12">
-                        <p className="text-lg text-gray-700 dark:text-gray-300">
-                            No advertisements found. Try adjusting your search criteria.
-                        </p>
-                    </div>
-                ) : (
-                    <>
-                        {/* Scrollable row + margin for buttons */}
-                        <div className="flex items-center">
-                            {/* Left button (outside) */}
-                            <button
-                                onClick={() =>
-                                    document.getElementById('ads-scroll').scrollBy({
-                                        left: -300,
-                                        behavior: 'smooth'
-                                    })
-                                }
-                                className="z-20 mr-2 p-2 bg-white dark:bg-gray-800 text-black dark:text-white rounded-full shadow hover:scale-105 transition"
-                            >
-                                ◀
-                            </button>
-
-                            {/* Scrollable row */}
-                            <div
-                                id="ads-scroll"
-                                className="flex overflow-x-scroll gap-4 scroll-smooth hide-scrollbar"
-                                style={{ scrollBehavior: 'smooth' }}
-                            >
-                                {advertisements.slice().reverse().map((ad) => (
-                                    <div key={ad._id} className="flex-shrink-0 w-[300px]">
-                                        <AdvertisementCard ad={ad} />
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Right button (outside) */}
-                            <button
-                                onClick={() =>
-                                    document.getElementById('ads-scroll').scrollBy({
-                                        left: 300,
-                                        behavior: 'smooth'
-                                    })
-                                }
-                                className="z-20 ml-2 p-2 bg-white dark:bg-gray-800 text-black dark:text-white rounded-full shadow hover:scale-105 transition"
-                            >
-                                ▶
-                            </button>
+            ) : (
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    {advertisements.length === 0 ? (
+                        <div className="text-center py-12">
+                            <p className="text-lg text-gray-700 dark:text-gray-300">
+                                No advertisements found. Try adjusting your search criteria.
+                            </p>
                         </div>
-                    </>
-                )}
-            </div>
-
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {advertisements
+                                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                                .slice(0, 9)
+                                .map((ad) => (
+                                    <AdvertisementCard key={ad._id} ad={ad} />
+                                ))}
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     )
 }
 
-export default LatestAdvertisements
+export default LatestAdvertisements;
