@@ -23,7 +23,7 @@ import MyOrders from './MyOrders';
 import MyPackages from './MyPackages';
 
 import AddAdvertisement from "./AddAdvertisement";
-import Example from "./Example.jsx";
+import MyAds from "./MyAds";
 import { getAdvertisementsByUser } from '../../api/advertisementApi.js';
 import { getUserOrders } from '../../api/orderApi.js';
 
@@ -89,7 +89,7 @@ const UserDashboard = () => {
         )
       case 'my-ads':
         return (
-          <Example />
+          <MyAds />
         )
       case 'favourites':
         return (
