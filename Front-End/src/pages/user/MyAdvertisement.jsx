@@ -25,9 +25,7 @@ const AdvertisementCard = ({ item, onEdit, onDelete }) => {
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
                     {item?.title}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {item?.description || 'No description provided.'}
-                </p>
+
 
                 <div className="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300">
           <span className="font-semibold text-lg text-primary">
@@ -44,14 +42,14 @@ const AdvertisementCard = ({ item, onEdit, onDelete }) => {
             <div className="pt-4 flex justify-end gap-4 border-t border-gray-200 dark:border-gray-700 mt-2">
                 <button
                     onClick={onEdit}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary border-2 border-primary rounded-lg hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
                 >
                     <Edit size={16} />
                     Edit
                 </button>
                 <button
                     onClick={onDelete}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary focus:outline-none focus:ring-2 focus:ring-red-400"
                 >
                     <Trash2 size={16} />
                     Delete
