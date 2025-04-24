@@ -8,12 +8,8 @@ import {
   FileText,
   ShoppingBag,
   Package,
-  Bell,
-  Edit,
-  Grid,
-  ChevronRight,
   Plus,
-  Heart
+  
 } from 'lucide-react'
 import { useLocation, Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
@@ -31,7 +27,7 @@ import { getAllOrders } from '../../api/orderApi';
 
 const AdminDashboard = () => {
   const { user, token } = useAuth();
-  const { fetchUser, clearUser } = useUser();
+  const { fetchUser } = useUser();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userData, setUserData] = useState({});

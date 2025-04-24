@@ -121,7 +121,7 @@ const OrdersAdmin = () => {
       </div>
 
       <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1">
           {filteredOrders().length > 0 ? (
             filteredOrders().map((order) => (
               <OrderCard key={order._id} order={order} isAdmin={true} />

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect } from 'react'
 import blankProfileImage from '../../assets/blank-profile-picture.jpg';
 import {
   User,
@@ -8,10 +8,6 @@ import {
   FileText,
   ShoppingBag,
   Package,
-  Bell,
-  Edit,
-  Grid,
-  ChevronRight,
   Plus,
   Heart
 } from 'lucide-react'
@@ -22,7 +18,6 @@ import SettingsPage from './Settings'
 import { getUserById } from '../../api/userApi'
 import { useDispatch } from 'react-redux';
 
-import MyAdvertisement from './MyAdvertisement';
 import Favourites from './Favourites';
 import MyOrders from './MyOrders';
 import MyPackages from './MyPackages';
@@ -31,15 +26,10 @@ import AddAdvertisement from "./AddAdvertisement";
 import Example from "./Example.jsx";
 import { getAdvertisementsByUser } from '../../api/advertisementApi.js';
 import { getUserOrders } from '../../api/orderApi.js';
-//import Example from "./Example.jsx";
-//import MyAdvertisements from './Example.jsx';
-
-
-
 
 const UserDashboard = () => {
   const { user, token } = useAuth();
-  const { fetchUser, clearUser } = useUser();
+  const { fetchUser } = useUser();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userData, setUserData] = useState({});
