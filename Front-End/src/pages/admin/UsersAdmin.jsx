@@ -3,6 +3,7 @@ import { getAllUsers, deleteUser } from '../../api/userApi';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
+import { useNavigate } from 'react-router-dom';
 
 const UserAdmin = () => {
   const [users, setUsers] = useState([]);
@@ -10,6 +11,7 @@ const UserAdmin = () => {
   const [error, setError] = useState('');
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const navigate = useNavigate();
 
   const { user, token } = useSelector((state) => state.auth);
 
@@ -65,37 +67,48 @@ const UserAdmin = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">User Management</h1>
-        {isAdmin && (
-          <Link
-            to="/admin/add-user"
-            className="bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded flex items-center"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-            Add New User
-          </Link>
-        )}
-      </div>
-
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-          <p>{error}</p>
-        </div>
-      )}
-
+    <div className="px-6 py-8 max-w-5xl mx-auto">
       <div className="overflow-x-auto">
-        {users.length > 0 ? (
-          <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-            <thead className="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white border-b pb-3">
+          User Management
+        </h2>
+        <button
+          onClick={() => navigate('/admin/dashboard/add-user')}
+          className="px-4 py-2 bg-primary text-white font-semibold rounded-md hover:bg-primary-dark transition"
+        >
+          + Add User
+        </button>
+      </div>
+        <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <thead>
+            <tr>
+              <th className="px-4 py-2 border-b">Name</th>
+              <th className="px-4 py-2 border-b">Email</th>
+              <th className="px-4 py-2 border-b">Role</th>
+              <th className="px-4 py-2 border-b">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user._id} className="text-center">
+                <td className="px-4 py-2 border-b">{user.username}</td>
+                <td className="px-4 py-2 border-b">{user.email}</td>
+                <td className="px-4 py-2 border-b capitalize">{user.role}</td>
+                <td className="px-4 py-2 border-b space-x-2">
+                  <Link
+                    to={`/admin/update-user?id=${user._id}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(user._id)}
+                    className="text-red-600 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">

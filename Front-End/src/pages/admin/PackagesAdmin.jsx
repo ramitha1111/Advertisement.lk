@@ -35,13 +35,14 @@ const PackagesAdmin = () => {
     const handleViewPackage = (packageId) => {
         console.log('Viewing package:', packageId);
         // Implement view logic or navigation
-        navigate(`/admin/packages/view/${packageId}`);
+        navigate(`/admin/view-package/${packageId}`);
 
     };
 
     const handleUpdatePackage = (packageId) => {
         console.log('Updating package:', packageId);
         // Implement update logic or navigation
+        navigate(`/admin/update-package/${packageId}`)
     };
 
     const handleDeletePackage = async (packageId) => {
