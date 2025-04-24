@@ -7,12 +7,13 @@ import useAuth from '../../hooks/useAuth.js';
 import { getAdvertisementsByUser } from '../../api/advertisementApi.js';
 
 import {useDispatch} from "react-redux";
-import {fetchAdvertisement} from "../../store/advertisementSlice.js";
+import useAdvertisement from "../../hooks/useAdvertisement.js";
 import EditAdvertisement from "./EditeAdvertisement.jsx";
 
 const MyAdvertisements = () => {
     const navigate = useNavigate();
     const { user, token } = useAuth();
+    const {fetchAdvertisement,clearAdvertisements} = useAdvertisement();
     const [isLoading, setIsLoading] = useState(true);
     const [advertisementData, setAdvertisementData] = useState([]);
     const dispatch = useDispatch();
@@ -37,10 +38,10 @@ const MyAdvertisements = () => {
             setIsLoading(true);
             try {
                 if (token) {
-                    const data = await getAdvertisementsByUser(token,user.id);
+                    const data = await getAdvertisementsByUser(user.id,token);
                     setAdvertisementData(data || []);
-
-                    dispatch(fetchAdvertisement( { advertisementData: data || [] }));
+                    console.log('Fetched advertisements:', data);
+                    dispatch(fetchAdvertisement( { advertisementData: data|| [] }));
 
                 }
             } catch (error) {
@@ -81,8 +82,8 @@ const MyAdvertisements = () => {
             {advertisementData?.length > 0 ? (
                 advertisementData?.map((item) => (
                     <AdvertisementCard
-                        Key={item?._doc?._id}
-                        item={item?._doc}
+                        Key={item?._doc._id}
+                        item={item._doc}
                         onEdit={() => handleEdit(item?._doc)}
                         onDelete={() => handleDelete(item?._doc)}
                     />
