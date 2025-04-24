@@ -62,7 +62,7 @@ const AddPackage = () => {
             }
 
             // Navigate back to packages page on success
-            navigate('/admin/packages');
+            navigate('/admin/dashboard?section=packages-admin');
         } catch (err) {
             setError(err.message);
             console.error('Failed to create package:', err);
