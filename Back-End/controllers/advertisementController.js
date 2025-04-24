@@ -137,12 +137,12 @@ exports.getAdvertisementsByUserId = async (req, res) => {
         const userId = req.params.id;
 
         // Find advertisements by userId
-        const advertisements = await Advertisement.find({ userId }).lean();
-
+        const advertisements = await Advertisement.find({ userId:userId });
+        //const advertisements = await Advertisement.find({ userId }).lean();
         if (!advertisements || advertisements.length === 0) {
             return res.status(404).json({ message: "No advertisements found for this user" });
         }
-
+        console.log(advertisements);
         // Enrich advertisements with category and user details
         const enrichedAds = await Promise.all(
             advertisements.map(ad => enrichAdvertisement(ad))

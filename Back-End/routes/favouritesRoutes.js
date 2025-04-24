@@ -18,7 +18,7 @@ router.post('/:id', authMiddleware, createFavourites);
 
 
 // Get all favourites
-router.get('/', authMiddleware, getAllFavourites);
+router.get('/:id', authMiddleware, getAllFavourites);
 
 // Delete favourite
 router.delete('/:id', authMiddleware, deleteFavourite);

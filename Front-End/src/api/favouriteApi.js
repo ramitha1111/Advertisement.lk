@@ -1,8 +1,8 @@
 // userApi.js
 import api from '../axios';
 
-export const getAllFavourites = async (token) => {
-  const response = await api.get(`/favourites`, {
+export const getAllFavourites = async (token,userId) => {
+  const response = await api.get(`/favourites/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
