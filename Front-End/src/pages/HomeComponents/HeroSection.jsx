@@ -1,8 +1,12 @@
 import React from "react";
 import { Search } from "lucide-react";
 import WaveBackground from "./Images/WaveBackground.svg"
+import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
+
+    const Navigate = useNavigate();
+    
     return (
         <div className="relative w-full min-h-[80vh] overflow-hidden bg-white">
             {/* Background wave pattern */}
@@ -54,6 +58,8 @@ export default function HeroSection() {
                                     />
                                 </div> */}
                                 <button
+                                type="submit"
+                                onClick={() => Navigate("/search-advertisements/"+document.querySelector("input[type='text']").value)}
                                     className="bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-md flex items-center justify-center lg:w-12 lg:mr-5"
                                 >
                                     <Search size={20} />
