@@ -181,7 +181,7 @@ exports.getAdvertisementById = async (req, res) => {
 
         // Find advertisement by ID
         const advertisement = await Advertisement.findById(advertisementId).lean();
-
+        console.log(advertisement);
         if (!advertisement) {
             return res.status(404).json({ message: "Advertisement not found" });
         }

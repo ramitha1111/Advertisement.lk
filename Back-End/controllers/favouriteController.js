@@ -5,7 +5,7 @@ const advertisementModel = require('./../models/advertisement');
 // Create a new favourite
 exports.createFavourites = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.body.userId;
         const advertisementId = req.params.id;
 
         const advertisement = await advertisementModel.findOne({ _id: advertisementId });
