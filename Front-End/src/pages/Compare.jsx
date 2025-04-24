@@ -403,7 +403,7 @@ const handleRemoveItem = async (adId, userId) => {
                     </div>
 
                     {/* Contact Section */}
-                    <div>
+                    {/* <div>
                         <button
                             onClick={() => toggleSection('contact')}
                             className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 text-left"
@@ -483,7 +483,7 @@ const handleRemoveItem = async (adId, userId) => {
                                 )}
                             </div>
                         )}
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="flex justify-center mt-8">
