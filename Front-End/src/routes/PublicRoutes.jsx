@@ -21,6 +21,7 @@ import Advertisement from '../pages/Advertisement'
 import { User } from 'lucide-react'
 import Advertiser from '../pages/Advertiser'
 import AdminLogin from '../pages/AdminLogin'
+import SearchAdvertisement from '../pages/SearchAdvertisement'
 
 const PublicRoutes = () => {
   const location = useLocation()
@@ -47,6 +48,7 @@ const PublicRoutes = () => {
         <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
         <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
         <Route path="/advertisements" element={<PageWrapper><Advertisements /></PageWrapper>} />
+        <Route path="/search-advertisements/:keyword" element={<PageWrapper><SearchAdvertisement /></PageWrapper>} />
         <Route path="/categories" element={<PageWrapper><Categories /></PageWrapper>} />
         <Route path="/categories/:id" element={<PageWrapper><AdsByCategory /></PageWrapper>} />
         <Route path="/advertisement/:id" element={<PageWrapper><Advertisement /></PageWrapper>} />

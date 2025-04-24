@@ -57,7 +57,6 @@ const MyAdvertisements = () => {
             if (token) {
                 const data = await getAdvertisementsByUser(user.id, token);
                 setAdvertisementData(data || []);
-                console.log('Fetched advertisements:', data);
                 dispatch(fetchAdvertisement({ advertisementData: data || [] }));
             }
         } catch (error) {
