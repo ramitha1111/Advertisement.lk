@@ -10,6 +10,8 @@ import UpdateAdvertisement from '../pages/user/UpdateAdvertisement';
 import SelectPackage from '../pages/user/SelectPackage';
 import Footer from '../components/Footer';
 import AddAdvertisement from "../pages/user/AddAdvertisement";
+import Compare from '../pages/Compare'
+import Order from '../pages/user/Order';
 
 const UserRoutes = () => {
   return (
@@ -57,7 +59,7 @@ const UserRoutes = () => {
           }
         />
         <Route
-          path="/update-advertisement"
+          path="/update-advertisement/:id"
           element={
             <ProtectedRoutes>
               <UpdateAdvertisement />
@@ -72,6 +74,20 @@ const UserRoutes = () => {
             </ProtectedRoutes>
           }
         />
+        <Route 
+          path="/compare" 
+          element={
+            <ProtectedRoutes>
+              <Compare />
+            </ProtectedRoutes>
+          } />
+          <Route 
+          path="/order/:orderId" 
+          element={
+            <ProtectedRoutes>
+              <Order />
+            </ProtectedRoutes>
+          } />
       </Routes>
       <Footer />
     </>

@@ -35,7 +35,6 @@ const validateData = (req, res) => {
     if (!categoryId) return res.status(400).json({ message: "Category is required" });
     if (!subcategoryId) return res.status(400).json({ message: "Subcategory is required" });
     if (!location) return res.status(400).json({ message: "Location is required" });
-    if (!videoUrl) return res.status(400).json({ message: "Video URL is required" });
     //if (!features || !Array.isArray(features) || features.length === 0)
         //return res.status(400).json({ message: "At least one feature is required" });
 
@@ -63,7 +62,7 @@ const enrichAdvertisement = async (ad) => {
             lastName: user.lastName,
             profileImage: user.profileImage,
             email: user.email,
-            phone: user.phone
+            phone: user.phone,
         } : null,
         packageDetails: package ? {
             packageId: package._id,
@@ -82,15 +81,18 @@ exports.createAdvertisement = [
     handleFileUploads,
     async (req, res) => {
         try {
-            if (!req.files || !req.files.featuredImage) {
-                return res.status(400).json({ message: "Featured image is required" });
-            }
-
             // Normalize and convert paths for frontend
             const normalizePath = (filePath) => `${BASE_URL}/${filePath.replace(/\\/g, '/')}`;
 
-            req.body.featuredImage = normalizePath(req.files.featuredImage[0].path);
-            req.body.images = req.files.images
+            // Optional featuredImage handling
+            if (req.files && req.files.featuredImage && req.files.featuredImage.length > 0) {
+                req.body.featuredImage = normalizePath(req.files.featuredImage[0].path);
+            } else {
+                req.body.featuredImage = ""; // or you can skip assigning it
+            }
+
+            // Optional additional images
+            req.body.images = req.files && req.files.images
                 ? req.files.images.map(file => normalizePath(file.path))
                 : [];
 
@@ -128,6 +130,7 @@ exports.createAdvertisement = [
         }
     }
 ];
+
 
 
 // Get advertisement by userId
@@ -266,15 +269,18 @@ exports.updateAdvertisement = [
 exports.deleteAdvertisement = async (req, res) => {
     try {
         const userId = req.user.id;
+        const userRole = req.user.role; // assuming role is available in req.user
         const advertisementId = req.params.id;
 
-        const advertisement = await Advertisement.findOne({
-            userId,
-            _id: advertisementId
-        });
+        // If the user is an admin, find the ad by ID only
+        const query = userRole === 'admin'
+            ? { _id: advertisementId }
+            : { _id: advertisementId, userId };
+
+        const advertisement = await Advertisement.findOne(query);
 
         if (!advertisement) {
-            return res.status(404).json({ message: "Advertisement not found or not owned by this user" });
+            return res.status(404).json({ message: "Advertisement not found or not accessible" });
         }
 
         await advertisement.deleteOne();
@@ -285,6 +291,7 @@ exports.deleteAdvertisement = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
 
 // Get advertisements by category
 exports.getAdvertisementsByCategory = async (req, res) => {

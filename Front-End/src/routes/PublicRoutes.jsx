@@ -17,12 +17,16 @@ import About from '../pages/About'
 import Advertisements from '../pages/Advertisements'
 import Categories from '../pages/Categories'
 import AdsByCategory from '../pages/AdsByCategory'
+import Advertisement from '../pages/Advertisement'
+import { User } from 'lucide-react'
+import Advertiser from '../pages/Advertiser'
+import AdminLogin from '../pages/AdminLogin'
 
 const PublicRoutes = () => {
   const location = useLocation()
 
   // Hide Header only on /login
-  const hideHeaderPaths = ['/login', '/register', '/google/callback', '/verify-email', '/forgot-password']
+  const hideHeaderPaths = ['/login', '/register', '/google/callback', '/verify-email', '/forgot-password', '/admin-login']
   const shouldHideHeader = hideHeaderPaths.includes(location.pathname)
 
   return (
@@ -31,6 +35,7 @@ const PublicRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
         <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+        <Route path="/admin-login" element={<PageWrapper><AdminLogin /></PageWrapper>} />
         <Route path="/register" element={<PageWrapper><Register /></PageWrapper>} />
         <Route path="/verify-email" element={<PageWrapper><VerifyEmail /></PageWrapper>} />
         <Route path="/forgot-password" element={<PageWrapper><ForgotPassword /></PageWrapper>} />
@@ -44,6 +49,8 @@ const PublicRoutes = () => {
         <Route path="/advertisements" element={<PageWrapper><Advertisements /></PageWrapper>} />
         <Route path="/categories" element={<PageWrapper><Categories /></PageWrapper>} />
         <Route path="/categories/:id" element={<PageWrapper><AdsByCategory /></PageWrapper>} />
+        <Route path="/advertisement/:id" element={<PageWrapper><Advertisement /></PageWrapper>} />
+        <Route path="/advertiser/:id" element={<PageWrapper><Advertiser /></PageWrapper>} />
         {/* Add other public routes here */}
       </Routes>
       {!shouldHideHeader && <Footer />}

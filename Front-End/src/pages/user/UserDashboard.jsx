@@ -28,6 +28,9 @@ import MyOrders from './MyOrders';
 import MyPackages from './MyPackages';
 
 import AddAdvertisement from "./AddAdvertisement";
+import Example from "./Example.jsx";
+import { getAdvertisementsByUser } from '../../api/advertisementApi.js';
+import { getUserOrders } from '../../api/orderApi.js';
 //import Example from "./Example.jsx";
 //import MyAdvertisements from './Example.jsx';
 
@@ -42,6 +45,9 @@ const UserDashboard = () => {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+  const [totalAds, setTotalAds] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
 
   // Extract the active tab from URL parameters
   useEffect(() => {
@@ -64,6 +70,15 @@ const UserDashboard = () => {
           const data = await getUserById(user.id || user._id, token);
           setUserData(data.data);
           dispatch(fetchUser({ userData: data.data }))
+
+          const ads = await getAdvertisementsByUser(user.id || user._id, token);
+          setTotalAds(ads?.length || 0);
+
+          // const users = await getAllUsers(token);
+          // setTotalUsers(users?.length || 0);
+
+          const orders = await getUserOrders(user.id || user._id, token);
+          setTotalOrders(orders?.length || 0);
         }
       } catch (err) {
         console.error(err?.response?.message || err.message);
@@ -75,10 +90,6 @@ const UserDashboard = () => {
     fetchUserData();
   }, [user?.id, token]);
 
-  console.log(user.id)
-  console.log(token)
-  console.log(userData)
-
   // Rendering different content based on the active tab
   const renderContent = () => {
     switch (activeTab) {
@@ -87,9 +98,9 @@ const UserDashboard = () => {
           <AddAdvertisement />
         )
       case 'my-ads':
-        // return (
-        //   //<MyAdvertisements />
-        // )
+        return (
+          <Example />
+        )
       case 'favourites':
         return (
           <Favourites />
@@ -108,7 +119,7 @@ const UserDashboard = () => {
         )
       default:
         return (
-          <MyAdvertisement />
+          console.log('No section selected')
         )
     }
   }
@@ -166,9 +177,9 @@ const UserDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <FileText size={18} className="text-green-600 dark:text-green-400" />
-                        <h3 className="ml-2 font-medium text-green-600 dark:text-green-400">Active Ads</h3>
+                        <h3 className="ml-2 font-medium text-green-600 dark:text-green-400">My Ads</h3>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">1</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalAds}</p>
                     </div>
                   </div>
 
@@ -177,9 +188,9 @@ const UserDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <FileText size={18} className="text-red-600 dark:text-red-400" />
-                        <h3 className="ml-2 font-medium text-red-600 dark:text-red-400">Expired Ads</h3>
+                        <h3 className="ml-2 font-medium text-red-600 dark:text-red-400">My Orders</h3>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">2</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalOrders}</p>
                     </div>
                   </div>
 
@@ -188,7 +199,7 @@ const UserDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <Bell size={18} className="text-yellow-600 dark:text-yellow-400" />
-                        <h3 className="ml-2 font-medium text-yellow-600 dark:text-yellow-400">Pending Ads</h3>
+                        <h3 className="ml-2 font-medium text-yellow-600 dark:text-yellow-400">My Packages</h3>
                       </div>
                       <p className="text-2xl font-bold text-gray-900 dark:text-white">1</p>
                     </div>
@@ -199,9 +210,10 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        {/* Dashboard navigation tabs - Updated with navigation based on URL parameters */}
-        <div className="mb-8">
-          <div className="border-b border-gray-200 dark:border-gray-700">
+        {/* Dashboard navigation tabs - Mobile-friendly tile layout */}
+        <div className="mb-4">
+          {/* Desktop horizontal tabs - hidden on mobile */}
+          <div className="border-b border-gray-200 dark:border-gray-700 hidden md:block">
             <nav className="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
               <Link
                 to="/user/dashboard?section=my-ads"
@@ -219,7 +231,7 @@ const UserDashboard = () => {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
               >
-                <Plus size={16} className="mr-2" /> Add New Ad
+                <Plus size={16} className="mr-2" /> New Ad
               </Link>
               <Link
                 to="/user/dashboard?section=favourites"
@@ -258,6 +270,75 @@ const UserDashboard = () => {
                 <Settings size={16} className="mr-2" /> Settings
               </Link>
             </nav>
+          </div>
+
+          {/* Mobile tile layout - visible only on mobile */}
+          <div className="grid grid-cols-3 gap-2 md:hidden px-2">
+            <Link
+              to="/user/dashboard?section=my-ads"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'my-ads'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <FileText size={16} className="mr-2" />
+              <span className="text-sm font-medium">My Ads</span>
+            </Link>
+
+            <Link
+              to="/user/dashboard?section=add-new-ad"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'add-new-ad'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <Plus size={16} className="mr-2" />
+              <span className="text-sm font-medium">New Ad</span>
+            </Link>
+
+            <Link
+              to="/user/dashboard?section=favourites"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'favourites'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <Heart size={16} className="mr-2" />
+              <span className="text-sm font-medium">Favourites</span>
+            </Link>
+
+            <Link
+              to="/user/dashboard?section=my-packages"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'my-packages'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <Package size={16} className="mr-2" />
+              <span className="text-sm font-medium">Packages</span>
+            </Link>
+
+            <Link
+              to="/user/dashboard?section=my-orders"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'my-orders'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <ShoppingBag size={16} className="mr-2" />
+              <span className="text-sm font-medium">My Orders</span>
+            </Link>
+
+            <Link
+              to="/user/dashboard?section=settings"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'settings'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <Settings size={16} className="mr-2" />
+              <span className="text-sm font-medium">Settings</span>
+            </Link>
           </div>
         </div>
 

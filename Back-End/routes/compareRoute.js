@@ -1,16 +1,16 @@
 const express = require('express');
-const { createCompare, getAllCompares, getCompareById, deleteCompare } = require('../controllers/compareController');
+const { createCompare, getAllCompares, deleteCompare } = require('../controllers/compareController');
 const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
 
 //Routes
 // Add to compare
-router.post('/:advertisementID', authMiddleware, createCompare);
+router.post('/', authMiddleware, createCompare);
 
 // Get all compares
-router.get('/:userID', authMiddleware, getAllCompares);
+router.get('/:id', authMiddleware, getAllCompares);
 
 // Delete from compare
-router.delete('/:advertisementID', authMiddleware, deleteCompare);
+router.delete('/:id/:userId', authMiddleware, deleteCompare);
 
 module.exports = router;

@@ -1,19 +1,18 @@
-import { fetchAdvertisement, clearAdvertisement } from "../store/advertisementSlice";
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 
 const useAdvertisement = () => {
-  const dispatch = useDispatch();
   const advertisementData = useSelector((state) => state.advertisement.advertisementData);
 
-  const fetchAdvertisementData = (data) => {
-    dispatch(fetchAdvertisement({ advertisementData: data }));
-  };
+   const fetchAdvertisement = (payload) => ({
+    type: 'FETCH_ADVERTISEMENT',
+    payload,
+  });
 
-  const clearAdvertisementData = () => {
-    dispatch(clearAdvertisement());
-  };
+   const clearAdvertisements = () => ({
+    type: 'CLEAR_ADVERTISEMENTS',
+  });
 
-  return { advertisementData, fetchAdvertisementData, clearAdvertisementData };
+  return { advertisementData, fetchAdvertisement, clearAdvertisements};
 };
 
 export default useAdvertisement;
