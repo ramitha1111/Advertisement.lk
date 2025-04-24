@@ -8,12 +8,8 @@ import {
   FileText,
   ShoppingBag,
   Package,
-  Bell,
-  Edit,
-  Grid,
-  ChevronRight,
   Plus,
-  Heart
+  
 } from 'lucide-react'
 import { useLocation, Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
@@ -31,7 +27,7 @@ import { getAllOrders } from '../../api/orderApi';
 
 const AdminDashboard = () => {
   const { user, token } = useAuth();
-  const { fetchUser, clearUser } = useUser();
+  const { fetchUser } = useUser();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userData, setUserData] = useState({});
@@ -183,7 +179,7 @@ const AdminDashboard = () => {
                   <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <FileText size={18} className="text-red-600 dark:text-red-400" />
+                        <User size={18} className="text-red-600 dark:text-red-400" />
                         <h3 className="ml-2 font-medium text-red-600 dark:text-red-400">Total Users</h3>
                       </div>
                       <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalUsers}</p>
@@ -194,7 +190,7 @@ const AdminDashboard = () => {
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <Bell size={18} className="text-yellow-600 dark:text-yellow-400" />
+                        <ShoppingBag size={18} className="text-yellow-600 dark:text-yellow-400" />
                         <h3 className="ml-2 font-medium text-yellow-600 dark:text-yellow-400">Total Orders</h3>
                       </div>
                       <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalOrders}</p>

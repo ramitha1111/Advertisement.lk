@@ -108,7 +108,7 @@ const Header = () => {
     { name: 'My Orders', href: '/user/dashboard?section=my-orders', icon: ShoppingBag },
     { name: 'Settings', href: '/user/dashboard?section=settings', icon: Settings },
     { name: 'Favorites', href: '/user/dashboard?section=favourites', icon: Heart },
-    { name: 'Notifications', href: '/notifications', icon: Bell }
+    //{ name: 'Notifications', href: '/notifications', icon: Bell }
   ]
 
   const adminOptions = [
@@ -116,7 +116,7 @@ const Header = () => {
     { name: 'Orders', href: '/admin/dashboard?section=orders-admin', icon: ShoppingBag },
     { name: 'Settings', href: '/admin/dashboard?section=settings-admin', icon: Settings },
     { name: 'Users', href: '/admin/dashboard?section=users-admin', icon: User },
-    { name: 'Notifications', href: '/notifications', icon: Bell }
+    //{ name: 'Notifications', href: '/notifications', icon: Bell }
   ]
 
   return (

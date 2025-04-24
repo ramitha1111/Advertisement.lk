@@ -81,9 +81,9 @@ const Categories = () => {
     };
 
     return (
-        <div className="py-6 lg:py-4 bg-gray-50 dark:bg-gray-900">
+        <div className="my-12 py-6 lg:py-4 bg-white dark:bg-gray-900">
             <div className="container mx-auto px-4 lg:px-2">
-                <h2 className="text-5xl font-bold text-gray-800 dark:text-white mb-3 text-center pt-5 pb-6">
+                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-3 text-center pt-5 pb-6">
                     Explore Categories
                 </h2>
 

@@ -149,9 +149,9 @@ const LatestAdvertisements = () => {
     }
 
     return (
-        <div className="bg-gray-50 dark:bg-gray-900 mb-5">
+        <div className="bg-gray-50 dark:bg-gray-800 py-12">
             <div className="flex justify-center p-4">
-                <h1 className="text-5xl font-bold">Latest Ads</h1>
+                <h1 className="text-3xl font-bold">Latest Ads</h1>
             </div>
 
             {error && (
