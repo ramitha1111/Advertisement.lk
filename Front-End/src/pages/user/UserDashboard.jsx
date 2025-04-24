@@ -46,7 +46,7 @@ const UserDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const [totalAds, setTotalAds] = useState(0);
-  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalPackages, setTotalPackages] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
 
   // Extract the active tab from URL parameters
@@ -74,8 +74,8 @@ const UserDashboard = () => {
           const ads = await getAdvertisementsByUser(user.id || user._id, token);
           setTotalAds(ads?.length || 0);
 
-          // const users = await getAllUsers(token);
-          // setTotalUsers(users?.length || 0);
+          const packages = ads.filter(ad => ad.packageId);
+          setTotalPackages(packages?.length || 0);
 
           const orders = await getUserOrders(user.id || user._id, token);
           setTotalOrders(orders?.length || 0);
@@ -187,7 +187,7 @@ const UserDashboard = () => {
                   <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <FileText size={18} className="text-red-600 dark:text-red-400" />
+                        <ShoppingBag size={18} className="text-red-600 dark:text-red-400" />
                         <h3 className="ml-2 font-medium text-red-600 dark:text-red-400">My Orders</h3>
                       </div>
                       <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalOrders}</p>
@@ -198,10 +198,10 @@ const UserDashboard = () => {
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <Bell size={18} className="text-yellow-600 dark:text-yellow-400" />
+                        <Package size={18} className="text-yellow-600 dark:text-yellow-400" />
                         <h3 className="ml-2 font-medium text-yellow-600 dark:text-yellow-400">My Packages</h3>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">1</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalPackages}</p>
                     </div>
                   </div>
                 </div>
