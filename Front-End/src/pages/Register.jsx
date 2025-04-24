@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, Eye, EyeOff } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { loginSuccess } from '../store/authSlice'
 import { useNavigate, Link } from 'react-router-dom'
@@ -8,12 +8,12 @@ import useAuth from '../hooks/useAuth'
 import { motion } from 'framer-motion'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import { Eye, EyeOff } from 'lucide-react' // Import Eye and EyeOff icons
 
 
 export default function Register() {
     const [formData, setFormData] = useState({
-        name: '',
+        firstName: '',
+        lastName: '',
         username: '',
         email: '',
         password: '',
@@ -86,7 +86,8 @@ export default function Register() {
 
         try {
             const response = await api.post('/auth/register', {
-                name: formData.name,
+                firstName: formData.firstName,
+                lastName: formData.lastName,
                 username: formData.username,
                 email: formData.email,
                 password: formData.password,
@@ -221,24 +222,47 @@ export default function Register() {
                         )}
 
                         <form className="space-y-4" onSubmit={handleRegister}>
-                            {/* Full Name */}
-                            <motion.div variants={itemVariants}>
-                                <label htmlFor="name" className="block text-base font-medium text-gray-700 dark:text-gray-300">
-                                    Full Name
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        id="name"
-                                        name="name"
-                                        type="text"
-                                        required
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        placeholder="John Doe"
-                                        className="block w-full rounded-md border-0 p-3 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-gray-800 text-base transition-all duration-200"
-                                    />
+                            {/* First Name & Last Name */}
+                            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
+                                {/* First Name */}
+                                <div className="w-full">
+                                    <label htmlFor="firstName" className="block text-base font-medium text-gray-700 dark:text-gray-300">
+                                        First Name
+                                    </label>
+                                    <div className="mt-1">
+                                        <input
+                                            id="firstName"
+                                            name="firstName"
+                                            type="text"
+                                            required
+                                            value={formData.firstName}
+                                            onChange={handleChange}
+                                            placeholder="John"
+                                            className="block w-full rounded-md border-0 p-3 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-gray-800 text-base transition-all duration-200"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Last Name */}
+                                <div className="w-full">
+                                    <label htmlFor="lastName" className="block text-base font-medium text-gray-700 dark:text-gray-300">
+                                        Last Name
+                                    </label>
+                                    <div className="mt-1">
+                                        <input
+                                            id="lastName"
+                                            name="lastName"
+                                            type="text"
+                                            required
+                                            value={formData.lastName}
+                                            onChange={handleChange}
+                                            placeholder="Doe"
+                                            className="block w-full rounded-md border-0 p-3 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-gray-800 text-base transition-all duration-200"
+                                        />
+                                    </div>
                                 </div>
                             </motion.div>
+
 
                             {/* Username */}
                             <motion.div variants={itemVariants}>
@@ -305,7 +329,7 @@ export default function Register() {
                                 <label htmlFor="password" className="block text-base font-medium text-gray-700 dark:text-gray-300">
                                     Password
                                 </label>
-                                <div className="mt-1 relative"> 
+                                <div className="mt-1 relative">
                                     <input
                                         id="password"
                                         name="password"

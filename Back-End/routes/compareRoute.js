@@ -5,12 +5,12 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 //Routes
 // Add to compare
-router.post('/:id', authMiddleware, createCompare);
+router.post('/', authMiddleware, createCompare);
 
 // Get all compares
-router.get('/', authMiddleware, getAllCompares);
+router.get('/:id', authMiddleware, getAllCompares);
 
 // Delete from compare
-router.delete('/:id', authMiddleware, deleteCompare);
+router.delete('/:id/:userId', authMiddleware, deleteCompare);
 
 module.exports = router;

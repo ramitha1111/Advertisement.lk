@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import blankFeaturedImage from '../assets/placeholder.jpg'
 import ReactPlayer from 'react-player'
 import {
     Heart,
@@ -34,6 +35,7 @@ import useAuth from '../hooks/useAuth'
 import DOMPurify from 'dompurify'
 
 const Advertisement = () => {
+    const userId = localStorage.getItem('userId')
     const { id } = useParams()
     const navigate = useNavigate()
     const { isLoggedIn, user, token } = useAuth()
@@ -99,9 +101,10 @@ const Advertisement = () => {
                     setIsFavorite(userFavorites.some(fav => fav.advertisementId === id))
 
                     // Check compares
-                    const comparesResponse = await getAllCompares(token)
-                    const userCompares = comparesResponse.data
-                    setIsCompared(userCompares.some(comp => comp.advertisementId === id))
+                    console.error(userId)
+                    const comparesResponse = await getAllCompares(userId, token);
+                    setIsCompared(comparesResponse.some(comp => comp._id === id));
+
                 } catch (err) {
                     console.error('Error checking user interactions:', err)
                 }
@@ -142,7 +145,8 @@ const Advertisement = () => {
                 // Navigate to compare page if already compared
                 navigate('/user/compare')
             } else {
-                await createCompare(id, token)
+                console.log(userId)
+                await createCompare({ userId: userId, advertisementId: id }, token)
                 setIsCompared(true)
             }
         } catch (err) {
@@ -238,7 +242,7 @@ const Advertisement = () => {
                     <img
                         src={showFullImage}
                         alt="Full size"
-                        className="w-full h-auto object-contain max-h-[90vh]"
+                        className="w-full h-full object-contain"
                     />
                 </div>
             </div>
@@ -349,9 +353,9 @@ const Advertisement = () => {
                                 onClick={() => setShowFullImage(featuredImage)}
                             >
                                 <img
-                                    src={featuredImage}
+                                    src={featuredImage || blankFeaturedImage}
                                     alt={title}
-                                    className="w-full h-auto object-contain max-h-96"
+                                    className="w-full h-auto object-cover max-h-96"
                                 />
                             </div>
                         </div>
@@ -389,7 +393,7 @@ const Advertisement = () => {
                             <h2 className="text-3xl font-bold text-primary mb-2">
                                 Rs. {price.toLocaleString()}
                             </h2>
-                            {isBoosted ?  (
+                            {isBoosted ? (
                                 <div className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 inline-block px-3 py-1 rounded-full text-sm font-medium mb-4">
                                     <Rocket size={14} className="inline mr-1" />
                                     Boosted
@@ -438,11 +442,11 @@ const Advertisement = () => {
                                 </div>
 
                                 <button
-                                        onClick={handleNavigationToAdvertiser}
-                                        className=" mt-6 px-4 py-2 max-h-10 w-full text-center bg-primary text-white rounded-md hover:bg-primary"
-                                    >
-                                        More Ads from Seller
-                                    </button>
+                                    onClick={handleNavigationToAdvertiser}
+                                    className=" mt-6 px-4 py-2 max-h-10 w-full text-center bg-primary text-white rounded-md hover:bg-primary"
+                                >
+                                    More Ads from Seller
+                                </button>
                             </div>
                         </div>
                     </div>

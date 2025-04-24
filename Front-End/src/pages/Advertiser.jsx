@@ -37,7 +37,6 @@ const Advertiser = () => {
         const fetchAdvertiserData = async () => {
             try {
                 setLoading(true)
-                console.log('a')
                 const data = await getAdvertisementsByUser(userId, token)
 
                 if (data && data.length > 0 && data[0].userDetails) {

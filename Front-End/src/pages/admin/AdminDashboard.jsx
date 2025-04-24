@@ -8,33 +8,34 @@ import {
   FileText,
   ShoppingBag,
   Package,
-  Bell,
-  Edit,
-  Grid,
-  ChevronRight,
   Plus,
-  Heart
+  
 } from 'lucide-react'
 import { useLocation, Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import useUser from '../../hooks/useUser';
 import SettingsPage from '../user/Settings'
 import CategoriesAdmin from './CategoriesAdmin';
-import { getUserById } from '../../api/userApi'
+import { getAllUsers, getUserById } from '../../api/userApi'
 import { useDispatch } from 'react-redux';
 import AdvertisementsAdmin from './AdvertisementsAdmin';
 import UsersAdmin from './UsersAdmin';
 import OrdersAdmin from './OrdersAdmin';
 import PackagesAdmin from './PackagesAdmin';
+import { getAllAdvertisements } from '../../api/advertisementApi';
+import { getAllOrders } from '../../api/orderApi';
 
 const AdminDashboard = () => {
   const { user, token } = useAuth();
-  const { fetchUser, clearUser } = useUser();
+  const { fetchUser } = useUser();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+  const [totalAds, setTotalAds] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
 
   // Extract the active tab from URL parameters
   useEffect(() => {
@@ -57,6 +58,15 @@ const AdminDashboard = () => {
           const data = await getUserById(user.id, token);
           setUserData(data.data);
           dispatch(fetchUser({ userData: data.data }))
+
+          const ads = await getAllAdvertisements(token);
+          setTotalAds(ads?.length || 0);
+
+          const users = await getAllUsers(token);
+          setTotalUsers(users?.data?.length || 0);
+
+          const orders = await getAllOrders(token);
+          setTotalOrders(orders?.length || 0);
         }
       } catch (err) {
         console.error(err?.response?.message || err.message);
@@ -161,7 +171,7 @@ const AdminDashboard = () => {
                         <FileText size={18} className="text-green-600 dark:text-green-400" />
                         <h3 className="ml-2 font-medium text-green-600 dark:text-green-400">Total Ads</h3>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">10</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalAds}</p>
                     </div>
                   </div>
 
@@ -169,10 +179,10 @@ const AdminDashboard = () => {
                   <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <FileText size={18} className="text-red-600 dark:text-red-400" />
+                        <User size={18} className="text-red-600 dark:text-red-400" />
                         <h3 className="ml-2 font-medium text-red-600 dark:text-red-400">Total Users</h3>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">5</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalUsers}</p>
                     </div>
                   </div>
 
@@ -180,10 +190,10 @@ const AdminDashboard = () => {
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <Bell size={18} className="text-yellow-600 dark:text-yellow-400" />
+                        <ShoppingBag size={18} className="text-yellow-600 dark:text-yellow-400" />
                         <h3 className="ml-2 font-medium text-yellow-600 dark:text-yellow-400">Total Orders</h3>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">8</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalOrders}</p>
                     </div>
                   </div>
                 </div>
@@ -193,8 +203,9 @@ const AdminDashboard = () => {
         </div>
 
         {/* Dashboard navigation tabs - Updated with navigation based on URL parameters */}
-        <div className="mb-8">
-          <div className="border-b border-gray-200 dark:border-gray-700">
+        <div className="mb-4">
+          {/* Desktop horizontal tabs */}
+          <div className="border-b border-gray-200 dark:border-gray-700 hidden md:block">
             <nav className="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
               <Link
                 to="/admin/dashboard?section=advetisements-admin"
@@ -203,7 +214,7 @@ const AdminDashboard = () => {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
                   } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
               >
-                <FileText size={16} className="mr-2" /> Advetisements
+                <FileText size={16} className="mr-2" /> Advertisements
               </Link>
               <Link
                 to="/admin/dashboard?section=categories-admin"
@@ -252,7 +263,72 @@ const AdminDashboard = () => {
               </Link>
             </nav>
           </div>
+
+          {/* Mobile tile layout */}
+          <div className="grid grid-cols-3 gap-2 md:hidden px-2 mt-4">
+            <Link
+              to="/admin/dashboard?section=advetisements-admin"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'advetisements-admin'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <FileText size={16} className="mr-2" />
+              <span className="text-sm font-medium">Ads</span>
+            </Link>
+            <Link
+              to="/admin/dashboard?section=categories-admin"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'categories-admin'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <Plus size={16} className="mr-2" />
+              <span className="text-sm font-medium">Categories</span>
+            </Link>
+            <Link
+              to="/admin/dashboard?section=users-admin"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'users-admin'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <User size={16} className="mr-2" />
+              <span className="text-sm font-medium">Users</span>
+            </Link>
+            <Link
+              to="/admin/dashboard?section=packages-admin"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'packages-admin'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <Package size={16} className="mr-2" />
+              <span className="text-sm font-medium">Packages</span>
+            </Link>
+            <Link
+              to="/admin/dashboard?section=orders-admin"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'orders-admin'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <ShoppingBag size={16} className="mr-2" />
+              <span className="text-sm font-medium">Orders</span>
+            </Link>
+            <Link
+              to="/admin/dashboard?section=settings-admin"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'settings-admin'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <Settings size={16} className="mr-2" />
+              <span className="text-sm font-medium">Settings</span>
+            </Link>
+          </div>
         </div>
+
 
         {/* Main content area */}
         {renderContent()}

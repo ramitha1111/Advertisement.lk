@@ -8,7 +8,7 @@ const User = require("../models/user");
 
 // Register User
 exports.register = async (req, res) => {
-  const { name, username, email, password, phone } = req.body;
+  const { firstName, lastName, username, email, password, phone } = req.body;
 
   try {
     // Check if email already exists
@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
-    user = new Auth({ name, username, email, password: hashedPassword, phone });
+    user = new Auth({ firstName, lastName, username, email, password: hashedPassword, phone });
     await user.save();
 
     // Send OTP after successful registration
