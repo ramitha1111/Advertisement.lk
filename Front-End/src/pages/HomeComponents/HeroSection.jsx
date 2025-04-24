@@ -10,7 +10,7 @@ export default function HeroSection() {
                 <img className="w-full h-full object-cover dark:invert" src={WaveBackground} alt="WaveBackground.svg"/>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 py-12 md:py-16 relative">
+            <div className="max-w-7xl mx-auto px-8 py-12 md:py-16 relative">
                 <div className="flex flex-col xl:flex-row items-center justify-center min-h-[60vh]">
                     {/* Text and Search - Full width on smaller screens, centered */}
                     <div className="w-full xl:w-1/2 z-10 mx-auto xl:mx-0 text-center xl:text-left">
