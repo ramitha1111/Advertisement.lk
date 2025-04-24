@@ -157,7 +157,7 @@ const UpdateAdvertisement = () => {
         try {
             await updateAdvertisement(id, formData, token);
             alert('Advertisement updated successfully!');
-            navigate('/dashboard/my-ads');
+            navigate('/user/dashboard?section=my-ads');
         } catch (error) {
             setError(error.response?.data?.message || 'Failed to update advertisement.');
         } finally {

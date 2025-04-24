@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { CreditCard, AlertCircle, ArrowLeft } from 'lucide-react'
+import { CreditCard, AlertCircle, ArrowLeft, Package, Calendar, Briefcase } from 'lucide-react'
 import { submitCheckout } from '../../api/checkoutApi'
 
 const Checkout = () => {
@@ -56,7 +56,7 @@ const Checkout = () => {
 
             navigate(`/user/payment`)
         } catch (err) {
-            alert(err.message || 'Checkout failed');
+            setError(err.message || 'Checkout failed');
         } finally {
             setLoading(false)
         }
@@ -84,9 +84,70 @@ const Checkout = () => {
             )}
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                {/* Package details and order summary */}
+                <div className="lg:col-span-1">
+                    <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+                        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Package Details</h2>
+                        </div>
+                        <div className="p-6">
+                            <div className="flex items-start mb-4">
+                                <Package className="h-5 w-5 text-primary mr-3 mt-0.5" />
+                                <div>
+                                    <h3 className="font-medium text-gray-900 dark:text-white">{packageName || 'Advertisement Package'}</h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        ID: {packageId?.substring(0, 8) || 'N/A'}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-start mb-4">
+                                <Briefcase className="h-5 w-5 text-primary mr-3 mt-0.5" />
+                                <div>
+                                    <h3 className="font-medium text-gray-900 dark:text-white">Advertisement</h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        ID: {advertisementId?.substring(0, 8) || 'N/A'}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-start">
+                                <Calendar className="h-5 w-5 text-primary mr-3 mt-0.5" />
+                                <div>
+                                    <h3 className="font-medium text-gray-900 dark:text-white">Order Date</h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        {new Date().toLocaleDateString()}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Order Summary</h2>
+                        </div>
+                        <div className="p-6">
+                            <div className="flex justify-between mb-2">
+                                <span className="text-gray-600 dark:text-gray-400">Package Price</span>
+                                <span className="text-gray-900 dark:text-white">${price || '0.00'}</span>
+                            </div>
+                            {/* <div className="flex justify-between mb-2">
+                                <span className="text-gray-600 dark:text-gray-400">Tax</span>
+                                <span className="text-gray-900 dark:text-white">$0.00</span>
+                            </div> */}
+                            <div className="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+                            <div className="flex justify-between font-semibold">
+                                <span className="text-gray-900 dark:text-white">Total</span>
+                                <span className="text-primary text-lg">${price || '0.00'}</span>
+                            </div>
+                            <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
+                                <p>By proceeding to payment, you agree to our <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 {/* Billing details form */}
-                <div className="lg:col-span-3">
+                <div className="lg:col-span-2">
                     <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
                         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Billing Details</h2>
@@ -258,8 +319,7 @@ const Checkout = () => {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${(loading) ? 'opacity-70 cursor-not-allowed' : ''
-                                            }`}
+                                        className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                                     >
                                         {loading ? (
                                             <>

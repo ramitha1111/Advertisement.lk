@@ -16,6 +16,7 @@ import {
   FileText,
   ShoppingBag,
   LogOut,
+  Package,
   Bell,
   Facebook,
   Twitter,
@@ -114,8 +115,9 @@ const Header = () => {
   const adminOptions = [
     { name: 'Ads', href: '/admin/dashboard?section=advertisements-admin', icon: FileText },
     { name: 'Orders', href: '/admin/dashboard?section=orders-admin', icon: ShoppingBag },
-    { name: 'Settings', href: '/admin/dashboard?section=settings-admin', icon: Settings },
     { name: 'Users', href: '/admin/dashboard?section=users-admin', icon: User },
+    { name: 'Packages', href: '/admin/dashboard?section=packages-admin', icon: Package },
+    { name: 'Settings', href: '/admin/dashboard?section=settings-admin', icon: Settings },
     //{ name: 'Notifications', href: '/notifications', icon: Bell }
   ]
 
