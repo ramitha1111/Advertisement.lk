@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { getAllUsers, deleteUser } from '../../api/userApi'; // you'll need to implement getAllUsers
 import { Link } from 'react-router-dom';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
+import { useNavigate } from 'react-router-dom';
 
 const UserAdmin = () => {
   const [users, setUsers] = useState([]);
@@ -10,6 +11,7 @@ const UserAdmin = () => {
   const [error, setError] = useState('');
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const navigate = useNavigate();
 
   const { token } = useSelector((state) => state.auth);
 
@@ -54,8 +56,18 @@ const UserAdmin = () => {
 
   return (
     <div className="px-6 py-8 max-w-5xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-6">User Management</h2>
       <div className="overflow-x-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white border-b pb-3">
+          User Management
+        </h2>
+        <button
+          onClick={() => navigate('/admin/dashboard/add-user')}
+          className="px-4 py-2 bg-primary text-white font-semibold rounded-md hover:bg-primary-dark transition"
+        >
+          + Add User
+        </button>
+      </div>
         <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <thead>
             <tr>
