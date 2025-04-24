@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
-import PackageCard from '../../components/PackageCard'; // Adjust the import path as needed
+import PackageCard from '../../components/PackageCard';
+import {useNavigate} from "react-router-dom";
 
 const PackagesAdmin = () => {
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPackages = async () => {
@@ -33,6 +35,8 @@ const PackagesAdmin = () => {
     const handleViewPackage = (packageId) => {
         console.log('Viewing package:', packageId);
         // Implement view logic or navigation
+        navigate(`/admin/packages/view/${packageId}`);
+
     };
 
     const handleUpdatePackage = (packageId) => {
@@ -63,6 +67,7 @@ const PackagesAdmin = () => {
     const handleCreatePackage = () => {
         // Navigate to package creation page or open a modal
         console.log('Creating a new package');
+        navigate("/admin/add-package")
     };
 
     if (loading) {
