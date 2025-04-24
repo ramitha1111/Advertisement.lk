@@ -28,9 +28,9 @@ const AdvertisementCard = ({ item, onEdit, onDelete }) => {
 
 
                 <div className="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300">
-          <span className="font-semibold text-lg text-primary">
-            Rs. {item?.price?.toLocaleString()}
-          </span>
+                    <span className="font-semibold text-lg text-primary">
+                        Rs. {item?.price?.toLocaleString()}
+                    </span>
                     <div className="flex items-center gap-1">
                         <MapPin className="w-4 h-4" />
                         <span>{item?.location}</span>

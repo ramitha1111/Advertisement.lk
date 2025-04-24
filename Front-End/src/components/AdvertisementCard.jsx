@@ -6,7 +6,7 @@ import { ArrowRight, Map } from 'lucide-react'
 
 const AdvertisementCard = ({ ad }) => {
   // No need to find category name as it's now included in the response
-  const categoryName = ad.categoryId ? ad.categoryDetails.categoryName : 'Uncategorized'
+  const categoryName = ad.categoryId ? ad.categoryDetails?.categoryName : 'Uncategorized'
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden transition-all hover:shadow-lg">
