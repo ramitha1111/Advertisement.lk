@@ -11,6 +11,7 @@ import SelectPackage from '../pages/user/SelectPackage';
 import Footer from '../components/Footer';
 import AddAdvertisement from "../pages/user/AddAdvertisement";
 import Compare from '../pages/Compare'
+import Order from '../pages/user/Order';
 
 const UserRoutes = () => {
   return (
@@ -78,6 +79,13 @@ const UserRoutes = () => {
           element={
             <ProtectedRoutes>
               <Compare />
+            </ProtectedRoutes>
+          } />
+          <Route 
+          path="/order/:orderId" 
+          element={
+            <ProtectedRoutes>
+              <Order />
             </ProtectedRoutes>
           } />
       </Routes>

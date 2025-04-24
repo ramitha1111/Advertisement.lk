@@ -21,6 +21,7 @@ const Compare = () => {
     const [compareItems, setCompareItems] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const userId = localStorage.getItem('userId')
     const [expandedSections, setExpandedSections] = useState({
         details: true,
         description: false,
@@ -39,8 +40,8 @@ const Compare = () => {
         const fetchCompareItems = async () => {
             try {
                 setLoading(true)
-                const response = await getAllCompares(token)
-                setCompareItems(response.data || [])
+                const response = await getAllCompares(userId, token)
+                setCompareItems(response || [])
                 setLoading(false)
             } catch (err) {
                 console.error('Error fetching compare items:', err)
@@ -51,16 +52,16 @@ const Compare = () => {
 
         fetchCompareItems()
     }, [isLoggedIn, token, navigate])
-
-    const handleRemoveItem = async (advertisementId) => {
-        try {
-            const result = await deleteCompare(advertisementId, token)
-            // Update local state after successful removal
-            setCompareItems(prev => prev.filter(item => item.advertisementId !== advertisementId))
-        } catch (err) {
-            console.error('Error removing item from comparison:', err)
-        }
+    
+const handleRemoveItem = async (adId, userId) => {
+    try {
+        await deleteCompare(userId, adId, token); // order: userId first, then adId, based on your API
+        setCompareItems(prev => prev.filter(item => item._id !== adId));
+    } catch (err) {
+        console.error('Error removing item from comparison:', err);
     }
+};
+
 
     const toggleSection = (section) => {
         setExpandedSections(prev => ({
@@ -153,16 +154,16 @@ const Compare = () => {
 
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md  mb-8">
                     {/* Fixed header with images and titles */}
-                    <div className="sticky top-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-10">
-                        <div className="grid grid-cols-[200px_1fr_1fr] md:grid-cols-[200px_1fr_1fr] gap-0">
+                    <div className="top-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-10">
+                        <div className="grid grid-cols-1 md:grid-cols-[200px_1fr_1fr] gap-4 md:gap-0">
                             <div className="bg-gray-50 dark:bg-gray-900 p-4 font-semibold text-gray-700 dark:text-gray-300">
                                 Products
                             </div>
 
                             {compareItems.map((item) => (
-                                <div key={item.advertisementId} className="p-4 relative">
+                                <div key={item.advertisementId} className="p-4 relative bg-white dark:bg-gray-800 rounded-md shadow-sm">
                                     <button
-                                        onClick={() => handleRemoveItem(item.advertisementId)}
+                                        onClick={() => handleRemoveItem(item._id, item.userId)}
                                         className="absolute top-2 right-2 p-1 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400"
                                         aria-label="Remove from comparison"
                                     >
@@ -197,7 +198,7 @@ const Compare = () => {
                             ))}
 
                             {compareItems.length === 1 && (
-                                <div className="p-4 flex items-center justify-center border-l border-gray-200 dark:border-gray-700">
+                                <div className="p-4 flex items-center justify-center border border-dashed border-gray-300 dark:border-gray-600 rounded-md">
                                     <div className="text-center text-gray-500 dark:text-gray-400">
                                         <div className="h-32 bg-gray-100 dark:bg-gray-700 rounded-md mb-3 flex items-center justify-center">
                                             <div className="p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md">

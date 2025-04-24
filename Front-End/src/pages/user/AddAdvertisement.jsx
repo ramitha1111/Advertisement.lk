@@ -14,7 +14,7 @@ const AddAdvertisement = () => {
         videoUrl: '',
         categoryId: '',
         subcategoryId: '',
-        featuredImage: null,
+        featuredImage: '',
         images: []
     });
 
@@ -138,11 +138,6 @@ const AddAdvertisement = () => {
             return;
         }
         
-        if (!ad.featuredImage) {
-            setError('Please upload a featured image');
-            return;
-        }
-        
         setLoading(true);
         setError('');
         
@@ -158,7 +153,7 @@ const AddAdvertisement = () => {
         formData.append('subcategoryId', ad.subcategoryId);
         
         // Add featured image
-        formData.append('featuredImage', ad.featuredImage);
+        formData.append('featuredImage', ad.featuredImage || '');
         
         // Add additional images
         ad.images.forEach(image => {
@@ -340,7 +335,7 @@ const AddAdvertisement = () => {
                 {/* Featured Image */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Featured Image <span className="text-red-500">*</span>
+                        Featured Image
                     </label>
                     <div className="flex items-center justify-center w-full">
                         {!featuredImagePreview ? (
@@ -363,7 +358,6 @@ const AddAdvertisement = () => {
                                     accept="image/*"
                                     className="hidden" 
                                     onChange={handleFeaturedImageChange} 
-                                    required
                                 />
                             </label>
                         ) : (
