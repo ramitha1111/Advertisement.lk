@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import PackageCard from '../../components/PackageCard';
 import {useNavigate} from "react-router-dom";
+import ConfirmationDialog from '../../components/ConfirmationDialog';
+const token = localStorage.getItem('token');
 
 const PackagesAdmin = () => {
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+
+    // Add states for confirmation dialog
+    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+    const [packageToDelete, setPackageToDelete] = useState(null);
 
     useEffect(() => {
         const fetchPackages = async () => {
@@ -45,24 +51,49 @@ const PackagesAdmin = () => {
         navigate(`/admin/update-package/${packageId}`)
     };
 
-    const handleDeletePackage = async (packageId) => {
-        if (window.confirm('Are you sure you want to delete this package?')) {
-            try {
-                const response = await fetch(`http://localhost:3000/api/packages/${packageId}`, {
-                    method: 'DELETE',
-                });
+    // Modified delete handler to open confirmation dialog
+    const handleDeletePackage = (packageId) => {
+        // Find the package to delete to display its name in the confirmation
+        const packageToDelete = packages.find(pkg => pkg._id === packageId);
+        setPackageToDelete(packageToDelete);
+        setIsConfirmDialogOpen(true);
+    };
 
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status}`);
-                }
+    // New method to handle confirmed deletion
+    const confirmDeletePackage = async () => {
+        if (!packageToDelete) return;
 
-                // Remove package from state after successful deletion
-                setPackages(packages.filter(pkg => pkg._id !== packageId));
-            } catch (err) {
-                console.error('Failed to delete package:', err);
-                alert('Failed to delete the package. Please try again.');
+        try {
+            const response = await fetch(`http://localhost:3000/api/packages/${packageToDelete._id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
             }
+
+            // Remove package from state after successful deletion
+            setPackages(packages.filter(pkg => pkg._id !== packageToDelete._id));
+
+            // Close dialog and reset packageToDelete
+            setIsConfirmDialogOpen(false);
+            setPackageToDelete(null);
+        } catch (err) {
+            console.error('Failed to delete package:', err);
+            // You could set an error state here to display in the UI
+            alert('Failed to delete the package. Please try again.');
+            setIsConfirmDialogOpen(false);
         }
+    };
+
+    // Cancel deletion
+    const cancelDeletePackage = () => {
+        setIsConfirmDialogOpen(false);
+        setPackageToDelete(null);
     };
 
     const handleCreatePackage = () => {
@@ -125,6 +156,18 @@ const PackagesAdmin = () => {
                     ))}
                 </div>
             )}
+
+            {/* Confirmation Dialog */}
+            <ConfirmationDialog
+                isOpen={isConfirmDialogOpen}
+                title="Delete Package"
+                message={packageToDelete ? `Are you sure you want to delete "${packageToDelete.name}"? This action cannot be undone.` : "Are you sure you want to delete this package?"}
+                confirmLabel="Delete"
+                cancelLabel="Cancel"
+                onConfirm={confirmDeletePackage}
+                onCancel={cancelDeletePackage}
+                confirmButtonClass="bg-red-600 hover:bg-red-700"
+            />
         </div>
     );
 };
