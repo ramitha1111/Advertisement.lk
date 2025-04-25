@@ -19,9 +19,9 @@ exports.createUser = [
   handleFileUploads, // Assuming this handles 'profileImage' and 'coverImage' fields
   async (req, res) => {
     try {
-      const { name, username, email, phone, password, role } = req.body;
+      const { firstName, lastName, username, email, phone, password, role } = req.body;
 
-      if (!name || !username || !email || !phone || !password) {
+      if (!firstName || !lastName || !username || !email || !password) {
         return res.status(400).json({ message: 'All required fields must be provided' });
       }
 
@@ -41,13 +41,15 @@ exports.createUser = [
           : null;
 
       const newUser = new Auth({
-        name,
+        firstName,
+        lastName,
         username,
         email,
         phone,
         password: hashedPassword,
         role: role || 'user',
         profileImage,
+        emailVerified: true,
         coverImage,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -55,11 +57,12 @@ exports.createUser = [
 
       await newUser.save();
 
-      res.status(201).json({
+      res.status(200).json({
         message: 'User created successfully',
         user: {
           id: newUser._id,
-          name: newUser.name,
+          fistName: newUser.fistName,
+          lastName: newUser.lastName,
           username: newUser.username,
           email: newUser.email,
           phone: newUser.phone,
@@ -76,13 +79,12 @@ exports.createUser = [
 ];
 
 
-// Update user
 exports.updateUser = [
   handleFileUploads, // Should handle 'profileImage' and 'coverImage'
   async (req, res) => {
     try {
       const userId = req.params.id;
-      const { name, username, email, phone, role } = req.body;
+      const { firstName, lastName, username, password, email, phone, role } = req.body;
 
       const user = await Auth.findById(userId);
       if (!user) {
@@ -90,11 +92,18 @@ exports.updateUser = [
       }
 
       // Update fields if they are present
-      if (name) user.name = name;
+      if (firstName) user.firstName = firstName;
+      if (lastName) user.lastName = lastName;
       if (username) user.username = username;
       if (email) user.email = email;
       if (phone) user.phone = phone;
       if (role) user.role = role;
+
+      // Only hash and update password if provided
+      if (password && password.trim() !== '') {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+      }
 
       // Handle new profile and cover images
       if (req.files?.profileImage) {
@@ -106,14 +115,14 @@ exports.updateUser = [
       }
 
       user.updatedAt = new Date();
-
       await user.save();
 
       res.status(200).json({
         message: 'User updated successfully',
         user: {
           id: user._id,
-          name: user.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           username: user.username,
           email: user.email,
           phone: user.phone,
@@ -128,6 +137,7 @@ exports.updateUser = [
     }
   }
 ];
+
 
 
 // Delete User

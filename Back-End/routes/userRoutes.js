@@ -19,7 +19,7 @@ const router = express.Router();
 router.post('/', authMiddleware, isAdmin, createUser); // Only Admins can create normal users
 
 // Create admin - Accessible by admin only
-//router.post('/admin', authMiddleware, isAdmin, createAdmin); // Only Admins can create other admins
+//router.post('/admin, authMiddleware, isAdmin, createAdmin); // Only Admins can create other admins
 
 // Update user details
 router.put('/:id', authMiddleware, updateUser);
@@ -31,7 +31,7 @@ router.delete('/:id', authMiddleware, deleteUser);
 router.get('/', authMiddleware, isAdmin, getUsers); // Only Admins can access this route
 
 // Get all admins - Only accessible to admins
-//router.get('/admins', authMiddleware, isAdmin, getAdmins); // Only Admins can access this route
+//router.get('/admins, authMiddleware, isAdmin, getAdmins); // Only Admins can access this route
 
 // Get user by ID
 router.get('/:id', authMiddleware, getUserById);
