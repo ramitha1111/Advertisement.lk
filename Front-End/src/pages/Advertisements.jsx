@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { 
-  Search, 
-  Filter, 
-  ChevronDown, 
+import {
+  Search,
+  Filter,
+  ChevronDown,
   Loader
 } from 'lucide-react'
-import { 
-  getAllAdvertisements, 
+import {
+  getAllAdvertisements,
   getAdvertisementsByCategory,
   getAdvertisementsBySearch,
   getAdvertisementsByFilter
@@ -17,6 +17,11 @@ import { getAllCategories } from '../api/categoryApi'
 import AdvertisementCard from '../components/AdvertisementCard'
 
 const Advertisements = () => {
+  const title = 'Ads - Advertisements.lk';
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
   const [advertisements, setAdvertisements] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
@@ -75,11 +80,11 @@ const Advertisements = () => {
   // Handle search form submission
   const handleSearch = async (e) => {
     e.preventDefault()
-    
+
     try {
       setLoading(true)
       let results
-      
+
       if (!searchQuery.trim()) {
         // If search is empty, fetch all ads or apply other filters
         if (selectedCategory || selectedLocation !== 'All Locations' || selectedPriceRange) {
@@ -91,7 +96,7 @@ const Advertisements = () => {
         // Search by query
         results = await getAdvertisementsBySearch(searchQuery)
       }
-      
+
       setAdvertisements(results.advertisements)
       console.log(results)
     } catch (err) {
@@ -108,7 +113,7 @@ const Advertisements = () => {
     const category = selectedCategory || ''
     const location = selectedLocation !== 'All Locations' ? selectedLocation : ''
     const priceRange = selectedPriceRange || ''
-    
+
     try {
       return await getAdvertisementsByFilter(category, location, priceRange)
     } catch (error) {
@@ -123,25 +128,25 @@ const Advertisements = () => {
     setSelectedCategory(categoryId)
     await updateFilters(categoryId, selectedLocation, selectedPriceRange)
   }
-  
+
   // Handle location filter change
   const handleLocationChange = async (location) => {
     setSelectedLocation(location)
     await updateFilters(selectedCategory, location, selectedPriceRange)
   }
-  
+
   // Handle price range filter change
   const handlePriceRangeChange = async (priceRange) => {
     setSelectedPriceRange(priceRange)
     await updateFilters(selectedCategory, selectedLocation, priceRange)
   }
-  
+
   // Update filters and fetch filtered results
   const updateFilters = async (category, location, priceRange) => {
     try {
       setLoading(true)
       console.log('Updating filters:', { category, location, priceRange })
-      
+
       if (!category && (location === 'All Locations' || !location) && !priceRange) {
         // No filters applied, get all ads
         const adsData = await getAllAdvertisements()
@@ -155,7 +160,7 @@ const Advertisements = () => {
         const categoryParam = category || ''
         const locationParam = (location === 'All Locations' || !location) ? '' : location
         const priceRangeParam = priceRange || ''
-        
+
         const adsData = await getAdvertisementsByFilter(categoryParam, locationParam, priceRangeParam)
         setAdvertisements(adsData)
       }
@@ -234,7 +239,7 @@ const Advertisements = () => {
                   ))}
                 </select>
               </div>
-              
+
               <div>
                 <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Location
@@ -252,7 +257,7 @@ const Advertisements = () => {
                   ))}
                 </select>
               </div>
-              
+
               <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Price Range
@@ -311,9 +316,9 @@ const Advertisements = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {advertisements.slice().reverse().map((ad) => (
-              <AdvertisementCard 
-                key={ad._id} 
-                ad={ad} 
+              <AdvertisementCard
+                key={ad._id}
+                ad={ad}
               />
             ))}
           </div>

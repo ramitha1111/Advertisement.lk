@@ -1,4 +1,11 @@
+import {useEffect} from "react";
+
 export default function NotFound() {
+    const title = 'Page not found - Advertisements.lk';
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+
     return (
       <main className="grid min-h-full place-items-center bg-white dark:bg-gray-900 px-6 py-24 sm:py-32 lg:px-8">
           <div className="text-center">
@@ -21,4 +28,3 @@ export default function NotFound() {
         </main>
     )
   }
-  

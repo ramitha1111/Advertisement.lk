@@ -19,6 +19,11 @@ export default function Login() {
   const { isLoggedIn } = useAuth() // Use the hook to check authentication status
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const title = 'Login - Advertisements.lk';
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };

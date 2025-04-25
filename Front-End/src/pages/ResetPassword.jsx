@@ -5,6 +5,11 @@ import { motion } from 'framer-motion'
 import { Eye, EyeOff } from 'lucide-react'
 
 export default function ResetPassword() {
+    const title = 'Reset Password - Advertisements.lk';
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -45,7 +50,7 @@ export default function ResetPassword() {
             special: /[!@#$%^&*]/.test(password),
             match: confirmPassword ? password === confirmPassword : true
         }
-        
+
         setPasswordErrors(errors)
         return Object.values(errors).every(Boolean)
     }
@@ -56,9 +61,9 @@ export default function ResetPassword() {
 
     const handlePasswordReset = async (e) => {
         e.preventDefault()
-        
+
         setShowValidation(true)
-        
+
         if (!isPasswordValid()) {
             return
         }
@@ -199,7 +204,7 @@ export default function ResetPassword() {
                                 </motion.div>
 
                                 {showValidation && (
-                                    <motion.div 
+                                    <motion.div
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         className="mb-4 text-left bg-gray-100 dark:bg-gray-800 p-3 rounded-md"
@@ -245,8 +250,8 @@ export default function ResetPassword() {
                                 </motion.div>
 
                                 <motion.div variants={itemVariants} className="text-center">
-                                    <a 
-                                        href="/login" 
+                                    <a
+                                        href="/login"
                                         className="text-sm text-primary hover:text-primary/80 font-medium"
                                     >
                                         Back to login
