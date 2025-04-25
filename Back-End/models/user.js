@@ -8,7 +8,7 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String },
   profileImage: { type: String }, // URL or path to the profile image
-  phone: { type: String, required: true },
+  phone: { type: String },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   otp: { type: String }, // Field to store OTP
   emailVerified: { type: Boolean, default: false }, // Email verification status

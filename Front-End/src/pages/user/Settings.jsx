@@ -208,7 +208,7 @@ const Settings = () => {
               <form onSubmit={handleSubmit}>
                 <div className="space-y-6">
                   {/* Cover Image */}
-                  <div className="relative h-40 bg-gray-100 dark:bg-gray-700 rounded-lg mb-8">
+                  {/* <div className="relative h-40 bg-gray-100 dark:bg-gray-700 rounded-lg mb-8">
                     {coverImagePreview && (
                       <img
                         src={coverImagePreview}
@@ -230,10 +230,10 @@ const Settings = () => {
                       className="hidden"
                       accept="image/*"
                     />
-                  </div>
+                  </div> */}
 
                   {/* Profile Image */}
-                  <div className="flex justify-center -mt-16 mb-4">
+                  <div className="flex justify-center mb-4">
                     <div className="relative">
                       <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 bg-gray-200 dark:bg-gray-700">
                         {profileImagePreview ? (
@@ -252,7 +252,7 @@ const Settings = () => {
                         htmlFor="profileImage"
                         className="absolute bottom-0 right-0 bg-white dark:bg-gray-800 p-1 rounded-full shadow cursor-pointer"
                       >
-                        <Camera size={16} className="text-gray-700 dark:text-gray-300" />
+                        <Camera size={20} className="text-gray-700 dark:text-gray-300" />
                       </label>
                       <input
                         type="file"
@@ -335,7 +335,7 @@ const Settings = () => {
                   </div>
 
                   {/* Location */}
-                  <div>
+                  {/* <div>
                     <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Location
                     </label>
@@ -347,7 +347,7 @@ const Settings = () => {
                       onChange={handleProfileChange}
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
                     />
-                  </div>
+                  </div> */}
 
                   {/* Submit Button */}
                   <div className="flex justify-end">

@@ -19,7 +19,7 @@ export const getUserById = async (userId, token) => {
 };
 
 export const createUser = async (userData, token) => {
-  const response = await api.put(`/users`, userData, {
+  const response = await api.post(`/users`, userData, {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data',

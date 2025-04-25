@@ -14,6 +14,7 @@ import Footer from "../components/Footer";
 import CategoryAdmin from "../pages/admin/CategoryAdmin";
 import NotFound from "../pages/NotFound.jsx";
 import ViewPackage from "../pages/admin/ViewPackage.jsx";
+import ViewUser from "../pages/admin/ViewUser.jsx";
 
 const AdminRoutes = () => {
   return (
@@ -81,6 +82,14 @@ const AdminRoutes = () => {
           element={
             <ProtectedRoutes adminOnly={true}>
               <AddUser />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/view-user/:id"
+          element={
+            <ProtectedRoutes adminOnly={true}>
+              <ViewUser />
             </ProtectedRoutes>
           }
         />
