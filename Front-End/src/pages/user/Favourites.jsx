@@ -1,57 +1,52 @@
-import React, { useState } from 'react';
-import { Trash2, Eye } from 'lucide-react';
+import React, {useCallback, useEffect, useState} from 'react';
+import AdvertisementCard from "../../components/AdvertisementCard.jsx";
+import {getAllFavourites} from "../../api/favouriteApi.js";
+import useAdvertisement from "../../hooks/useAdvertisement.js";
+import useAuth from "../../hooks/useAuth.js";
+import {getAdvertisementById} from "../../api/advertisementApi.js";
 
-const AdCard = ({ ad, onView, onRemove }) => {
-  return (
-      <div className="bg-gray-100 dark:bg-gray-700 rounded-lg shadow p-4 flex flex-col justify-between">
-        <img
-            src={ad.image || 'https://via.placeholder.com/150'}
-            alt={ad.title}
-            className="w-full h-40 object-cover rounded-md mb-4"
-        />
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{ad.title}</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{ad.description}</p>
-          <p className="text-sm text-gray-800 dark:text-gray-300 font-medium">Price: ${ad.price}</p>
-        </div>
-        <div className="mt-4 flex justify-between">
-          <button
-              onClick={() => onView(ad)}
-              className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
-          >
-            <Eye size={16} className="inline-block mr-2" /> View
-          </button>
-          <button
-              onClick={() => onRemove(ad.id)}
-              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-          >
-            <Trash2 size={16} className="inline-block mr-2" /> Remove
-          </button>
-        </div>
-      </div>
-  );
-};
+
 
 const Favourites = () => {
-  const [favourites, setFavourites] = useState([
-    {
-      id: 1,
-      title: 'Modern Apartment in City Center',
-      description: 'A beautiful apartment located in the heart of the city.',
-      price: 1200,
-      image: 'https://via.placeholder.com/150',
-    },
-    {
-      id: 2,
-      title: 'Cozy Cottage in the Countryside',
-      description: 'A peaceful retreat away from the hustle and bustle.',
-      price: 800,
-      image: 'https://via.placeholder.com/150',
-    },
-  ]);
+  const {user,token}=useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [advertisementdata, setAdvertisementData] = useState([]);
+  const fetchAdvertisementsFavoriteData =useCallback (async (user,token) => {
+    setIsLoading(true);
+    try {
+      if (token && user?.id) {
+        const data = await getAllFavourites(token,user.id);
+        const favouritesData = data.data[0]?.advertisementId || [];
+        console.log('Fetched advertisements:', data.data[0].advertisementId);
+        const result = await Promise.all(
+            favouritesData.map(async (value) => {
+                const genData = await getAdvertisementById(value);
+                return genData;
+            })
+            );
+            setAdvertisementData(result);
+      }
+    } catch (error) {
+      console.error('Error fetching advertisements:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user, token]);
+  useEffect(() => {
+
+      fetchAdvertisementsFavoriteData(user,token)
+
+
+
+
+  }, [fetchAdvertisementsFavoriteData]);
+  useEffect(() => {
+    console.log('Fetched advertisement data:', advertisementdata);
+  }, [advertisementdata]);
+
 
   const handleRemove = (id) => {
-    setFavourites((prev) => prev.filter((ad) => ad.id !== id));
+   setAdvertisementData((prev) => prev.filter((ad) => ad.id !== id));
   };
 
   const handleView = (ad) => {
@@ -62,10 +57,13 @@ const Favourites = () => {
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Favourite Advertisements</h2>
-        {favourites.length > 0 ? (
+
+        {isLoading? (
+            <p className="text-gray-600 dark:text-gray-400">Loading....</p>
+        ) : advertisementdata.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {favourites.map((ad) => (
-                  <AdCard key={ad.id} ad={ad} onRemove={handleRemove} onView={handleView} />
+              {advertisementdata.map((advertisement) => (
+                  <AdvertisementCard key={advertisement.id} ad={advertisement} onRemove={handleRemove} onView={handleView} />
               ))}
             </div>
         ) : (

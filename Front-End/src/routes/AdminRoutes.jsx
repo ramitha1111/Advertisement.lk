@@ -85,7 +85,7 @@ const AdminRoutes = () => {
           }
         />
         <Route
-          path="/update-user"
+          path="/update-user/:id"
           element={
             <ProtectedRoutes adminOnly={true}>
               <UpdateUser />

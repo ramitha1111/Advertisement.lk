@@ -16,6 +16,7 @@ import {
   FileText,
   ShoppingBag,
   LogOut,
+  Package,
   Bell,
   Facebook,
   Twitter,
@@ -108,15 +109,16 @@ const Header = () => {
     { name: 'My Orders', href: '/user/dashboard?section=my-orders', icon: ShoppingBag },
     { name: 'Settings', href: '/user/dashboard?section=settings', icon: Settings },
     { name: 'Favorites', href: '/user/dashboard?section=favourites', icon: Heart },
-    { name: 'Notifications', href: '/notifications', icon: Bell }
+    //{ name: 'Notifications', href: '/notifications', icon: Bell }
   ]
 
   const adminOptions = [
     { name: 'Ads', href: '/admin/dashboard?section=advertisements-admin', icon: FileText },
     { name: 'Orders', href: '/admin/dashboard?section=orders-admin', icon: ShoppingBag },
-    { name: 'Settings', href: '/admin/dashboard?section=settings-admin', icon: Settings },
     { name: 'Users', href: '/admin/dashboard?section=users-admin', icon: User },
-    { name: 'Notifications', href: '/notifications', icon: Bell }
+    { name: 'Packages', href: '/admin/dashboard?section=packages-admin', icon: Package },
+    { name: 'Settings', href: '/admin/dashboard?section=settings-admin', icon: Settings },
+    //{ name: 'Notifications', href: '/notifications', icon: Bell }
   ]
 
   return (

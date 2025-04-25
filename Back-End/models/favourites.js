@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const favouritesSchema = new Schema({
-    userId: { type: String, required: true },
-    advertisementId: { type: String, required: true },
+    userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true  },
+    advertisementId:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'Advertisement' }],
 
 });
 

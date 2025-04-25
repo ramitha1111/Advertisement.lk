@@ -5,7 +5,7 @@ const advertisementModel = require('./../models/advertisement');
 // Create a new favourite
 exports.createFavourites = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.body.userId;
         const advertisementId = req.params.id;
 
         const advertisement = await advertisementModel.findOne({ _id: advertisementId });
@@ -36,7 +36,8 @@ exports.createFavourites = async (req, res) => {
 // Get all favourites
 exports.getAllFavourites = async (req, res) => {
     try {
-        const favourites = await favouritesModel.find({ "userId": req.user.id });
+        const userId = req.params.id;
+        const favourites = await favouritesModel.find({ userId: userId});
         return res.status(200).json(favourites);
     } catch (error) {
         return res.status(500).json({ message: error.message });

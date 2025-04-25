@@ -1,63 +1,138 @@
-import React, { useState, useEffect } from 'react';
-import AdvertisementCard from '../../components/AdvertisementCard';
-import { getAllAdvertisements } from '../../api/advertisementApi.js';
+'use client';
 
-const AdvertisementsAdmin = () => {
-  const [advertisements, setAdvertisements] = useState([]);
-  const [loading, setLoading] = useState(false);
+import { useCallback, useEffect, useState } from 'react';
+import AdvertisementCard from '../user/AdvertisementCardNew.jsx';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth.js';
+import { deleteAdvertisement, getAdvertisementsByUser, getAllAdvertisements } from '../../api/advertisementApi.js';
+
+import { useDispatch } from "react-redux";
+import useAdvertisement from "../../hooks/useAdvertisement.js";
+import ConfirmationDialog from '../../components/ConfirmationDialog.jsx';
+
+const AdvertisementAdmin = () => {
+  const navigate = useNavigate();
+  const { user, token } = useAuth();
+  const { fetchAdvertisement, clearAdvertisements } = useAdvertisement();
+  const [isLoading, setIsLoading] = useState(true);
+  const [advertisementData, setAdvertisementData] = useState([]);
+  const dispatch = useDispatch();
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
   const [error, setError] = useState('');
 
+  // Redirect to login if user is not authenticated
   useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        setLoading(true);
-        const adsData = await getAllAdvertisements();
-        setAdvertisements(adsData);
-      } catch (err) {
-        setError('Failed to load data. Please try again later.');
-        console.error('Error fetching initial data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!user || !token) {
+      navigate('/login');
+    }
+  }, [user, token, navigate]);
 
-    fetchInitialData();
-  }, []);
+  const confirmDelete = async () => {
+    try {
+      if (!selectedItemId) return;
+
+      await deleteAdvertisement(selectedItemId, token);
+      // Refresh the advertisements list after deletion
+      fetchAdvertisementsData(user, token);
+      setError('');
+    } catch (error) {
+      console.error('Error deleting ad:', error);
+      setError('Failed to delete ad. Please try again.');
+    } finally {
+      setShowConfirmDialog(false);
+      setSelectedItemId(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmDialog(false);
+    setSelectedItemId(null);
+  };
+
+  // Fetch advertisements created by the current user
+  const fetchAdvertisementsData = useCallback(async (user, token) => {
+    setIsLoading(true);
+    try {
+      if (token) {
+        const adsData = await getAllAdvertisements();
+        setAdvertisementData(adsData || []);
+      }
+    } catch (error) {
+      console.error('Error fetching advertisements:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user?.id && token) {
+      fetchAdvertisementsData(user, token);
+    }
+  }, [user, token, fetchAdvertisementsData]);
+
+  const handleEdit = (item) => {
+    navigate('../../user/update-advertisement/' + item._id);
+  };
+
+  const handleDelete = (item) => {
+    setSelectedItemId(item._id);
+    setShowConfirmDialog(true);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader">Loading...</div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      {/* Advertisement grid */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Advertisement Management</h1>
-      </div>
-        {(() => {
-          if (loading) {
-            return <p className="text-center text-gray-500 dark:text-gray-400">Loading advertisements...</p>;
-          }
-          if (error) {
-            return <p className="text-center text-red-500">{error}</p>;
-          }
-          if (advertisements.length === 0) {
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+      <h1 className="text-xl font-bold mb-6">Advertisements Management</h1>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <p>{error}</p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        {advertisementData && advertisementData.length > 0 ? (
+          advertisementData.map((item) => {
+            const ad = item?._doc || item; // fallback if not using ._doc
             return (
-              <div className="text-center py-12">
-                <p className="text-lg text-gray-700 dark:text-gray-300">
-                  No advertisements found. Try adjusting your search criteria.
-                </p>
-              </div>
+              <AdvertisementCard
+                key={ad._id}
+                item={ad}
+                onEdit={() => handleEdit(ad)}
+                onDelete={() => handleDelete(ad)}
+              />
             );
-          }
-          return (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {advertisements.slice().reverse().map((ad) => (
-                <AdvertisementCard key={ad._id} ad={ad} />
-              ))}
-            </div>
-          );
-        })()}
+          })
+        ) : (
+          <div className="col-span-full text-center text-gray-500">
+            No advertisements found.
+          </div>
+        )}
       </div>
-    </>
+
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <ConfirmationDialog
+          isOpen={showConfirmDialog}
+          title="Delete Advertisement"
+          message="Are you sure you want to delete this ad? This action cannot be undone."
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+          confirmButtonClass="bg-red-600 hover:bg-red-700"
+        />
+      )}
+    </div>
   );
 };
 
-export default AdvertisementsAdmin;
+export default AdvertisementAdmin;

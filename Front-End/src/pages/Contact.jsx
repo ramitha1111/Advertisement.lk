@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { sendMessage } from '../api/contactApi'
 import {
   Mail,
@@ -18,12 +18,17 @@ import {
 } from 'lucide-react'
 
 const Contact = () => {
+  const title = 'Contact Us - Advertisements.lk';
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   })
-  
+
   const [loading, setLoading] = useState(false)
   const [submitStatus, setSubmitStatus] = useState({
     submitted: false,
@@ -42,23 +47,23 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    
+
     try {
       const response = await sendMessage(formData)
-      
+
       setSubmitStatus({
         submitted: true,
         success: true,
         message: response.message || 'Message sent successfully!'
       })
-      
+
       // Reset form on success
       setFormData({
         name: '',
         email: '',
         message: ''
       })
-      
+
     } catch (error) {
       setSubmitStatus({
         submitted: true,
@@ -67,7 +72,7 @@ const Contact = () => {
       })
     } finally {
       setLoading(false)
-      
+
       // Auto-clear status message after 5 seconds
       setTimeout(() => {
         setSubmitStatus(prev => ({
@@ -89,7 +94,7 @@ const Contact = () => {
             Have questions or feedback? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information with Map */}
           <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
@@ -106,13 +111,13 @@ const Contact = () => {
                 title="Office Location"
               ></iframe>
             </div>
-            
+
             {/* Contact Info */}
             <div className="p-6">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
                 Get In Touch
               </h3>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
@@ -129,7 +134,7 @@ const Contact = () => {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-12 w-12 rounded-md bg-primary bg-opacity-10 text-primary">
@@ -148,7 +153,7 @@ const Contact = () => {
                     </a>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-12 w-12 rounded-md bg-primary bg-opacity-10 text-primary">
@@ -167,7 +172,7 @@ const Contact = () => {
                     </a>
                   </div>
                 </div>
-                
+
                 {/* Social Media */}
                 <div className="pt-4">
                   <h4 className="text-base font-medium text-gray-900 dark:text-white mb-3">
@@ -191,14 +196,14 @@ const Contact = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Contact Form */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             <div className="p-6 md:p-8">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
                 Send Us a Message
               </h3>
-              
+
               {submitStatus.submitted && (
                 <div className={`mb-6 rounded-md p-4 ${
                   submitStatus.success 
@@ -221,7 +226,7 @@ const Contact = () => {
                   </div>
                 </div>
               )}
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -243,7 +248,7 @@ const Contact = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Email Address
@@ -264,7 +269,7 @@ const Contact = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Your Message
@@ -285,7 +290,7 @@ const Contact = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <button
                     type="submit"
