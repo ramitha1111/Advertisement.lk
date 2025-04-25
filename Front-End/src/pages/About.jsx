@@ -1,12 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { 
-  Trophy, 
-  Users, 
-  Globe, 
-  CheckCircle, 
-  MessageSquare, 
+import {
+  Trophy,
+  Users,
+  Globe,
+  CheckCircle,
+  MessageSquare,
   Mail,
   Phone,
   MapPin,
@@ -15,6 +15,11 @@ import {
 } from 'lucide-react'
 
 const About = () => {
+  const title = 'About - Advertisements.lk';
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
   // For scroll animations if needed
   const [isVisible, setIsVisible] = useState({
     hero: false,
@@ -41,7 +46,7 @@ const About = () => {
     }
 
     const observer = new IntersectionObserver(observerCallback, observerOptions)
-    
+
     const sections = ['hero', 'stats', 'mission', 'team', 'testimonials']
     sections.forEach(section => {
       const element = document.getElementById(section)
@@ -80,7 +85,7 @@ const About = () => {
   return (
     <main className="pt-8 bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
       {/* Hero Section */}
-      <section 
+      <section
         id="hero"
         className={`relative px-6 py-24 sm:py-32 lg:px-8 overflow-hidden transition-opacity duration-1000 ${isVisible.hero ? 'opacity-100' : 'opacity-0'}`}
       >
@@ -88,7 +93,7 @@ const About = () => {
           <div className="bg-white dark:bg-gray-900 bg-opacity-90 dark:bg-opacity-90 absolute inset-0"></div>
           <div className="bg-gradient-to-r from-orange-100 to-orange-50 dark:from-gray-800 dark:to-gray-900 opacity-30 dark:opacity-60 absolute inset-0"></div>
         </div>
-        
+
         <div className="mx-auto max-w-7xl text-center">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-6">
             About <span className="text-black dark:text-white">ADvertise</span>
@@ -101,8 +106,8 @@ const About = () => {
       </section>
 
       {/* Stats Section */}
-      <section 
-        id="stats" 
+      <section
+        id="stats"
         className={`py-16 bg-gray-50 dark:bg-gray-800 transition-transform duration-1000 ${isVisible.stats ? 'translate-y-0' : 'translate-y-10'}`}
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -148,8 +153,8 @@ const About = () => {
       </section>
 
       {/* Our Mission */}
-      <section 
-        id="mission" 
+      <section
+        id="mission"
         className={`py-16 transition-opacity duration-1000 ${isVisible.mission ? 'opacity-100' : 'opacity-0'}`}
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -190,8 +195,8 @@ const About = () => {
       </section>
 
       {/* Testimonials */}
-      <section 
-        id="testimonials" 
+      <section
+        id="testimonials"
         className={`py-16 bg-gray-50 dark:bg-gray-800 transition-opacity duration-1000 ${isVisible.testimonials ? 'opacity-100' : 'opacity-0'}`}
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -207,9 +212,9 @@ const About = () => {
                 <div key={index} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                   <div className="flex mb-4">
                     {[...Array(5)].map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={`h-5 w-5 ${i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
+                      <Star
+                        key={i}
+                        className={`h-5 w-5 ${i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
                       />
                     ))}
                   </div>

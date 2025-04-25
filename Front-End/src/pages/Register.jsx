@@ -11,6 +11,11 @@ import 'react-phone-input-2/lib/style.css'
 
 
 export default function Register() {
+    const title = 'Register - Advertisements.lk';
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
