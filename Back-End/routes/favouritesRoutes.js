@@ -21,6 +21,6 @@ router.post('/:id', authMiddleware, createFavourites);
 router.get('/:id', authMiddleware, getAllFavourites);
 
 // Delete favourite
-router.delete('/:id', authMiddleware, deleteFavourite);
+router.delete('/:userId/:id', authMiddleware, deleteFavourite);
 
 module.exports = router;

@@ -96,9 +96,12 @@ const Advertisement = () => {
             if (isLoggedIn && token) {
                 try {
                     // Check favorites
-                    const favoritesResponse = await getAllFavourites(token)
-                    const userFavorites = favoritesResponse.data
-                    setIsFavorite(userFavorites.some(fav => fav.advertisementId === id))
+                    const favoritesResponse = await getAllFavourites(token, userId)
+                    const userFavorites = favoritesResponse?.data || []
+                    console.log(userFavorites);
+                    setIsFavorite(
+                        userFavorites.some(fav => fav.advertisementId.includes(id))
+                      )
 
                     // Check compares
                     console.error(userId)
@@ -123,9 +126,9 @@ const Advertisement = () => {
 
         try {
             if (isFavorite) {
-                await deleteFavourite(id, token)
+                await deleteFavourite(userId, id, token)
             } else {
-                await createFavourite(id, token)
+                await createFavourite(id, userId, token)
             }
             setIsFavorite(!isFavorite)
         } catch (err) {

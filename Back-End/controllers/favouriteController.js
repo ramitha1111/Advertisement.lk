@@ -48,7 +48,7 @@ exports.getAllFavourites = async (req, res) => {
 // Delete a favourite by userId and advertisementId
 exports.deleteFavourite = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.params.userId;
         const advertisementId = req.params.id;
 
         const favourite = await favouritesModel.findOneAndDelete({ "userId" :userId, "advertisementId": advertisementId });
