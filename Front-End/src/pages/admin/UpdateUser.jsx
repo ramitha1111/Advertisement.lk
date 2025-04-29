@@ -56,8 +56,8 @@ const UpdateUser = () => {
                 });
 
                 // Set image previews if available
-                if (userData.profileImageUrl) {
-                    setProfileImagePreview(userData.profileImageUrl);
+                if (userData.profileImage) {
+                    setProfileImagePreview(userData.profileImage);
                 }
 
                 if (userData.coverImageUrl) {
@@ -127,7 +127,7 @@ const UpdateUser = () => {
     };
 
     const handleRemoveProfileImage = () => {
-        if (profileImagePreview && !currentUser?.profileImageUrl) {
+        if (profileImagePreview && !currentUser?.profileImage) {
             URL.revokeObjectURL(profileImagePreview);
         }
         setUser(prev => ({ ...prev, profileImage: null }));
@@ -537,7 +537,7 @@ const UpdateUser = () => {
                     <div className="flex justify-end space-x-4 pt-4">
                         <button
                             type="button"
-                            onClick={() => navigate('/users')}
+                            onClick={() => navigate('/admin/dashboard?section=users-admin')}
                             className="px-6 py-3 rounded-md text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 font-medium"
                         >
                             Cancel

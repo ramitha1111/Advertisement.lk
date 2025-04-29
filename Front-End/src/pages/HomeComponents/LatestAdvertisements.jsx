@@ -180,7 +180,7 @@ const LatestAdvertisements = () => {
                     {advertisements.length === 0 ? (
                         <div className="text-center py-12">
                             <p className="text-lg text-gray-700 dark:text-gray-300">
-                                No advertisements found. Try adjusting your search criteria.
+                                No advertisements found.
                             </p>
                         </div>
                     ) : (

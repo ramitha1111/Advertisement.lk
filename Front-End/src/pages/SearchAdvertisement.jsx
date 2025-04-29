@@ -231,7 +231,7 @@ const SearchAdvertisement = () => {
             >
               Search
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={() => setShowFilters(!showFilters)}
               className="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
@@ -239,80 +239,8 @@ const SearchAdvertisement = () => {
               <Filter className="h-5 w-5 mr-2" />
               Filters
               <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
-            </button>
+            </button> */}
           </form>
-
-          {/* Filter options */}
-          {showFilters && (
-            <div className="mt-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Category
-                  </label>
-                  <select
-                    id="category"
-                    value={selectedCategory}
-                    onChange={(e) => handleCategoryChange(e.target.value)}
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
-                  >
-                    <option value="">All Categories</option>
-                    {categories.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div>
-                  <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Location
-                  </label>
-                  <select
-                    id="location"
-                    value={selectedLocation}
-                    onChange={(e) => handleLocationChange(e.target.value)}
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
-                  >
-                    {locationOptions.map((location) => (
-                      <option key={location} value={location}>
-                        {location}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div>
-                  <label htmlFor="price" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Price Range
-                  </label>
-                  <select
-                    id="price"
-                    value={selectedPriceRange}
-                    onChange={(e) => handlePriceRangeChange(e.target.value)}
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
-                  >
-                    {priceRangeOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={handleApplyFilters}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                >
-                  Apply Filters
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 

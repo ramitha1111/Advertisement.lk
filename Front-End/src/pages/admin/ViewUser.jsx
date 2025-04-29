@@ -121,14 +121,14 @@ const ViewUser = () => {
                     <div className="mb-4 sm:mb-0 sm:mr-6">
                         <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-white dark:border-gray-800 shadow-md">
                             <img
-                                src={user.profileImageUrl || defaultAvatar}
+                                src={user.profileImage || defaultAvatar}
                                 alt={`${user.firstName} ${user.lastName}`}
                                 className="h-full w-full object-cover"
                             />
                         </div>
                     </div>
                     <div className="text-center sm:text-left">
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                        <h1 className="text-2xl mt-2 font-bold text-gray-900 dark:text-white">
                             {user.firstName} {user.lastName}
                         </h1>
                         <p className="text-lg text-gray-600 dark:text-gray-400">@{user.username}</p>

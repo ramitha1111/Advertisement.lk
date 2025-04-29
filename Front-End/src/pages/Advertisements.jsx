@@ -220,7 +220,7 @@ const Advertisements = () => {
 
           {/* Filter options */}
           {showFilters && (
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Category
@@ -258,7 +258,7 @@ const Advertisements = () => {
                 </select>
               </div>
 
-              <div>
+              {/* <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Price Range
                 </label>
@@ -274,7 +274,7 @@ const Advertisements = () => {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
             </div>
           )}
         </div>
