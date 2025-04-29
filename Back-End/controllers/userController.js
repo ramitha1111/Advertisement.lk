@@ -139,7 +139,6 @@ exports.updateUser = [
 ];
 
 
-
 // Delete User
 exports.deleteUser = async (req, res) => {
   const userId = req.params.id; // Ensure optional chaining in case req.user is undefined
