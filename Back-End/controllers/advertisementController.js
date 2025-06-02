@@ -101,8 +101,8 @@ exports.createAdvertisement = [
             req.body.updatedAt = req.body.createdAt;
             req.body.isBoosted = 0;
             req.body.views = "0";
-            req.body.status = "active";
-            req.body.isVisible = 1;
+            req.body.status = "pending";
+            req.body.isVisible = 0;
 
             if (typeof req.body.features === 'string') {
                 try {

@@ -34,4 +34,7 @@ router.get('/favorites', authMiddleware, getAdvertisementsByFavourite);
 router.get('/renewable-ads', authMiddleware, getRenewableAds);
 router.get('/user-by-ad/:advertisementId', authMiddleware, getUserIdByAdvertisementId);
 
+//change status to active
+
+
 module.exports = router;
