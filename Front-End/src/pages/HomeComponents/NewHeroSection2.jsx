@@ -61,7 +61,7 @@ export default function NewHeroSection() {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyPress={handleKeyPress}
-                                className="pl-14 pr-4 py-4 w-full bg-transparent border border-orange-500/50 rounded-lg text-orange-600 placeholder-orange-400 focus:outline-none focus:border-orange-600/75 transition-colors duration-300"
+                                className="pl-14 pr-4 py-4 w-full bg-transparent border border-orange-500/50 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-orange-600/75 transition-colors duration-300"
                                 placeholder="Search items, categories, or locations..."
                             />
                         </div>
