@@ -12,13 +12,18 @@ const {
     getAdvertisementsByFiltering,
     getAdvertisementsByFavourite,
     getUserIdByAdvertisementId,
-    getRenewableAds
+    getRenewableAds,
+    changeStatus,
+    getAllAdvertisementsAdmin
 } = require('../controllers/advertisementController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const { isAdmin } = require('../middlewares/roleMiddleware');
 const router = express.Router();
 
 // Public routes
 router.get('/', getAllAdvertisements); //
+router.get('/admin', authMiddleware, isAdmin, getAllAdvertisementsAdmin);
+
 router.get('/:id', getAdvertisementById); //
 router.get('/search/:search', getAdvertisementsBySearching); //
 router.get('/filter/:category?/:location?/:priceRange?', getAdvertisementsByFiltering);
@@ -33,5 +38,8 @@ router.delete('/:id', authMiddleware, deleteAdvertisement); //
 router.get('/favorites', authMiddleware, getAdvertisementsByFavourite);
 router.get('/renewable-ads', authMiddleware, getRenewableAds);
 router.get('/user-by-ad/:advertisementId', authMiddleware, getUserIdByAdvertisementId);
+
+// change the status of advertisement
+router.get('/change-status/:id', authMiddleware, isAdmin, changeStatus);
 
 module.exports = router;

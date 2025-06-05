@@ -288,7 +288,10 @@ const Advertisement = () => {
                                     Edit Ad
                                 </button>
 
-                                {isBoosted ? (
+                                
+                            </>
+                        )}
+                        {isBoosted ? (
                                     <button
                                         onClick={handleBoost}
                                         className="flex items-center px-4 py-2 max-h-10  bg-primary text-white rounded-md hover:bg-primary"
@@ -306,8 +309,6 @@ const Advertisement = () => {
                                         Boost Ad
                                     </button>
                                 )}
-                            </>
-                        )}
 
                         {/* Non-owner actions (only for logged in users) */}
                         {isLoggedIn && (

@@ -3,16 +3,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import AdvertisementCard from '../user/AdvertisementCardNew.jsx';
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth.js';
-import { deleteAdvertisement, getAdvertisementsByUser, getAllAdvertisements } from '../../api/advertisementApi.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteAdvertisement, getAdvertisementsByUser, getAllAdvertisementsAdmin, changeAdvertisementStatus } from '../../api/advertisementApi.js';
 
-import { useDispatch } from "react-redux";
 import useAdvertisement from "../../hooks/useAdvertisement.js";
 import ConfirmationDialog from '../../components/ConfirmationDialog.jsx';
 
 const AdvertisementAdmin = () => {
   const navigate = useNavigate();
-  const { user, token } = useAuth();
+  const { user, token } = useSelector((state) => state.auth);
   const { fetchAdvertisement, clearAdvertisements } = useAdvertisement();
   const [isLoading, setIsLoading] = useState(true);
   const [advertisementData, setAdvertisementData] = useState([]);
@@ -20,6 +19,7 @@ const AdvertisementAdmin = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [error, setError] = useState('');
+  const [statusUpdateLoading, setStatusUpdateLoading] = useState(null); // Track which ad is being updated
 
   // Redirect to login if user is not authenticated
   useEffect(() => {
@@ -50,16 +50,43 @@ const AdvertisementAdmin = () => {
     setSelectedItemId(null);
   };
 
+  // Complete toggle ad status function
+  const toggleAdStatus = async (item) => {
+    try {
+      // Only allow toggling between active and pending status
+      if (item.status !== 'active' && item.status !== 'pending') {
+        setError('Can only toggle between active and pending status.');
+        return;
+      }
+
+      setStatusUpdateLoading(item._id);
+      setError('');
+
+      // Call the API to change status
+      await changeAdvertisementStatus(item._id, token);
+      
+      // Refresh the advertisements list after toggling status
+      await fetchAdvertisementsData(user, token);
+      
+    } catch (error) {
+      console.error('Error toggling ad status:', error);
+      setError('Failed to toggle ad status. Please try again.');
+    } finally {
+      setStatusUpdateLoading(null);
+    }
+  };
+
   // Fetch advertisements created by the current user
   const fetchAdvertisementsData = useCallback(async (user, token) => {
     setIsLoading(true);
     try {
       if (token) {
-        const adsData = await getAllAdvertisements();
+        const adsData = await getAllAdvertisementsAdmin(token);
         setAdvertisementData(adsData || []);
       }
     } catch (error) {
       console.error('Error fetching advertisements:', error);
+      setError('Failed to fetch advertisements. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -80,6 +107,13 @@ const AdvertisementAdmin = () => {
     setShowConfirmDialog(true);
   };
 
+  const handleToggleStatus = (item) => {
+    // Prevent multiple simultaneous status updates
+    if (statusUpdateLoading === item._id) return;
+    
+    toggleAdStatus(item);
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -95,6 +129,19 @@ const AdvertisementAdmin = () => {
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
           <p>{error}</p>
+          <button 
+            onClick={() => setError('')}
+            className="text-red-700 hover:text-red-900 font-medium underline mt-1"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
+      {/* Status Update Loading Indicator */}
+      {statusUpdateLoading && (
+        <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4">
+          <p>Updating advertisement status...</p>
         </div>
       )}
 
@@ -103,12 +150,15 @@ const AdvertisementAdmin = () => {
           advertisementData.map((item) => {
             const ad = item?._doc || item; // fallback if not using ._doc
             return (
-              <AdvertisementCard
-                key={ad._id}
-                item={ad}
-                onEdit={() => handleEdit(ad)}
-                onDelete={() => handleDelete(ad)}
-              />
+              <div key={ad._id} className={statusUpdateLoading === ad._id ? 'opacity-50 pointer-events-none' : ''}>
+                <AdvertisementCard
+                  item={ad}
+                  onEdit={() => handleEdit(ad)}
+                  onDelete={() => handleDelete(ad)}
+                  onToggleStatus={() => handleToggleStatus(ad)}
+                  showStatusToggle={true} // Show toggle for admin
+                />
+              </div>
             );
           })
         ) : (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { createAdvertisement } from "../../api/advertisementApi.js";
-import { getAllCategories } from "../../api/CategoryApi.js"; // Assuming this is your category API
+import { getAllCategories } from "../../api/CategoryApi.js";
 import { useSelector } from "react-redux";
 
 const AddAdvertisement = () => {
@@ -67,6 +67,12 @@ const AddAdvertisement = () => {
     const handleFeaturedImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            // Check the file size
+            if (file.size > 1 * 1024 * 1024) { // 1MB limit
+                setError('Featured image must be less than 1MB');
+                return;
+            }
+
             // Check if the file is an image
             if (!file.type.startsWith('image/')) {
                 setError('Featured image must be an image file (JPEG, PNG, etc.)');

@@ -7,8 +7,25 @@ export const getAllAdvertisements = async () => {
   return response.data;
 };
 
-// Get advertisements by logged-in user
+// Get all advertisements
+export const getAllAdvertisementsAdmin = async (token) => {
+  const response = await api.get("/advertisements/admin", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  });
+  return response.data;
+};
 
+// change the status
+export const changeAdvertisementStatus = async (advertisementId, token) => {
+  const response = await api.get(`/advertisements/change-status/${advertisementId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
 
 
 export const getAdvertisementsByUser = async (userId, token) => {
