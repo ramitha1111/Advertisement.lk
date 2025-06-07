@@ -1,11 +1,141 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
 import WaveBackground from "./Images/WaveBackground.svg"
-import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
+    // Mock navigation function - replace with your actual navigation logic
+    const Navigate = (path) => {
+        console.log("Navigating to:", path);
+        // In your actual app, this would be: useNavigate()(path)
+    };
 
-    const Navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+    const inputRef = useRef(null);
+    const suggestionRefs = useRef([]);
+
+    // Sample suggestions - you can replace this with API calls or your own data
+    const allSuggestions = [
+        "Real Estate in Colombo",
+        "Houses for Sale",
+        "Apartments for Rent",
+        "Birds for Sale",
+        "Cats and Kittens",
+        "Dogs for Adoption",
+        "Cars for Sale",
+        "Motorcycles",
+        "Mobile Phones",
+        "Laptops and Computers",
+        "Furniture",
+        "Electronics",
+        "Jobs in Colombo",
+        "Part-time Jobs",
+        "Freelance Work",
+        "Tutoring Services",
+        "Home Services",
+        "Repair Services"
+    ];
+
+    // Filter suggestions based on search query
+    useEffect(() => {
+        if (searchQuery.trim() === "") {
+            setSuggestions([]);
+            setShowSuggestions(false);
+            return;
+        }
+
+        const filtered = allSuggestions.filter(suggestion =>
+            suggestion.toLowerCase().includes(searchQuery.toLowerCase())
+        ).slice(0, 6); // Limit to 6 suggestions
+
+        setSuggestions(filtered);
+        setShowSuggestions(filtered.length > 0);
+        setSelectedIndex(-1);
+    }, [searchQuery]);
+
+    // Handle input change
+    const handleInputChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    // Handle keyboard navigation
+    const handleKeyDown = (e) => {
+        if (!showSuggestions) return;
+
+        switch (e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                setSelectedIndex(prev => 
+                    prev < suggestions.length - 1 ? prev + 1 : prev
+                );
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                setSelectedIndex(prev => prev > 0 ? prev - 1 : -1);
+                break;
+            case 'Enter':
+                e.preventDefault();
+                if (selectedIndex >= 0) {
+                    handleSuggestionClick(suggestions[selectedIndex]);
+                } else {
+                    handleSearch();
+                }
+                break;
+            case 'Escape':
+                setShowSuggestions(false);
+                setSelectedIndex(-1);
+                inputRef.current?.blur();
+                break;
+        }
+    };
+
+    // Handle suggestion click
+    const handleSuggestionClick = (suggestion) => {
+        setSearchQuery(suggestion);
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+        Navigate("/search-advertisements/" + suggestion);
+    };
+
+    // Handle search
+    const handleSearch = () => {
+        if (searchQuery.trim()) {
+            Navigate("/search-advertisements/" + searchQuery);
+            setShowSuggestions(false);
+        }
+    };
+
+    // Handle input focus
+    const handleInputFocus = () => {
+        if (suggestions.length > 0) {
+            setShowSuggestions(true);
+        }
+    };
+
+    // Handle click outside to close suggestions
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (inputRef.current && !inputRef.current.contains(event.target)) {
+                setShowSuggestions(false);
+                setSelectedIndex(-1);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // Scroll selected suggestion into view
+    useEffect(() => {
+        if (selectedIndex >= 0 && suggestionRefs.current[selectedIndex]) {
+            suggestionRefs.current[selectedIndex].scrollIntoView({
+                block: 'nearest',
+                behavior: 'smooth'
+            });
+        }
+    }, [selectedIndex]);
     
     return (
         <div className="relative w-full min-h-[80vh] overflow-hidden bg-white">
@@ -26,7 +156,7 @@ export default function HeroSection() {
                         {/* Search Box with higher z-index - centered on smaller screens */}
                         <div className="mt-8 relative z-20 max-w-2xl mx-auto xl:mx-0 xl:pr-12">
                             <div className="flex flex-col sm:flex-row gap-2">
-                                <div className="flex-1 relative">
+                                <div className="flex-1 relative" ref={inputRef}>
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <div className="w-5 h-5 text-gray-400">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -37,30 +167,43 @@ export default function HeroSection() {
                                     </div>
                                     <input
                                         type="text"
+                                        value={searchQuery}
+                                        onChange={handleInputChange}
+                                        onKeyDown={handleKeyDown}
+                                        onFocus={handleInputFocus}
                                         className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 hover:ring-2 hover:ring-orange-200 dark:hover:ring-orange-800"
                                         placeholder="I'm looking for..."
+                                        autoComplete="off"
                                     />
-                                </div>
-                                {/*
-                                <div className="flex-1 relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <div className="w-5 h-5 text-gray-400">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                                <circle cx="12" cy="10" r="3" />
-                                            </svg>
+                                    
+                                    {/* Suggestions dropdown */}
+                                    {showSuggestions && suggestions.length > 0 && (
+                                        <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-700 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-y-auto z-50">
+                                            {suggestions.map((suggestion, index) => (
+                                                <div
+                                                    key={index}
+                                                    ref={el => suggestionRefs.current[index] = el}
+                                                    className={`px-4 py-3 cursor-pointer border-b border-gray-100 dark:border-gray-600 last:border-b-0 transition-colors ${
+                                                        index === selectedIndex 
+                                                            ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400' 
+                                                            : 'hover:bg-gray-50 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200'
+                                                    }`}
+                                                    onClick={() => handleSuggestionClick(suggestion)}
+                                                >
+                                                    <div className="flex items-center">
+                                                        <Search size={16} className="mr-3 text-gray-400" />
+                                                        <span className="text-sm">{suggestion}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        className="pl-10 pr-3 py-3 w-full bg-slate-50 dark:bg-slate-700 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 hover:ring-2 hover:ring-orange-200 dark:hover:ring-orange-800"
-                                        placeholder="Location (e.g. Colombo)"
-                                    />
-                                </div> */}
+                                    )}
+                                </div>
+                                
                                 <button
-                                type="submit"
-                                onClick={() => Navigate("/search-advertisements/"+document.querySelector("input[type='text']").value)}
-                                    className="bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-md flex items-center justify-center lg:w-12 lg:mr-5"
+                                    type="submit"
+                                    onClick={handleSearch}
+                                    className="bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-md flex items-center justify-center lg:w-12 lg:mr-5 transition-colors"
                                 >
                                     <Search size={20} />
                                 </button>
@@ -70,10 +213,30 @@ export default function HeroSection() {
                             <div className="mt-4 text-sm text-gray-600 dark:text-slate-400">
                                 <span className="font-medium">What's popular:</span>
                                 <span className="ml-2">
-                                  <span className="mr-2">Real Estate,</span>
-                                  <span className="mr-2">Houses,</span>
-                                  <span className="mr-2">Birds,</span>
-                                  <span>Cats</span>
+                                    <button 
+                                        onClick={() => handleSuggestionClick("Real Estate")}
+                                        className="mr-2 hover:text-orange-500 cursor-pointer transition-colors"
+                                    >
+                                        Real Estate,
+                                    </button>
+                                    <button 
+                                        onClick={() => handleSuggestionClick("Houses")}
+                                        className="mr-2 hover:text-orange-500 cursor-pointer transition-colors"
+                                    >
+                                        Houses,
+                                    </button>
+                                    <button 
+                                        onClick={() => handleSuggestionClick("Birds")}
+                                        className="mr-2 hover:text-orange-500 cursor-pointer transition-colors"
+                                    >
+                                        Birds,
+                                    </button>
+                                    <button 
+                                        onClick={() => handleSuggestionClick("Cats")}
+                                        className="hover:text-orange-500 cursor-pointer transition-colors"
+                                    >
+                                        Cats
+                                    </button>
                                 </span>
                             </div>
                         </div>

@@ -139,9 +139,15 @@ exports.getAdvertisementsByUserId = async (req, res) => {
         // Get the UserId from authMiddleware
         const userId = req.params.id;
 
+        let advertisements;
         // Find advertisements by userId
         //const advertisements = await Advertisement.findById(userId);
-        const advertisements = await Advertisement.find({ userId }).lean();
+        if (userId === req.user.id) {
+            advertisements = await Advertisement.find({ userId }).lean();
+        } else {
+            advertisements = await Advertisement.find({ status: 'active' }).lean();
+        }
+
         if (!advertisements || advertisements.length === 0) {
             return res.status(404).json({ message: "No advertisements found for this user" });
         }
@@ -262,8 +268,8 @@ exports.updateAdvertisement = [
 
             const updatedAdvertisement = await Advertisement.findByIdAndUpdate(
                 advertisementId,
-                { $set: req.body },
-                { new: true }
+                { $set: { ...req.body, status: 'pending' } },
+                { new: true },
             );
 
             if (!updatedAdvertisement) {

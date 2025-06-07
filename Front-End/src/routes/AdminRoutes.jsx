@@ -15,6 +15,7 @@ import CategoryAdmin from "../pages/admin/CategoryAdmin";
 import NotFound from "../pages/NotFound.jsx";
 import ViewPackage from "../pages/admin/ViewPackage.jsx";
 import ViewUser from "../pages/admin/ViewUser.jsx";
+import UserOrders from "../pages/admin/UserOrders.jsx";
 
 const AdminRoutes = () => {
   return (
@@ -98,6 +99,14 @@ const AdminRoutes = () => {
           element={
             <ProtectedRoutes adminOnly={true}>
               <UpdateUser />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/user-orders/:userId"
+          element={
+            <ProtectedRoutes adminOnly={true}>
+              <UserOrders />
             </ProtectedRoutes>
           }
         />

@@ -38,6 +38,10 @@ const ViewUser = () => {
         navigate(`/admin/update-user/${userId}`);
     };
 
+    const handleOrders = () => {
+        navigate(`/admin/user-orders/${userId}`);
+    };
+
     const handleDelete = async () => {
         if (!deleteConfirm) {
             setDeleteConfirm(true);
@@ -197,6 +201,12 @@ const ViewUser = () => {
                     </button>
 
                     <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+                        <button
+                            onClick={handleOrders}
+                            className="px-6 py-3 rounded-md text-white font-medium bg-primary hover:bg-primary/90"
+                        >
+                            View Orders
+                        </button>
                         <button
                             onClick={handleUpdate}
                             className="px-6 py-3 rounded-md text-white font-medium bg-primary hover:bg-primary/90"
