@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Search,
   Filter,
@@ -31,6 +31,11 @@ const Advertisements = () => {
   const [selectedLocation, setSelectedLocation] = useState('All Locations')
   const [selectedPriceRange, setSelectedPriceRange] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+  const [suggestions, setSuggestions] = useState([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const inputRef = useRef(null)
+  const suggestionRefs = useRef([])
 
   // Location options for Sri Lanka
   const locationOptions = [
@@ -55,6 +60,28 @@ const Advertisements = () => {
     { label: 'Over Rs. 50,000', value: '50000,9999999' }
   ]
 
+  // Sample suggestions
+  const allSuggestions = [
+    "Real Estate in Colombo",
+    "Houses for Sale",
+    "Apartments for Rent",
+    "Birds for Sale",
+    "Cats and Kittens",
+    "Dogs for Adoption",
+    "Cars for Sale",
+    "Motorcycles",
+    "Mobile Phones",
+    "Laptops and Computers",
+    "Furniture",
+    "Electronics",
+    "Jobs in Colombo",
+    "Part-time Jobs",
+    "Freelance Work",
+    "Tutoring Services",
+    "Home Services",
+    "Repair Services"
+  ]
+
   // Load all advertisements and categories when the component mounts
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -76,6 +103,46 @@ const Advertisements = () => {
 
     fetchInitialData()
   }, [])
+
+  // Filter suggestions based on search query
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setSuggestions([])
+      setShowSuggestions(false)
+      return
+    }
+
+    const filtered = allSuggestions.filter(suggestion =>
+      suggestion.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 6) // Limit to 6 suggestions
+
+    setSuggestions(filtered)
+    setShowSuggestions(filtered.length > 0)
+    setSelectedIndex(-1)
+  }, [searchQuery])
+
+  // Handle click outside to close suggestions
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setShowSuggestions(false)
+        setSelectedIndex(-1)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Scroll selected suggestion into view
+  useEffect(() => {
+    if (selectedIndex >= 0 && suggestionRefs.current[selectedIndex]) {
+      suggestionRefs.current[selectedIndex].scrollIntoView({
+        block: 'nearest',
+        behavior: 'smooth'
+      })
+    }
+  }, [selectedIndex])
 
   // Handle search form submission
   const handleSearch = async (e) => {
@@ -172,6 +239,56 @@ const Advertisements = () => {
     }
   }
 
+  // Handle keyboard navigation
+  const handleKeyDown = (e) => {
+    if (!showSuggestions) return
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault()
+        setSelectedIndex(prev =>
+          prev < suggestions.length - 1 ? prev + 1 : prev
+        )
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        setSelectedIndex(prev => prev > 0 ? prev - 1 : -1)
+        break
+      case 'Enter':
+        e.preventDefault()
+        if (selectedIndex >= 0) {
+          handleSuggestionClick(suggestions[selectedIndex])
+        } else {
+          handleSearch(e)
+        }
+        break
+      case 'Escape':
+        setShowSuggestions(false)
+        setSelectedIndex(-1)
+        inputRef.current?.blur()
+        break
+    }
+  }
+
+  // Handle suggestion click
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion)
+    setShowSuggestions(false)
+    setSelectedIndex(-1)
+    // Trigger search with the selected suggestion
+    setTimeout(() => {
+      const fakeEvent = { preventDefault: () => { } }
+      handleSearch(fakeEvent)
+    }, 100)
+  }
+
+  // Handle input focus
+  const handleInputFocus = () => {
+    if (suggestions.length > 0) {
+      setShowSuggestions(true)
+    }
+  }
+
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Page header */}
@@ -189,7 +306,7 @@ const Advertisements = () => {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           {/* Search bar */}
           <form onSubmit={handleSearch} className="flex items-center">
-            <div className="relative flex-grow">
+            <div className="relative flex-grow" ref={inputRef}>
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-gray-400" />
               </div>
@@ -197,9 +314,34 @@ const Advertisements = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onFocus={handleInputFocus}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md leading-5 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                 placeholder="Search advertisements..."
+                autoComplete="off"
               />
+
+              {/* Suggestions dropdown */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-y-auto z-50">
+                  {suggestions.map((suggestion, index) => (
+                    <div
+                      key={index}
+                      ref={el => suggestionRefs.current[index] = el}
+                      className={`px-4 py-3 cursor-pointer border-b border-gray-100 dark:border-gray-600 last:border-b-0 transition-colors ${index === selectedIndex
+                          ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                          : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200'
+                        }`}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      <div className="flex items-center">
+                        <Search size={16} className="mr-3 text-gray-400" />
+                        <span className="text-sm">{suggestion}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <button
               type="submit"

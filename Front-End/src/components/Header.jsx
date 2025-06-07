@@ -33,6 +33,7 @@ import {
   PopoverButton,
   PopoverPanel,
 } from '@headlessui/react'
+import GoogleTranslate from './GoogleTranslate'
 
 const Header = () => {
   const isDark = useSelector((state) => state.theme.isDark)
@@ -127,6 +128,7 @@ const Header = () => {
     <header ref={headerRef} className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 z-50">
       {/* Top bar */}
       <div className="hidden md:block bg-gray-100 dark:bg-gray-800 py-2">
+        <GoogleTranslate />
         <div className="mx-auto max-w-7xl px-8">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -140,9 +142,9 @@ const Header = () => {
                 <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
                   <Facebook size={16} className="stroke-2" />
                 </a>
-                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
+                {/* <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
                   <Twitter size={16} className="stroke-2" />
-                </a>
+                </a> */}
                 <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
                   <Linkedin size={16} className="stroke-2" />
                 </a>
@@ -203,7 +205,6 @@ const Header = () => {
               <Moon size={20} className="text-gray-800 stroke-2" />
             }
           </button>
-
           {/* User dropdown - changes based on auth state */}
           <Popover className="relative group">
             {({ open }) => (
@@ -456,9 +457,9 @@ const Header = () => {
                   <a href="#" className="w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full text-white hover:bg-blue-600 transition-colors">
                     <Facebook size={18} />
                   </a>
-                  <a href="#" className="w-10 h-10 flex items-center justify-center bg-sky-500 rounded-full text-white hover:bg-sky-600 transition-colors">
+                  {/* <a href="#" className="w-10 h-10 flex items-center justify-center bg-sky-500 rounded-full text-white hover:bg-sky-600 transition-colors">
                     <Twitter size={18} />
-                  </a>
+                  </a> */}
                   <a href="#" className="w-10 h-10 flex items-center justify-center bg-blue-700 rounded-full text-white hover:bg-blue-800 transition-colors">
                     <Linkedin size={18} />
                   </a>

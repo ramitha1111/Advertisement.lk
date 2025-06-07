@@ -55,7 +55,7 @@ const MyAdvertisements = () => {
         setIsLoading(true);
         try {
             if (token) {
-                const data = await getAdvertisementsByUser(user.id, token);
+                const data = await getAdvertisementsByUser(user._id, token);
                 setAdvertisementData(data || []);
                 dispatch(fetchAdvertisement({ advertisementData: data || [] }));
             }
@@ -67,7 +67,7 @@ const MyAdvertisements = () => {
     }, [dispatch]);
     
     useEffect(() => {
-        if (user?.id && token) {
+        if (user?._id || user?.id && token) {
             fetchAdvertisementsData(user, token);
         }
     }, [user, token, fetchAdvertisementsData]);

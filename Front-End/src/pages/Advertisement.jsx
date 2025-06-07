@@ -49,22 +49,28 @@ const Advertisement = () => {
     // Check if current user is owner
     const isOwner = isLoggedIn && user?.id === advertisement?.userId
 
-    // Convert YouTube URL to embed URL
-    const getYoutubeEmbedUrl = (url) => {
-        if (!url) return null
+    const getEmbedUrl = (url) => {
+        if (!url) return null;
 
-        // Handle different YouTube URL formats
-        let videoId
-        const youtubeRegex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
-        const match = url.match(youtubeRegex)
-
-        if (match && match[1]) {
-            videoId = match[1]
-            return `https://www.youtube.com/embed/${videoId}`
+        // YouTube regex
+        const youtubeRegex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const ytMatch = url.match(youtubeRegex);
+        if (ytMatch && ytMatch[1]) {
+            return `https://www.youtube.com/embed/${ytMatch[1]}`;
         }
 
-        return url // Return original if not a YouTube URL
-    }
+        // Facebook video regex — includes standard, fb.watch, and share formats
+        const fbRegex = /(?:facebook\.com\/(?:.*\/videos\/|share\/v\/|watch\/\?v=)|fb\.watch\/)([0-9a-zA-Z._-]+)/;
+        const fbMatch = url.match(fbRegex);
+        if (fbMatch && fbMatch[1]) {
+            return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&width=500`;
+        }
+
+        // Return original URL if nothing matches
+        return url;
+    };
+
+
 
     // Format date
     const formatDate = (dateString) => {
@@ -101,7 +107,7 @@ const Advertisement = () => {
                     console.log(userFavorites);
                     setIsFavorite(
                         userFavorites.some(fav => fav.advertisementId.includes(id))
-                      )
+                    )
 
                     // Check compares
                     console.error(userId)
@@ -288,25 +294,26 @@ const Advertisement = () => {
                                     Edit Ad
                                 </button>
 
-                                {isBoosted ? (
-                                    <button
-                                        onClick={handleBoost}
-                                        className="flex items-center px-4 py-2 max-h-10  bg-primary text-white rounded-md hover:bg-primary"
-                                    >
-                                        <Rocket size={16} className="mr-2" />
-                                        Boost Again
-                                        <span className="ml-1 text-xs">(Until {formatDate(boostedUntil)})</span>
-                                    </button>
-                                ) : (
-                                    <button
-                                        onClick={handleBoost}
-                                        className="flex items-center px-4 py-2 max-h-10  bg-primary text-white rounded-md hover:bg-primary"
-                                    >
-                                        <Rocket size={16} className="mr-2" />
-                                        Boost Ad
-                                    </button>
-                                )}
+
                             </>
+                        )}
+                        {isBoosted ? (
+                            <button
+                                onClick={handleBoost}
+                                className="flex items-center px-4 py-2 max-h-10  bg-primary text-white rounded-md hover:bg-primary"
+                            >
+                                <Rocket size={16} className="mr-2" />
+                                Boost Again
+                                <span className="ml-1 text-xs">(Until {formatDate(boostedUntil)})</span>
+                            </button>
+                        ) : (
+                            <button
+                                onClick={handleBoost}
+                                className="flex items-center px-4 py-2 max-h-10  bg-primary text-white rounded-md hover:bg-primary"
+                            >
+                                <Rocket size={16} className="mr-2" />
+                                Boost Ad
+                            </button>
                         )}
 
                         {/* Non-owner actions (only for logged in users) */}
@@ -369,7 +376,7 @@ const Advertisement = () => {
                                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-3">Video</h3>
                                 <div className="w-full aspect-video rounded-lg overflow-hidden">
                                     <ReactPlayer
-                                        url={getYoutubeEmbedUrl(videoUrl)}
+                                        url={getEmbedUrl(videoUrl)}
                                         width="100%"
                                         height="100%"
                                         controls={true}
