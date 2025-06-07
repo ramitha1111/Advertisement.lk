@@ -5,14 +5,25 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { ArrowRight, Map, Edit, Trash2, Eye } from 'lucide-react'
 
-const AdvertisementCard = ({ item, onEdit, onDelete }) => {
+const AdvertisementCard = ({ item, onEdit, onDelete, onToggleStatus, showStatusToggle = false }) => {
     const navigate = useNavigate();
     // No need to find category name as it's now included in the response
     const categoryName = item.categoryId ? item.categoryDetails?.categoryName : 'Uncategorized'
 
-    return (
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'active':
+                return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+            case 'pending':
+                return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+            case 'inactive':
+                return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+            default:
+                return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
+        }
+    }
 
-        
+    return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden transition-all hover:shadow-lg">
             {/* Ad Image */}
             <div className="relative h-48 bg-gray-200 dark:bg-gray-700">
@@ -32,13 +43,38 @@ const AdvertisementCard = ({ item, onEdit, onDelete }) => {
             {/* Ad Content */}
             <div className="p-4">
                 <div className="flex items-center justify-between mb-1">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300">
-                        {categoryName}
-                    </span>
+                    <div className="flex items-center space-x-2">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300">
+                            {categoryName}
+                        </span>
+                        {/* Status Badge */}
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
+                            {item.status || 'pending'}
+                        </span>
+                    </div>
                     <span className="text-xs text-gray-500 dark:text-gray-400">
                         {new Date(item.createdAt).toLocaleDateString()}
                     </span>
                 </div>
+
+                {/* Status Toggle Switch - Only show if showStatusToggle is true */}
+                {showStatusToggle && (item.status === 'active' || item.status === 'pending') && (
+                    <div className="flex items-center justify-between mb-3 p-2 bg-gray-50 dark:bg-gray-700 rounded">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {item.status === 'active' ? 'Active' : 'Pending'} → 
+                            {item.status === 'active' ? ' Set to Pending' : ' Set to Active'}
+                        </span>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                className="sr-only peer"
+                                checked={item.status === 'active'}
+                                onChange={() => onToggleStatus && onToggleStatus(item)}
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                )}
 
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
                     {item.title}
@@ -115,6 +151,7 @@ AdvertisementCard.propTypes = {
         title: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
         location: PropTypes.string,
+        status: PropTypes.string,
         userId: PropTypes.string,
         userDetails: PropTypes.shape({
             profileImage: PropTypes.string,
@@ -123,6 +160,8 @@ AdvertisementCard.propTypes = {
     }).isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
+    onToggleStatus: PropTypes.func,
+    showStatusToggle: PropTypes.bool,
 }
 
 export default AdvertisementCard

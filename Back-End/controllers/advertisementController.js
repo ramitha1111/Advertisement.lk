@@ -101,8 +101,8 @@ exports.createAdvertisement = [
             req.body.updatedAt = req.body.createdAt;
             req.body.isBoosted = 0;
             req.body.views = "0";
-            req.body.status = "active";
-            req.body.isVisible = 1;
+            req.body.status = "pending";
+            req.body.isVisible = 0;
 
             if (typeof req.body.features === 'string') {
                 try {
@@ -139,9 +139,15 @@ exports.getAdvertisementsByUserId = async (req, res) => {
         // Get the UserId from authMiddleware
         const userId = req.params.id;
 
+        let advertisements;
         // Find advertisements by userId
         //const advertisements = await Advertisement.findById(userId);
-        const advertisements = await Advertisement.find({ userId }).lean();
+        if (userId === req.user.id) {
+            advertisements = await Advertisement.find({ userId }).lean();
+        } else {
+            advertisements = await Advertisement.find({ status: 'active' }).lean();
+        }
+
         if (!advertisements || advertisements.length === 0) {
             return res.status(404).json({ message: "No advertisements found for this user" });
         }
@@ -158,8 +164,24 @@ exports.getAdvertisementsByUserId = async (req, res) => {
     }
 };
 
-// Get all advertisements
+// Get all advertisements (active)
 exports.getAllAdvertisements = async (req, res) => {
+    try {
+        const advertisements = await Advertisement.find({ status: 'active' }).lean();
+
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
+
+        res.status(200).json(enrichedAds);
+    } catch (error) {
+        console.error('Error getting all advertisements:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+// Get all advertisements
+exports.getAllAdvertisementsAdmin = async (req, res) => {
     try {
         const advertisements = await Advertisement.find().lean();
 
@@ -246,8 +268,8 @@ exports.updateAdvertisement = [
 
             const updatedAdvertisement = await Advertisement.findByIdAndUpdate(
                 advertisementId,
-                { $set: req.body },
-                { new: true }
+                { $set: { ...req.body, status: 'pending' } },
+                { new: true },
             );
 
             if (!updatedAdvertisement) {
@@ -511,3 +533,36 @@ exports.getRenewableAds = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch renewable ads', error: error.message });
     }
 };
+
+exports.changeStatus = async (req, res) => {
+    try {
+        const advertisementId = req.params.id;
+
+        // Find the advertisement by only ad ID
+        const advertisement = await Advertisement.findById(advertisementId).lean();
+
+
+        if (!advertisement) {
+            return res.status(404).json({ message: "Advertisement not found" });
+        }
+
+        // Toggle the status
+        const newStatus = advertisement.status === "active" ? "pending" : "active";
+
+        if (newStatus === "active") {
+            advertisement.isVisible = 1;
+        }
+
+        if (newStatus === "pending") {
+            advertisement.isVisible = 0;
+        }
+
+        // Update the advertisement status
+        await Advertisement.findByIdAndUpdate(advertisementId, { status: newStatus });
+
+        res.status(200).json({ message: "Advertisement status updated successfully", newStatus });
+    } catch (error) {
+        console.error('Error changing advertisement status:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
