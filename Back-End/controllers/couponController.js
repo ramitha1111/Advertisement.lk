@@ -1,4 +1,4 @@
-const Coupon = require('../models/Coupon');
+const Coupon = require('../models/coupon');
 
 // POST /api/coupons/apply
 exports.applyCoupon = async (req, res) => {
