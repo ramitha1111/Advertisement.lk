@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Advertisement = require("../models/Advertisement");
+const Advertisement = require("../models/advertisement");
 const Category = require("../models/category");
 const User = require("../models/User");
 const Favourites = require("../models/favourites");
