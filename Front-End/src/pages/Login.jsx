@@ -8,7 +8,6 @@ import api from '../axios'
 import useAuth from '../hooks/useAuth' // Import your useAuth hook
 import { motion } from 'framer-motion' // Note: You'll need to install framer-motion
 import { Eye, EyeOff } from 'lucide-react' // Import Eye and EyeOff icons
-import loginImage from "./src/assets/login-image.jpg";
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -306,7 +305,7 @@ export default function Login() {
       >
         <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800">
           <img
-            src={loginImage}
+            src="./src/assets/login-image.jpg"
             alt="login"
             className="h-full w-full object-cover"
           />

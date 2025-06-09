@@ -128,7 +128,7 @@ const Header = () => {
     <header ref={headerRef} className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 z-50">
       {/* Top bar */}
       <div className="hidden md:block bg-gray-100 dark:bg-gray-800 py-2">
-        <GoogleTranslate />
+        {/* <GoogleTranslate /> */}
         <div className="mx-auto max-w-7xl px-8">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-600 dark:text-gray-400">
