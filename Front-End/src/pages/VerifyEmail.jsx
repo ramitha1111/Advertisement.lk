@@ -4,6 +4,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom'
 import api from '../axios'
 import useAuth from '../hooks/useAuth'
 import { motion } from 'framer-motion'
+import loginImage from '../assets/login-image.jpg';
 
 export default function EmailVerification() {
     const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', ''])
@@ -245,7 +246,7 @@ export default function EmailVerification() {
             >
                 <div className="absolute inset-0">
                     <img
-                        src="./src/assets/login-image.jpg"
+                        src={loginImage}
                         alt="Verification"
                         className="w-full h-full object-cover"
                     />
