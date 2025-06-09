@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
-import WaveBackground from "./Images/WaveBackground.svg"
+import WaveBackground from "../../assets/login-image.jpg"
 
 export default function HeroSection() {
     // Mock navigation function - replace with your actual navigation logic
