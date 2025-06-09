@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const Advertisement = require("../models/advertisement");
 const Category = require("../models/category");
-const User = require("../models/User");
+const User = require("../models/user");
 const Favourites = require("../models/favourites");
 const dayjs = require('dayjs');
-const Order = require('../models/Order');
+const Order = require('../models/order');
 const upload = require('../middlewares/upload');
-const Package = require('../models/Package');
+const Package = require('../models/package');
 
 
 // Multer middleware for image uploads
