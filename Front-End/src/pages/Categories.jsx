@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllCategories, deleteCategory } from '../api/CategoryApi';
+import { getAllCategories, deleteCategory } from '../api/categoryApi';
 import CategoryCard from '../components/CategoryCard';
 import { useSelector } from 'react-redux';
 
