@@ -8,7 +8,7 @@ import useAuth from '../hooks/useAuth'
 import { motion } from 'framer-motion'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-
+import loginImage from '../assets/login-image.jpg';
 
 export default function Register() {
     const title = 'Register - Advertisements.lk';
@@ -444,7 +444,7 @@ export default function Register() {
             >
                 <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800">
                     <img
-                        src="./src/assets/login-image.jpg"
+                        src={loginImage}
                         alt="register"
                         className="h-full w-full object-cover"
                     />

@@ -1,6 +1,6 @@
-const Order = require('../models/Order');
-const Advertisement = require('../models/Advertisement');
-const Package = require('../models/Package');
+const Order = require('../models/order');
+const Advertisement = require('../models/advertisement');
+const Package = require('../models/package');
 const paymentGateway = require('../utils/mockPaymentgateway');
 const { generateInvoiceWithParams } = require('../utils/invoiceSend');
 

@@ -3,6 +3,7 @@ import { ChevronLeft } from 'lucide-react'
 import { useNavigate, Link } from 'react-router-dom'
 import api from '../axios'
 import { motion } from 'framer-motion'
+import loginImage from '../assets/login-image.jpg';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('')
@@ -154,7 +155,7 @@ export default function ForgotPassword() {
       >
         <div className="absolute inset-0">
           <img
-            src="./src/assets/login-image.jpg"
+            src={loginImage}
             alt="Reset Password"
             className="w-full h-full object-cover"
           />

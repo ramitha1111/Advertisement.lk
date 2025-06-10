@@ -399,7 +399,7 @@ const Advertisement = () => {
                     {/* Right column - Price, seller info */}
                     <div className="lg:col-span-1">
                         {/* Price box */}
-                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 sticky top-24">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 sticky top-40">
                             <h2 className="text-3xl font-bold text-primary mb-2">
                                 Rs. {price.toLocaleString()}
                             </h2>

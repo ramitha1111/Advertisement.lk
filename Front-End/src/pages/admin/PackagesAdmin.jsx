@@ -19,7 +19,7 @@ const PackagesAdmin = () => {
         const fetchPackages = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:3000/api/packages');
+                const response = await fetch('http://localhost:3001/api/packages');
 
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
@@ -64,7 +64,7 @@ const PackagesAdmin = () => {
         if (!packageToDelete) return;
 
         try {
-            const response = await fetch(`http://localhost:3000/api/packages/${packageToDelete._id}`, {
+            const response = await fetch(`http://localhost:3001/api/packages/${packageToDelete._id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
