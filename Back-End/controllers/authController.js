@@ -30,7 +30,7 @@ exports.register = async (req, res) => {
     await user.save();
 
     // Send OTP after successful registration
-    await otpController.sendOTP(email);
+    //await otpController.sendOTP(email);
 
     res.json({ message: "User registered successfully. OTP sent to email for verification." });
   } catch (error) {
