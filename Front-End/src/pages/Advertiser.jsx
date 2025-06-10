@@ -102,7 +102,7 @@ const Advertiser = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Left column - Advertiser info */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 sticky top-24">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 sticky top-40">
                             {/* Profile Header */}
                             <div className="flex flex-col items-center mb-6">
                                 <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-white dark:border-gray-700 shadow-md">

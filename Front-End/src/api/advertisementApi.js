@@ -27,6 +27,16 @@ export const changeAdvertisementStatus = async (advertisementId, token) => {
   return response.data;
 };
 
+export const getMyAdvertisements = async (userId, token) => {
+
+  const response = await api.get(`/advertisements/my/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 
 export const getAdvertisementsByUser = async (userId, token) => {
 

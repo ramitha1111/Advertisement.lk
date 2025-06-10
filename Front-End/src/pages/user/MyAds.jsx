@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import AdvertisementCard from './AdvertisementCardNew.jsx';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth.js';
-import { deleteAdvertisement, getAdvertisementsByUser } from '../../api/advertisementApi.js';
+import { deleteAdvertisement, getMyAdvertisements } from '../../api/advertisementApi.js';
 
 import { useDispatch } from "react-redux";
 import useAdvertisement from "../../hooks/useAdvertisement.js";
@@ -55,7 +55,7 @@ const MyAdvertisements = () => {
         setIsLoading(true);
         try {
             if (token) {
-                const data = await getAdvertisementsByUser(user._id, token);
+                const data = await getMyAdvertisements(user._id || user.id, token);
                 setAdvertisementData(data || []);
                 dispatch(fetchAdvertisement({ advertisementData: data || [] }));
             }

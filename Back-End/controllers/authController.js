@@ -2,9 +2,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Auth = require("../models/user");
 const otpController = require("./otpController");
-const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const User = require("../models/user");
+const { Resend } = require('resend');
+
+// Initialize Resend
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Register User
 exports.register = async (req, res) => {
@@ -62,7 +65,6 @@ exports.login = async (req, res) => {
   }
 };
 
-
 // Google Authentication
 exports.googleAuth = (req, res) => {
   // Google login successful, user and token are available
@@ -78,7 +80,6 @@ exports.googleAuth = (req, res) => {
   // Redirect to the client URL with the token
   res.redirect(`${process.env.CLIENT_URL}/user/dashboard?token=${token}&user=${JSON.stringify(user)}`);
 };
-
 
 // Send Password Reset Email
 exports.sendPasswordResetEmail = async (req, res) => {
@@ -100,25 +101,64 @@ exports.sendPasswordResetEmail = async (req, res) => {
     // Create the reset URL
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
-    // Set up email transporter (using Gmail SMTP)
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    // Send the email using Resend
+    try {
+      const { data, error } = await resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
+        to: user.email,
+        subject: 'Password Reset Request - DigiteX',
+        text: `You requested a password reset. Please click the following link to reset your password:\n\n${resetUrl}\n\nThis link will expire in 1 hour for security reasons.`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #007bff; padding-bottom: 20px;">
+              <h1 style="color: #007bff; margin: 0; font-size: 28px;">DigiteX</h1>
+              <p style="margin: 5px 0; color: #666; font-size: 16px;">Password Reset Request</p>
+            </div>
+            
+            <h2 style="color: #333; text-align: center;">Reset Your Password</h2>
+            <p style="color: #666; text-align: center; margin-bottom: 30px;">
+              You requested to reset your password. Click the button below to proceed:
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${resetUrl}" 
+                 style="background-color: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold; display: inline-block;">
+                Reset Password
+              </a>
+            </div>
+            
+            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 30px 0;">
+              <p style="margin: 0; color: #666; font-size: 14px;">
+                <strong>Security Notice:</strong> This link will expire in 1 hour for your security. 
+                If you didn't request this password reset, please ignore this email.
+              </p>
+            </div>
+            
+            <p style="color: #999; font-size: 14px; text-align: center; margin-top: 30px;">
+              If the button doesn't work, copy and paste this link into your browser:<br>
+              <span style="word-break: break-all;">${resetUrl}</span>
+            </p>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
+              <p style="color: #666; font-size: 14px; margin: 0;">
+                Best regards,<br>
+                The DigiteX Team
+              </p>
+            </div>
+          </div>
+        `,
+      });
 
-    // Email content
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: user.email,
-      subject: 'Password Reset Request',
-      text: `You requested a password reset. Please click the following link to reset your password:\n\n${resetUrl}`,
-    };
+      if (error) {
+        console.error('Email sending failed:', error);
+        throw new Error('Failed to send email');
+      }
 
-    // Send the email
-    await transporter.sendMail(mailOptions);
+      console.log('Password reset email sent successfully:', data);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      throw error;
+    }
 
     res.status(200).send({ message: 'Password reset email sent successfully!' });
   } catch (error) {
@@ -126,7 +166,6 @@ exports.sendPasswordResetEmail = async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 };
-
 
 // Reset Password
 exports.resetPassword = async (req, res) => {
@@ -156,6 +195,3 @@ exports.resetPassword = async (req, res) => {
     res.status(400).send({ error: error.message });
   }
 };
-
-
-
