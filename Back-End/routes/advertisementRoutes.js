@@ -14,7 +14,8 @@ const {
     getUserIdByAdvertisementId,
     getRenewableAds,
     changeStatus,
-    getAllAdvertisementsAdmin
+    getAllAdvertisementsAdmin,
+    getMyAdvertisements
 } = require('../controllers/advertisementController');
 const authMiddleware = require('../middlewares/authMiddleware');
 const { isAdmin } = require('../middlewares/roleMiddleware');
@@ -33,6 +34,7 @@ router.get('/subcategory/:subcategoryId', getAdvertisementsBySubcategory);
 // Protected routes (require authentication)
 router.post('/', authMiddleware, createAdvertisement); //
 router.get('/user/:id', authMiddleware, getAdvertisementsByUserId); //
+router.get('/my/:id', authMiddleware, getMyAdvertisements); //
 router.put('/:id', authMiddleware, updateAdvertisement);
 router.delete('/:id', authMiddleware, deleteAdvertisement); //
 router.get('/favorites', authMiddleware, getAdvertisementsByFavourite);
