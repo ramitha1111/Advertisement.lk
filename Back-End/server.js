@@ -13,6 +13,7 @@ const contactRoutes = require("./routes/contactRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const siteSettingsRoutes = require("./routes/siteSettingsRoutes");
 const path = require('path');
 
 require("dotenv").config();
@@ -59,6 +60,7 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/checkout", checkoutRoutes)
 app.use("/api/payment", paymentRoutes);
+app.use("/api/site-settings", siteSettingsRoutes);
 app.use("/uploads", express.static('uploads'));
 
 // Serve profile and cover image uploads as static files
