@@ -21,7 +21,7 @@ const {compare} = require("bcryptjs");
 const {checkout} = require("./controllers/checkoutController");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 app.use(cors({
