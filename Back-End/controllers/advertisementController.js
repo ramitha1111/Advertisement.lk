@@ -75,7 +75,7 @@ const enrichAdvertisement = async (ad) => {
 
 const path = require('path');
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3001';
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 exports.createAdvertisement = [
     handleFileUploads,
@@ -270,14 +270,17 @@ exports.updateAdvertisement = [
 
             req.body.updatedAt = new Date();
 
+            // Normalize and convert paths for frontend
+            const normalizePath = (filePath) => `${BASE_URL}/${filePath.replace(/\\/g, '/')}`;
+
             // Process file uploads if any
             if (req.files) {
-                if (req.files.featuredImage) {
-                    req.body.featuredImage = req.files.featuredImage[0].path;
+                if (req.files.featuredImage && req.files.featuredImage.length > 0) {
+                    req.body.featuredImage = normalizePath(req.files.featuredImage[0].path);
                 }
 
                 if (req.files.images && req.files.images.length > 0) {
-                    req.body.images = req.files.images.map(file => file.path);
+                    req.body.images = req.files.images.map(file => normalizePath(file.path));
                 }
             }
 
