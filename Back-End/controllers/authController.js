@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
     user = new Auth({ firstName, lastName, username, email, password: hashedPassword, phone });
     await user.save();
 
-    // Send OTP after successful registration
+    // Send OTP after successful registration - uncomment the line below to enable OTP functionality
     //await otpController.sendOTP(email);
 
     res.json({ message: "User registered successfully. OTP sent to email for verification." });
