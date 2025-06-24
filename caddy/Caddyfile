@@ -2,7 +2,7 @@
     local_certs
 }
 
-68.183.231.92 {
+advertisements.lk {
     encode gzip
     reverse_proxy frontend:5173
 }
