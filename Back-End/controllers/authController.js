@@ -104,7 +104,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
 
     // Send the email using Resend
     await resend.emails.send({
-      from: process.env.EMAIL_FROM || 'noreply@yourdomain.com',
+      from: process.env.EMAIL_FROM || 'noreply@advertisements.lk',
       to: user.email,
       subject: 'Password Reset Request',
       text: `You requested a password reset. Please click the following link to reset your password:\n\n${resetUrl}`,

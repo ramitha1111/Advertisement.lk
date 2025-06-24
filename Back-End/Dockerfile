@@ -6,8 +6,6 @@ COPY package*.json ./
 
 RUN npm ci
 
-RUN npm install -g nodemon
-
 COPY . .
 
 EXPOSE 3000

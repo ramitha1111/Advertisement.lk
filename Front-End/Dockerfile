@@ -6,8 +6,6 @@ COPY package*.json ./
 
 RUN npm ci
 
-RUN npm install -g vite
-
 COPY . .
 
 EXPOSE 5173
