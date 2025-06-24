@@ -17,7 +17,7 @@ exports.register = async (req, res) => {
     let user = await Auth.findOne({ email });
     if (user) return res.status(400).json({ message: "Email already exists" });
 
-    // Check if username already exists
+    // Check if the username already exists
     user = await Auth.findOne({ username });
     if (user) return res.status(400).json({ message: "Username taken" });
 
