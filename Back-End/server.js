@@ -66,6 +66,6 @@ app.use('/assets/uploads/profile_photos', express.static(path.join(__dirname, 'u
 app.use('/assets/uploads/cover_photos', express.static(path.join(__dirname, 'uploads/cover_photos')));
 app.use('/assets/uploads/advertisementImages', express.static(path.join(__dirname, '/assets/uploads/advertisementImages')));
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

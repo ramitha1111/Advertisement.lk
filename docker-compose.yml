@@ -1,0 +1,12 @@
+name: advertisement-lk
+
+services:
+  api:
+    build:
+      context: ./Back-End
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./Back-End/.env
+    ports:
+      - "3000:3000"
+    
