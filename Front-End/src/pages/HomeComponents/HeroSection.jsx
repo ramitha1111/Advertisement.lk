@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Add this import
 import WaveBackground from "./Images/WaveBackground.svg"
 
 export default function HeroSection() {
-    // Mock navigation function - replace with your actual navigation logic
+    const navigate = useNavigate(); // Use the actual hook
+    
+    // Replace the mock function with actual navigation
     const Navigate = (path) => {
-        console.log("Navigating to:", path);
-        // In your actual app, this would be: useNavigate()(path)
+        navigate(path);
     };
 
     const [searchQuery, setSearchQuery] = useState("");
@@ -96,13 +98,13 @@ export default function HeroSection() {
         setSearchQuery(suggestion);
         setShowSuggestions(false);
         setSelectedIndex(-1);
-        Navigate("/search-advertisements/" + suggestion);
+        Navigate("/search-advertisements/" + encodeURIComponent(suggestion));
     };
 
     // Handle search
     const handleSearch = () => {
         if (searchQuery.trim()) {
-            Navigate("/search-advertisements/" + searchQuery);
+            Navigate("/search-advertisements/" + encodeURIComponent(searchQuery));
             setShowSuggestions(false);
         }
     };
@@ -201,7 +203,7 @@ export default function HeroSection() {
                                 </div>
                                 
                                 <button
-                                    type="submit"
+                                    type="button"
                                     onClick={handleSearch}
                                     className="bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-md flex items-center justify-center lg:w-12 lg:mr-5 transition-colors"
                                 >
