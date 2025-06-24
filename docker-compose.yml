@@ -10,7 +10,9 @@ services:
     ports:
       - "27017:27017"
     networks:
-    - advertisement-lk
+      - advertisement-lk
+    mem_limit: 512m
+    cpus: 0.5
 
   api:
     build:
