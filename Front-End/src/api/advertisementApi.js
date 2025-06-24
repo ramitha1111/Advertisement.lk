@@ -48,6 +48,12 @@ export const getAdvertisementsByUser = async (userId, token) => {
   return response.data;
 };
 
+// Get advertisements by user ID (public access)
+export const getAdvertisementsByUserPublic = async (userId) => {
+  const response = await api.get(`/advertisements/user/public/${userId}`);
+  return response.data;
+};
+
 // Get single advertisement by ID
 export const getAdvertisementById = async (advertisementId) => {
   const response = await api.get(`/advertisements/${advertisementId}`);
