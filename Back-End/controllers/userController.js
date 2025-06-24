@@ -2,8 +2,8 @@ const Auth = require('../models/user');
 const mongoose = require('mongoose');
 
 const path = require('path');
-const bcrypt = require('bcrypt');
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3001';
+const bcrypt = require('bcryptjs');
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 const upload = require('../middlewares/upload');
 
 // Multer middleware for image uploads

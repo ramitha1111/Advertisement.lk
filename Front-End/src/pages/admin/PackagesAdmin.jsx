@@ -4,6 +4,7 @@ import PackageCard from '../../components/PackageCard';
 import {useNavigate} from "react-router-dom";
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 const token = localStorage.getItem('token');
+import { getAllPackages, deletePackage } from '../../api/packageApi';
 
 const PackagesAdmin = () => {
     const [packages, setPackages] = useState([]);
@@ -19,7 +20,7 @@ const PackagesAdmin = () => {
         const fetchPackages = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:3000/api/packages');
+                const response = await getAllPackages(token);
 
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
@@ -64,13 +65,7 @@ const PackagesAdmin = () => {
         if (!packageToDelete) return;
 
         try {
-            const response = await fetch(`http://localhost:3000/api/packages/${packageToDelete._id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-            });
+            const response = await deletePackage(packageToDelete._id, token);
 
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
