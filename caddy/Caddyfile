@@ -2,11 +2,11 @@
     local_certs
 }
 
-ad.localhost {
+advertisements.lk {
     encode gzip
     reverse_proxy frontend:5173
 }
 
-api.ad.localhost {
+api.advertisements.lk {
     reverse_proxy api:3000
 }
