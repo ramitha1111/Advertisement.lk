@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getCategoryById, deleteCategory } from '../../api/CategoryApi';
+import { getCategoryById, deleteCategory } from '../../api/categoryApi';
 import { useSelector } from 'react-redux';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 

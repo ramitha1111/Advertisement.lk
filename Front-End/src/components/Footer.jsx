@@ -55,9 +55,9 @@ const Footer = () => {
               <a href="#" className="w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full text-white hover:bg-blue-600 transition-colors">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="w-10 h-10 flex items-center justify-center bg-sky-500 rounded-full text-white hover:bg-sky-600 transition-colors">
+              {/* <a href="#" className="w-10 h-10 flex items-center justify-center bg-sky-500 rounded-full text-white hover:bg-sky-600 transition-colors">
                 <Twitter size={18} />
-              </a>
+              </a> */}
               <a href="#" className="w-10 h-10 flex items-center justify-center bg-blue-700 rounded-full text-white hover:bg-blue-800 transition-colors">
                 <Linkedin size={18} />
               </a>

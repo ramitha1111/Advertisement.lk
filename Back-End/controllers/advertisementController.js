@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
-const Advertisement = require("../models/Advertisement");
+const Advertisement = require("../models/advertisement");
 const Category = require("../models/category");
-const User = require("../models/User");
+const User = require("../models/user");
 const Favourites = require("../models/favourites");
 const dayjs = require('dayjs');
-const Order = require('../models/Order');
+const Order = require('../models/order');
 const upload = require('../middlewares/upload');
-const Package = require('../models/Package');
+const Package = require('../models/package');
 
 
 // Multer middleware for image uploads
@@ -132,9 +132,8 @@ exports.createAdvertisement = [
 ];
 
 
-
-// Get advertisement by userId
-exports.getAdvertisementsByUserId = async (req, res) => {
+// Get my advertisements
+exports.getMyAdvertisements = async (req, res) => {
     try {
         // Get the UserId from authMiddleware
         const userId = req.params.id;
@@ -142,6 +141,7 @@ exports.getAdvertisementsByUserId = async (req, res) => {
         // Find advertisements by userId
         //const advertisements = await Advertisement.findById(userId);
         const advertisements = await Advertisement.find({ userId }).lean();
+
         if (!advertisements || advertisements.length === 0) {
             return res.status(404).json({ message: "No advertisements found for this user" });
         }
@@ -158,8 +158,56 @@ exports.getAdvertisementsByUserId = async (req, res) => {
     }
 };
 
-// Get all advertisements
+
+// Get advertisement by userId
+exports.getAdvertisementsByUserId = async (req, res) => {
+    try {
+        // Get the UserId from authMiddleware
+        const userId = req.params.id;
+
+        let advertisements;
+        // Find advertisements by userId
+        //const advertisements = await Advertisement.findById(userId);
+        if (userId === req.user.id) {
+            advertisements = await Advertisement.find({ userId }).lean();
+        } else {
+            advertisements = await Advertisement.find({ status: 'active' }).lean();
+        }
+
+        if (!advertisements || advertisements.length === 0) {
+            return res.status(404).json({ message: "No advertisements found for this user" });
+        }
+        console.log(advertisements);
+        // Enrich advertisements with category and user details
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
+
+        res.status(200).json(enrichedAds);
+    } catch (error) {
+        console.error('Error getting user advertisements:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+// Get all advertisements (active)
 exports.getAllAdvertisements = async (req, res) => {
+    try {
+        const advertisements = await Advertisement.find({ status: 'active' }).lean();
+
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
+
+        res.status(200).json(enrichedAds);
+    } catch (error) {
+        console.error('Error getting all advertisements:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+// Get all advertisements
+exports.getAllAdvertisementsAdmin = async (req, res) => {
     try {
         const advertisements = await Advertisement.find().lean();
 
@@ -222,14 +270,17 @@ exports.updateAdvertisement = [
 
             req.body.updatedAt = new Date();
 
+            // Normalize and convert paths for frontend
+            const normalizePath = (filePath) => `${BASE_URL}/${filePath.replace(/\\/g, '/')}`;
+
             // Process file uploads if any
             if (req.files) {
-                if (req.files.featuredImage) {
-                    req.body.featuredImage = req.files.featuredImage[0].path;
+                if (req.files.featuredImage && req.files.featuredImage.length > 0) {
+                    req.body.featuredImage = normalizePath(req.files.featuredImage[0].path);
                 }
 
                 if (req.files.images && req.files.images.length > 0) {
-                    req.body.images = req.files.images.map(file => file.path);
+                    req.body.images = req.files.images.map(file => normalizePath(file.path));
                 }
             }
 
@@ -246,8 +297,8 @@ exports.updateAdvertisement = [
 
             const updatedAdvertisement = await Advertisement.findByIdAndUpdate(
                 advertisementId,
-                { $set: req.body },
-                { new: true }
+                { $set: { ...req.body, status: 'pending' } },
+                { new: true },
             );
 
             if (!updatedAdvertisement) {
@@ -511,3 +562,36 @@ exports.getRenewableAds = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch renewable ads', error: error.message });
     }
 };
+
+exports.changeStatus = async (req, res) => {
+    try {
+        const advertisementId = req.params.id;
+
+        // Find the advertisement by only ad ID
+        const advertisement = await Advertisement.findById(advertisementId).lean();
+
+
+        if (!advertisement) {
+            return res.status(404).json({ message: "Advertisement not found" });
+        }
+
+        // Toggle the status
+        const newStatus = advertisement.status === "active" ? "pending" : "active";
+
+        if (newStatus === "active") {
+            advertisement.isVisible = 1;
+        }
+
+        if (newStatus === "pending") {
+            advertisement.isVisible = 0;
+        }
+
+        // Update the advertisement status
+        await Advertisement.findByIdAndUpdate(advertisementId, { status: newStatus });
+
+        res.status(200).json({ message: "Advertisement status updated successfully", newStatus });
+    } catch (error) {
+        console.error('Error changing advertisement status:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}

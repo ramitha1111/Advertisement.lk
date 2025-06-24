@@ -6,7 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const packageRoutes = require("./routes/packageRoutes");
-const advertisementRoutes = require("./routes/AdvertisementRoutes")
+const advertisementRoutes = require("./routes/advertisementRoutes")
 const favouritesRoutes = require("./routes/favouritesRoutes");
 const compareRoutes = require("./routes/compareRoute");
 const contactRoutes = require("./routes/contactRoutes");
@@ -25,7 +25,10 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: [
+    process.env.CLIENT_URL,
+    'http://128.199.132.175'
+  ],
   credentials: true
 }))
 

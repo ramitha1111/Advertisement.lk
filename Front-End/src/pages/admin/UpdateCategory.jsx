@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCategoryById, updateCategory } from "../../api/CategoryApi";
+import { getCategoryById, updateCategory } from "../../api/categoryApi";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 

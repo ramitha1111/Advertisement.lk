@@ -9,9 +9,9 @@ const userSchema = new Schema({
   password: { type: String },
   profileImage: { type: String }, // URL or path to the profile image
   phone: { type: String },
-  role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  role: { type: String, enum: ['user', 'admin'], default: 'admin' }, // change this to user
   otp: { type: String }, // Field to store OTP
-  emailVerified: { type: Boolean, default: false }, // Email verification status
+  emailVerified: { type: Boolean, default: true }, // change this to default false
   googleId: { type: String }, // Google ID for OAuth
   profileImage: { type: String },
   coverImage: { type: String },

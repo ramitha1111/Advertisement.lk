@@ -9,7 +9,8 @@ import {
   ShoppingBag,
   Package,
   Plus,
-  Heart
+  Heart,
+  ChartBar,
 } from 'lucide-react'
 import { useLocation, Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
@@ -26,6 +27,7 @@ import AddAdvertisement from "./AddAdvertisement";
 import MyAds from "./MyAds";
 import { getAdvertisementsByUser } from '../../api/advertisementApi.js';
 import { getUserOrders } from '../../api/orderApi.js';
+import AdStats from './AdStats.jsx';
 
 const UserDashboard = () => {
   const { user, token } = useAuth();
@@ -102,6 +104,10 @@ const UserDashboard = () => {
       case 'my-orders':
         return (
           <MyOrders />
+        )
+      case 'statistics':
+        return (
+          <AdStats />
         )
       case 'settings':
         return (
@@ -251,6 +257,15 @@ const UserDashboard = () => {
                 <ShoppingBag size={16} className="mr-2" /> My Orders
               </Link>
               <Link
+                to="/user/dashboard?section=statistics"
+                className={`${activeTab === 'statistics'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
+                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+              >
+                <ChartBar size={16} className="mr-2" /> Statistics
+              </Link>
+              <Link
                 to="/user/dashboard?section=settings"
                 className={`${activeTab === 'settings'
                   ? 'border-primary text-primary'
@@ -317,6 +332,17 @@ const UserDashboard = () => {
             >
               <ShoppingBag size={16} className="mr-2" />
               <span className="text-sm font-medium">My Orders</span>
+            </Link>
+
+            <Link
+              to="/user/dashboard?section=statistics"
+              className={`flex items-center justify-center p-2 rounded-lg border ${activeTab === 'statistics'
+                ? 'bg-blue-50 border-primary text-primary dark:bg-blue-900/20 dark:border-blue-400'
+                : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                }`}
+            >
+              <Settings size={16} className="mr-2" />
+              <span className="text-sm font-medium">Settings</span>
             </Link>
 
             <Link
