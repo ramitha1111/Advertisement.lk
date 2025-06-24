@@ -2,9 +2,8 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: '/api',
-  credintials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  baseURL: 'https://api.advertisements.lk/api',
+  withCredintials: true,
 })
 
 export default api
