@@ -15,7 +15,7 @@ import {
     Linkedin,
     MessageCircle
 } from 'lucide-react'
-import { getAdvertisementsByUserPublic } from '../api/advertisementApi.js'
+import { getAdvertisementsByUserPublic } from '../api/advertisementApi'
 import useAuth from '../hooks/useAuth'
 import AdvertisementCard from '../components/AdvertisementCard'
 
