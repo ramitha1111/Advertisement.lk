@@ -1,5 +1,4 @@
-// App.jsx
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import useDarkMode from './hooks/useDarkMode'
@@ -10,8 +9,11 @@ import Dashboard from "./pages/user/UserDashboard.jsx";
 
 const App = () => {
   const location = useLocation()
+  const { toggleTheme } = useDarkMode()
 
-  useDarkMode()
+  useEffect(() => {
+    toggleTheme()
+  }, [])
 
   return (
     <main className="bg-white dark:bg-gray-900 text-black dark:text-white">
@@ -20,8 +22,7 @@ const App = () => {
           <Route path="/*" element={<PublicRoutes />} />
           <Route path="/user/*" element={<UserRoutes />} />
           <Route path="/admin/*" element={<AdminRoutes />} />
-          <Route path={"/dashboard"} element={<Dashboard/>}/>
-
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </AnimatePresence>
     </main>
