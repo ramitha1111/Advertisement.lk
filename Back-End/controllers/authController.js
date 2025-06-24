@@ -17,7 +17,7 @@ exports.register = async (req, res) => {
     let user = await Auth.findOne({ email });
     if (user) return res.status(400).json({ message: "Email already exists" });
 
-    // Check if username already exists
+    // Check if the username already exists
     user = await Auth.findOne({ username });
     if (user) return res.status(400).json({ message: "Username taken" });
 
@@ -104,7 +104,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
 
     // Send the email using Resend
     await resend.emails.send({
-      from: process.env.EMAIL_FROM || 'noreply@yourdomain.com',
+      from: process.env.EMAIL_FROM || 'noreply@advertisements.lk',
       to: user.email,
       subject: 'Password Reset Request',
       text: `You requested a password reset. Please click the following link to reset your password:\n\n${resetUrl}`,
