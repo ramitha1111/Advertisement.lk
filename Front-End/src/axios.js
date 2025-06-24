@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://api.ad.localhost/api',
+  baseURL: 'https://api.advertisements.lk/api',
   credintials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 })
