@@ -37,11 +37,6 @@ export const getMyAdvertisements = async (userId, token) => {
   return response.data;
 };
 
-// Get advertisements by user ID (public access)
-export const getUserAdvertisementsPublic = async (userId) => {
-  const response = await api.get(`/advertisements/user/public/${userId}`);
-  return response.data;
-};
 
 export const getAdvertisementsByUser = async (userId, token) => {
 
@@ -50,6 +45,12 @@ export const getAdvertisementsByUser = async (userId, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
+  return response.data;
+};
+
+// Get advertisements by user ID (public access)
+export const getAdvertisementsByUserPublic = async (userId) => {
+  const response = await api.get(`/advertisements/user/public/${userId}`);
   return response.data;
 };
 
