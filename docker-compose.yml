@@ -1,12 +1,65 @@
 name: advertisement-lk
 
 services:
+
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+    - advertisement-lk
+
   api:
     build:
       context: ./Back-End
       dockerfile: Dockerfile
     restart: unless-stopped
     env_file: ./Back-End/.env
+    volumes:
+      - ./Back-End:/app:cached
+      - /app/node_modules
+    networks:
+      - advertisement-lk
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: ./Front-End
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./Front-End:/app:cached
+      - /app/node_modules
+    networks:
+      - advertisement-lk
+    depends_on:
+      - api
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
     ports:
-      - "3000:3000"
+      - "80:80"
+      - "443:443"
+    networks:
+      - advertisement-lk
+    depends_on:
+      - api
+      - frontend
     
+volumes:
+  mongo-data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  advertisement-lk:
+    driver: bridge

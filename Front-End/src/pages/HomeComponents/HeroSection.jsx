@@ -152,7 +152,7 @@ export default function HeroSection() {
                     <div className="w-full xl:w-1/2 z-10 mx-auto xl:mx-0 text-center xl:text-left">
                         <h1 className="text-5xl md:text-6xl font-bold text-slate-700 dark:text-slate-200 mb-4">
                             Find Anything<br/>
-                            Around <span className="text-orange-500">You.</span>
+                            Around <span className="text-orange-500">You</span>
                         </h1>
 
                         {/* Search Box with higher z-index - centered on smaller screens */}
