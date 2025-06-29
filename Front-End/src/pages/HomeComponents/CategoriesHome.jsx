@@ -136,7 +136,7 @@ const Categories = () => {
 
     const fetchHomepageCategories = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/site-settings/homepage-categories`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/site-settings/homepage-categories`);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch categories');
