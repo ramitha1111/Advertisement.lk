@@ -1,14 +1,7 @@
 const Auth = require("../models/user");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-// Email Transporter
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Generate OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
@@ -22,8 +15,8 @@ exports.sendOTP = async (email) => {
     await Auth.findOneAndUpdate({ email }, { otp }, { upsert: true });
 
     // Send OTP email
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'noreply@yourdomain.com',
       to: email,
       subject: "Email Verification OTP",
       text: `Your OTP code is ${otp}`,
@@ -46,8 +39,8 @@ exports.passwordResetOTP = async (req, res) => {
     await Auth.findOneAndUpdate({ email }, { otp }, { upsert: true });
 
     // Send OTP email
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'noreply@yourdomain.com',
       to: email,
       subject: "Email Verification OTP",
       text: `Your OTP code is ${otp}`,

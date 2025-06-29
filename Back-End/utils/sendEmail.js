@@ -1,16 +1,10 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: process.env.EMAIL_USER, // your email
-        pass: process.env.EMAIL_PASS, // app password
-    },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (to, subject, html) => {
-    await transporter.sendMail({
-        from: `"DigiteX" <${process.env.EMAIL_USER}>`,
+    await resend.emails.send({
+        from: `"DigiteX" <${process.env.EMAIL_FROM || 'noreply@yourdomain.com'}>`,
         to,
         subject,
         html,

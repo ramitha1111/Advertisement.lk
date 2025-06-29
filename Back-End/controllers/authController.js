@@ -2,9 +2,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Auth = require("../models/user");
 const otpController = require("./otpController");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 const crypto = require("crypto");
 const User = require("../models/user");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Register User
 exports.register = async (req, res) => {
@@ -15,7 +17,7 @@ exports.register = async (req, res) => {
     let user = await Auth.findOne({ email });
     if (user) return res.status(400).json({ message: "Email already exists" });
 
-    // Check if username already exists
+    // Check if the username already exists
     user = await Auth.findOne({ username });
     if (user) return res.status(400).json({ message: "Username taken" });
 
@@ -100,25 +102,13 @@ exports.sendPasswordResetEmail = async (req, res) => {
     // Create the reset URL
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
-    // Set up email transporter (using Gmail SMTP)
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    // Email content
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
+    // Send the email using Resend
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'noreply@advertisements.lk',
       to: user.email,
       subject: 'Password Reset Request',
       text: `You requested a password reset. Please click the following link to reset your password:\n\n${resetUrl}`,
-    };
-
-    // Send the email
-    await transporter.sendMail(mailOptions);
+    });
 
     res.status(200).send({ message: 'Password reset email sent successfully!' });
   } catch (error) {
@@ -156,6 +146,3 @@ exports.resetPassword = async (req, res) => {
     res.status(400).send({ error: error.message });
   }
 };
-
-
-

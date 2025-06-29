@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Plus, X, Save } from 'lucide-react';
 const token = localStorage.getItem('token');
+import { getPackageById, updatePackage } from '../../api/packageApi'; // Adjust the import path as necessary
 
 const UpdatePackage = () => {
     const { id } = useParams();
@@ -26,7 +27,7 @@ const UpdatePackage = () => {
 
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:3000/api/packages/${id}`);
+                const response = await getPackageById(id, token);
 
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
@@ -76,14 +77,7 @@ const UpdatePackage = () => {
 
         try {
             setSaving(true);
-            const response = await fetch(`http://localhost:3000/api/packages/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(packageData),
-            });
+            const response = await updatePackage(id, packageData, token);
 
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);

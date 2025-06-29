@@ -190,6 +190,33 @@ exports.getAdvertisementsByUserId = async (req, res) => {
     }
 };
 
+// Get advertisement by userId (public access)
+exports.getAdvertisementsByUserIdPublic = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        let advertisements;
+        
+        // Find advertisements by userId
+        advertisements = await Advertisement.find({ status: 'active', userId: userId }).lean();
+
+
+        if (!advertisements || advertisements.length === 0) {
+            return res.status(404).json({ message: "No advertisements found for this user" });
+        }
+        console.log(advertisements);
+        // Enrich advertisements with category and user details
+        const enrichedAds = await Promise.all(
+            advertisements.map(ad => enrichAdvertisement(ad))
+        );
+
+        res.status(200).json(enrichedAds);
+    } catch (error) {
+        console.error('Error getting user advertisements:', error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
 // Get all advertisements (active)
 exports.getAllAdvertisements = async (req, res) => {
     try {

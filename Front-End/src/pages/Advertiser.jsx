@@ -15,7 +15,7 @@ import {
     Linkedin,
     MessageCircle
 } from 'lucide-react'
-import { getAdvertisementsByUser } from '../api/advertisementApi.js'
+import { getAdvertisementsByUserPublic } from '../api/advertisementApi'
 import useAuth from '../hooks/useAuth'
 import AdvertisementCard from '../components/AdvertisementCard'
 
@@ -37,7 +37,7 @@ const Advertiser = () => {
         const fetchAdvertiserData = async () => {
             try {
                 setLoading(true)
-                const data = await getAdvertisementsByUser(userId, token)
+                const data = await getAdvertisementsByUserPublic(userId)
 
                 if (data && data.length > 0 && data[0].userDetails) {
                     setAdvertiser(data[0].userDetails)
