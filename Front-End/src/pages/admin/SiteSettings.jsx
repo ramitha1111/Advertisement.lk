@@ -22,7 +22,7 @@ const SiteSettings = () => {
   const [draggingItem, setDraggingItem] = useState(null);
 
   const { token } = useSelector((state) => state.auth);
-  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
     fetchCurrentSettings();
