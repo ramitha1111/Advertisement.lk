@@ -1,3 +1,4 @@
+// Front-End/src/components/Header.jsx - Updated with logo support
 'use client'
 
 import React, {useState, useEffect} from 'react'
@@ -35,15 +36,64 @@ import {
 } from '@headlessui/react'
 import GoogleTranslate from './GoogleTranslate'
 import {useNavigate} from "react-router-dom";
+import {getPublicSettings} from '../api/siteSettingsApi';
 
 const Header = () => {
     const isDark = useSelector((state) => state.theme.isDark)
     const dispatch = useDispatch()
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [headerHeight, setHeaderHeight] = useState(0)
+    const [logoSettings, setLogoSettings] = useState({
+        logo: null,
+        logoAlt: 'ADvertisements.lk',
+        favicon: null
+    })
     const headerRef = React.useRef(null)
     const {isLoggedIn, isAdmin} = useAuth() // Get login and admin status from useAuth hook
     const navigate = useNavigate()
+
+    // Fetch logo settings on component mount
+    useEffect(() => {
+        const fetchLogoSettings = async () => {
+            try {
+                const settings = await getPublicSettings();
+                setLogoSettings({
+                    logo: settings.logo,
+                    logoAlt: settings.logoAlt || 'ADvertisements.lk',
+                    favicon: settings.favicon
+                });
+
+                // Update favicon if available
+                if (settings.favicon) {
+                    updateFavicon(settings.favicon);
+                }
+            } catch (error) {
+                console.error('Error fetching logo settings:', error);
+                // Use default values if fetch fails
+                setLogoSettings({
+                    logo: null,
+                    logoAlt: 'ADvertisements.lk',
+                    favicon: null
+                });
+            }
+        };
+
+        fetchLogoSettings();
+    }, []);
+
+    // Function to update favicon
+    const updateFavicon = (faviconUrl) => {
+        const favicon = document.querySelector('link[rel="icon"]');
+        if (favicon) {
+            favicon.href = faviconUrl;
+        } else {
+            // Create favicon link if it doesn't exist
+            const newFavicon = document.createElement('link');
+            newFavicon.rel = 'icon';
+            newFavicon.href = faviconUrl;
+            document.head.appendChild(newFavicon);
+        }
+    };
 
     // Calculate and set header height
     useEffect(() => {
@@ -113,7 +163,6 @@ const Header = () => {
         {name: 'My Orders', href: '/user/dashboard?section=my-orders', icon: ShoppingBag},
         {name: 'Settings', href: '/user/dashboard?section=settings', icon: Settings},
         {name: 'Favorites', href: '/user/dashboard?section=favourites', icon: Heart},
-        //{ name: 'Notifications', href: '/notifications', icon: Bell }
     ]
 
     const adminOptions = [
@@ -123,15 +172,39 @@ const Header = () => {
         {name: 'Users', href: '/admin/dashboard?section=users-admin', icon: User},
         {name: 'Packages', href: '/admin/dashboard?section=packages-admin', icon: Package},
         {name: 'Settings', href: '/admin/dashboard?section=settings-admin', icon: Settings},
-        //{ name: 'Notifications', href: '/notifications', icon: Bell }
     ]
+
+    // Logo component
+    const Logo = () => {
+        if (logoSettings.logo) {
+            return (
+                <img
+                    src={logoSettings.logo}
+                    alt={logoSettings.logoAlt}
+                    className="h-8 w-auto max-w-48 object-contain"
+                    onClick={() => navigate('/')}
+                    style={{cursor: 'pointer'}}
+                />
+            );
+        } else {
+            // Fallback to text logo
+            return (
+                <button
+                    className="text-2xl font-bold tracking-tight"
+                    onClick={() => navigate('/')}
+                >
+                    <span className="text-black dark:text-white">ADvertise</span>
+                    <span className="text-primary">ments.lk</span>
+                </button>
+            );
+        }
+    };
 
     return (
         <header ref={headerRef}
                 className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 z-50">
             {/* Top bar */}
             <div className="hidden md:block bg-gray-100 dark:bg-gray-800 py-2">
-                {/* <GoogleTranslate /> */}
                 <div className="mx-auto max-w-7xl px-8">
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -147,9 +220,6 @@ const Header = () => {
                                    className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
                                     <Facebook size={16} className="stroke-2"/>
                                 </a>
-                                {/* <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
-                  <Twitter size={16} className="stroke-2" />
-                </a> */}
                                 <a href="#"
                                    className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
                                     <Linkedin size={16} className="stroke-2"/>
@@ -172,11 +242,15 @@ const Header = () => {
                         <span className="text-black dark:text-white">ADvertise</span>
                         <span className="text-primary">ments.lk</span>
                     </a>*/}
+                    <Logo/>
+                    <div className="w-2"></div>
                     <button className="text-2xl font-bold tracking-tight" onClick={() => navigate('/')}>
                         <span className="text-black dark:text-white">ADvertise</span>
                         <span className="text-primary">ments.lk</span>
                     </button>
+
                 </div>
+
 
                 {/* Mobile menu button - show when width < 1280px (xl breakpoint) */}
                 <div className="flex xl:hidden">
@@ -193,7 +267,6 @@ const Header = () => {
                 {/* Desktop navigation - hidden until width >= 1280px (xl breakpoint) */}
                 <div className="hidden xl:flex xl:gap-x-10">
                     {navLinks.map((link) => (
-
                         /*<a
                             key={link.name}
                             href={link.href}
@@ -206,7 +279,6 @@ const Header = () => {
                                 onClick={() => navigate(link.href)}>
                             {link.name}
                         </button>
-
                     ))}
                 </div>
 
@@ -262,14 +334,10 @@ const Header = () => {
                                                                         className="size-5 text-gray-600 dark:text-gray-400 group-hover:text-primary"/>
                                                                 </div>
                                                                 <div className="flex-auto">
-                                                                    {/*<a href={option.href}
-                                                                       className="block font-semibold text-gray-900 dark:text-white">
+                                                                    <button
+                                                                        className="block font-semibold text-gray-900 dark:text-white"
+                                                                        onClick={() => navigate(option.href)}>
                                                                         {option.name}
-                                                                        <span className="absolute inset-0"/>
-                                                                    </a>*/}
-                                                                    <button key={option.name}
-                                                                            className="block font-semibold text-gray-900 dark:text-white"
-                                                                            onClick={() => navigate(option.href)}>{option.name}
                                                                         <span className="absolute inset-0"/>
                                                                     </button>
                                                                 </div>
@@ -374,7 +442,6 @@ const Header = () => {
                                                     ))}
                                                 </>
                                             )}
-
                                         </div>
                                     </PopoverPanel>
                                 </div>
@@ -459,7 +526,6 @@ const Header = () => {
                         </span>
                             <span
                                 className="absolute inset-0 bg-orange-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out">
-
                             </span>
                         </button>
                     </div>
@@ -539,7 +605,6 @@ const Header = () => {
                                         ))}
                                     </>
                                 )}
-
                             </div>
 
                             {/* Theme Toggle */}
@@ -570,8 +635,8 @@ const Header = () => {
                                         <Facebook size={18}/>
                                     </a>
                                     {/* <a href="#" className="w-10 h-10 flex items-center justify-center bg-sky-500 rounded-full text-white hover:bg-sky-600 transition-colors">
-                    <Twitter size={18} />
-                  </a> */}
+                                        <Twitter size={18} />
+                                    </a> */}
                                     <a href="#"
                                        className="w-10 h-10 flex items-center justify-center bg-blue-700 rounded-full text-white hover:bg-blue-800 transition-colors">
                                         <Linkedin size={18}/>
