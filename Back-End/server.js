@@ -26,16 +26,16 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 app.use(cors({
-  origin: [
-    process.env.CLIENT_URL,
-    'http://128.199.132.175'
-  ],
-  credentials: true
+    origin: [
+        process.env.CLIENT_URL,
+        'http://128.199.132.175'
+    ],
+    credentials: true
 }))
 
 // Middleware
 app.use(express.json());
-app.use(session({ secret: process.env.JWT_SECRET, resave: false, saveUninitialized: false }));
+app.use(session({secret: process.env.JWT_SECRET, resave: false, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -63,13 +63,17 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/site-settings", siteSettingsRoutes);
 app.use("/uploads", express.static('uploads'));
 
+// Serve logo and favicon uploads specifically
+app.use('/uploads/logos', express.static(path.join(__dirname, 'uploads/logos')));
+app.use('/uploads/favicons', express.static(path.join(__dirname, 'uploads/favicons')));
+
 // Serve profile and cover image uploads as static files
 app.use('/assets/uploads/profile_photos', express.static(path.join(__dirname, 'uploads/profile_photos')));
 app.use('/assets/uploads/cover_photos', express.static(path.join(__dirname, 'uploads/cover_photos')));
 app.use('/assets/uploads/advertisementImages', express.static(path.join(__dirname, '/assets/uploads/advertisementImages')));
 app.get('/', (req, res) => {
-  res.send('API is working!');
+    res.send('API is working!');
 });
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });

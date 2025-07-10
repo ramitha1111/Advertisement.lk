@@ -1,13 +1,49 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Advertisement.lk</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.jsx"></script>
+
+<!-- Script to update favicon dynamically -->
+<script>
+    // Function to update favicon from site settings
+    window.updateFaviconFromSettings = function () {
+        fetch('/api/site-settings/public')
+            .then(response => response.json())
+            .then(data => {
+                if (data.favicon) {
+                    const favicon = document.querySelector('link[rel="icon"]');
+                    if (favicon) {
+                        favicon.href = data.favicon;
+                    }
+
+                    const appleTouchIcon = document.querySelector('link[rel="apple-touch-icon"]');
+                    if (appleTouchIcon) {
+                        appleTouchIcon.href = data.favicon;
+                    }
+                }
+
+                if (data.logoAlt && data.logoAlt !== 'Site Logo') {
+                    document.title = data.logoAlt + ' - Sri Lanka\'s #1 Marketplace';
+                }
+            })
+            .catch(error => {
+                console.log('Could not load favicon from settings, using default');
+            });
+    };
+
+    // Update favicon on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.updateFaviconFromSettings);
+    } else {
+        window.updateFaviconFromSettings();
+    }
+</script>
+</body>
 </html>
