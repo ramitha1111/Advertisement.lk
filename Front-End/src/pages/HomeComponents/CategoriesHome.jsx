@@ -24,7 +24,7 @@ const CategoryTile = ({category, onClick, index}) => {
             animate={{opacity: 1, y: 0}}
             transition={{duration: 0.5, delay: index * 0.1}}
             whileHover={{scale: 1.05}}
-            className="relative group cursor-pointer flex-shrink-0 w-[280px] sm:w-[320px] md:w-[340px] lg:w-[360px] mt-2 mb-2"
+            className="relative group cursor-pointer flex-shrink-0 w-full mt-2 mb-2"
             onClick={onClick}
         >
             <div className="relative w-full h-48 sm:h-56 lg:h-64 rounded-2xl overflow-hidden shadow-lg">
@@ -255,7 +255,7 @@ const Categories = () => {
     if (loading) {
         return (
             <div className="py-12 lg:py-16 bg-gray-50 dark:bg-gray-900">
-                <div className="container mx-auto px-4 lg:px-8">
+                <div className="max-w-7xl mx-auto px-8">
                     <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 dark:text-white mb-8 text-center">
                         Explore Categories
                     </h2>
@@ -275,7 +275,7 @@ const Categories = () => {
 
     return (
         <div className="py-12 lg:py-16 bg-gray-50 dark:bg-gray-900 overflow-hidden">
-            <div className="container mx-auto px-4 lg:px-8">
+            <div className="max-w-7xl mx-auto px-8">
                 <ScrollAnimatedSection>
                     <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 dark:text-white mb-10 text-center">
                         Explore Categories
@@ -284,11 +284,11 @@ const Categories = () => {
 
                 {/* Categories Carousel Container */}
                 <div className="relative" ref={containerRef}>
-                    {/* Left Navigation Arrow - Positioned outside the carousel */}
+                    {/* Left Navigation Arrow - Inside on mobile, outside on desktop */}
                     {showArrows && (
                         <button
                             onClick={handlePrevious}
-                            className={`absolute left-0 xl:-left-16 top-1/2 -translate-y-1/2 z-20 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-3 shadow-lg transition-all ${
+                            className={`absolute left-2 xl:left-0 xl:-left-16 top-1/2 -translate-y-1/2 z-20 bg-white/50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-3 shadow-lg transition-all ${
                                 !canScrollLeft ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
                             disabled={!canScrollLeft}
@@ -298,11 +298,11 @@ const Categories = () => {
                         </button>
                     )}
 
-                    {/* Right Navigation Arrow - Positioned outside the carousel */}
+                    {/* Right Navigation Arrow - Inside on mobile, outside on desktop */}
                     {showArrows && (
                         <button
                             onClick={handleNext}
-                            className={`absolute right-0 xl:-right-16 top-1/2 -translate-y-1/2 z-20 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-3 shadow-lg transition-all ${
+                            className={`absolute right-2 xl:right-0 xl:-right-16 top-1/2 -translate-y-1/2 z-20 bg-white/50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-3 shadow-lg transition-all ${
                                 !canScrollRight ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
                             disabled={!canScrollRight}
@@ -312,22 +312,21 @@ const Categories = () => {
                         </button>
                     )}
 
-                    {/* Scrollable Categories Container with padding for arrows */}
-                    <div className="px-12 xl:px-0">
+                    {/* Scrollable Categories Container */}
+                    <div className="mx-0">
                         <div
                             ref={scrollContainerRef}
-                            className={`overflow-x-auto scrollbar-hide scroll-smooth ${
-                                !showArrows ? 'flex justify-center' : ''
-                            }`}
+                            className="overflow-x-auto scrollbar-hide scroll-smooth"
                             style={{
                                 scrollbarWidth: 'none',
                                 msOverflowStyle: 'none',
                                 WebkitOverflowScrolling: 'touch'
                             }}
                         >
-                            <div className={`flex gap-6 ${!showArrows ? 'mx-auto' : ''} pb-2`}>
-                                {categories.map((category, index) => (
-                                    <div key={category._id} className="category-tile">
+                            {/* Grid container for desktop 4 items, mobile scroll */}
+                            <div className="md:grid md:grid-cols-4 md:gap-6 flex md:flex-none gap-6 pb-2">
+                                {categories.slice(0, 4).map((category, index) => (
+                                    <div key={category._id} className="category-tile flex-shrink-0 w-80 md:w-full">
                                         <CategoryTile
                                             category={category}
                                             index={index}
@@ -340,10 +339,10 @@ const Categories = () => {
                     </div>
                 </div>
 
-                {/* Navigation dots */}
+                {/* Navigation dots - only show on mobile when scrolling is possible */}
                 {showArrows && (
-                    <div className="flex justify-center mt-8 space-x-2">
-                        {categories.map((_, index) => (
+                    <div className="flex justify-center mt-8 space-x-2 md:hidden">
+                        {categories.slice(0, 4).map((_, index) => (
                             <button
                                 key={index}
                                 onClick={() => scrollToIndex(index)}

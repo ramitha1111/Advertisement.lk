@@ -20,13 +20,7 @@ const PackagesAdmin = () => {
         const fetchPackages = async () => {
             try {
                 setLoading(true);
-                const response = await getAllPackages(token);
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status}`);
-                }
-
-                const data = await response.json();
+                const data = await getAllPackages(token);
                 setPackages(data);
             } catch (err) {
                 setError(err.message);

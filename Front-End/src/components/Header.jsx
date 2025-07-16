@@ -176,8 +176,7 @@ const Header = () => {
 
     // Logo component
     const Logo = () => {
-        if (logoSettings.logo) {
-            return (
+        return (
                 <img
                     src={logoSettings.logo}
                     alt={logoSettings.logoAlt}
@@ -186,18 +185,6 @@ const Header = () => {
                     style={{cursor: 'pointer'}}
                 />
             );
-        } else {
-            // Fallback to text logo
-            return (
-                <button
-                    className="text-2xl font-bold tracking-tight"
-                    onClick={() => navigate('/')}
-                >
-                    <span className="text-black dark:text-white">ADvertise</span>
-                    <span className="text-primary">ments.lk</span>
-                </button>
-            );
-        }
     };
 
     return (
@@ -243,11 +230,6 @@ const Header = () => {
                         <span className="text-primary">ments.lk</span>
                     </a>*/}
                     <Logo/>
-                    <div className="w-2"></div>
-                    <button className="text-2xl font-bold tracking-tight" onClick={() => navigate('/')}>
-                        <span className="text-black dark:text-white">ADvertise</span>
-                        <span className="text-primary">ments.lk</span>
-                    </button>
 
                 </div>
 
