@@ -70,10 +70,6 @@ const Footer = () => {
                         alt={logoSettings.logoAlt}
                         className="h-10 w-auto max-w-48 object-contain mr-3"
                     />
-                    <div className="text-xl font-bold tracking-tight">
-                        <span className="text-black dark:text-white">ADvertise</span>
-                        <span className="text-primary">ments.lk</span>
-                    </div>
                 </div>
             );
         } else {

@@ -37,7 +37,7 @@ const AdvertisementCard = ({ ad }) => {
         </div>
 
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-          <a href={`/advertisement/${ad._id}`} className="hover:text-primary">
+          <a href={`/advertisement/${ad.title.replace(/\s+/g, '-')}/${ad._id}`} className="hover:text-primary">
             {ad.title}
           </a>
         </h3>
@@ -77,7 +77,7 @@ const AdvertisementCard = ({ ad }) => {
         </div>
 
         <a
-          href={`/advertisement/${ad._id}`}
+          href={`/advertisement/${ad.title.replace(/\s+/g, '-')}/${ad._id}`}
           className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80"
         >
           <ArrowRight className="h-4 w-4 mr-1" />

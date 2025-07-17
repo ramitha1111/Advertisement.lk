@@ -140,7 +140,7 @@ export default function HeroSection() {
     }, [selectedIndex]);
     
     return (
-        <div className="relative w-full min-h-[80vh] overflow-hidden bg-white">
+        <div className="relative w-full overflow-hidden bg-white">
             {/* Background wave pattern */}
             <div className="absolute inset-0 z-0 h-full w-full bg-gradient-to-r from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
                 <img className="w-full h-full object-cover dark:invert" src={WaveBackground} alt="WaveBackground.svg"/>

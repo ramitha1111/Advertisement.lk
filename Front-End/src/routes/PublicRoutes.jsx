@@ -51,7 +51,7 @@ const PublicRoutes = () => {
         <Route path="/search-advertisements/:keyword" element={<PageWrapper><SearchAdvertisement /></PageWrapper>} />
         <Route path="/categories" element={<PageWrapper><Categories /></PageWrapper>} />
         <Route path="/categories/:id" element={<PageWrapper><AdsByCategory /></PageWrapper>} />
-        <Route path="/advertisement/:id" element={<PageWrapper><Advertisement /></PageWrapper>} />
+        <Route path="/advertisement/:slug/:id" element={<PageWrapper><Advertisement /></PageWrapper>} />
         <Route path="/advertiser/:id" element={<PageWrapper><Advertiser /></PageWrapper>} />
         {/* Add other public routes here */}
       </Routes>
