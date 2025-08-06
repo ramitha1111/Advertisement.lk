@@ -462,35 +462,6 @@ const TermsConditions = () => {
           </div>
         </div>
       </section>
-
-      {/* Contact */}
-      <section
-        id="contact"
-        className={`py-16 transition-opacity duration-1000 ${isVisible.contact ? 'opacity-100' : 'opacity-0'}`}
-      >
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight mb-8">Questions About These Terms?</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-              If you have any questions about these Terms and Conditions, please contact our legal team.
-            </p>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="text-center">
-                  <MessageSquare className="h-8 w-8 text-primary mx-auto mb-4" />
-                  <h4 className="font-semibold mb-2">Legal Inquiries</h4>
-                  <p className="text-gray-600 dark:text-gray-400">legal@advertisements.lk</p>
-                </div>
-                <div className="text-center">
-                  <FileText className="h-8 w-8 text-primary mx-auto mb-4" />
-                  <h4 className="font-semibold mb-2">General Support</h4>
-                  <p className="text-gray-600 dark:text-gray-400">support@advertisements.lk</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
   )
 }
