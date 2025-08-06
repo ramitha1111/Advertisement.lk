@@ -22,6 +22,8 @@ import { User } from 'lucide-react'
 import Advertiser from '../pages/Advertiser'
 import AdminLogin from '../pages/AdminLogin'
 import SearchAdvertisement from '../pages/SearchAdvertisement'
+import PrivacyPolicy from '../pages/PrivacyPolicy'
+import TermsConditions from '../pages/TermsConditions'
 
 const PublicRoutes = () => {
   const location = useLocation()
@@ -53,6 +55,8 @@ const PublicRoutes = () => {
         <Route path="/categories/:id" element={<PageWrapper><AdsByCategory /></PageWrapper>} />
         <Route path="/advertisement/:slug/:id" element={<PageWrapper><Advertisement /></PageWrapper>} />
         <Route path="/advertiser/:id" element={<PageWrapper><Advertiser /></PageWrapper>} />
+        <Route path="/privacy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
+        <Route path="/terms" element={<PageWrapper><TermsConditions /></PageWrapper>} />
         {/* Add other public routes here */}
       </Routes>
       {!shouldHideHeader && <Footer />}
