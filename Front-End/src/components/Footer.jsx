@@ -47,17 +47,15 @@ const Footer = () => {
     const mainMenuLinks = [
         {name: 'Home', href: '/'},
         {name: 'About Us', href: '/about'},
-        {name: 'Contact Us', href: '/contact'},
-        {name: 'Business', href: '/business'},
+        {name: 'Advertisements', href: '/advertisements'},
         {name: 'Categories', href: '/categories'}
     ]
 
     const supportLinks = [
+        {name: 'Contact Us', href: '/contact'},
+        {name: 'About Us', href: '/about'},
         {name: 'Privacy Policy', href: '/privacy'},
-        {name: 'Terms & Conditions', href: '/terms'},
-        {name: 'FAQ', href: '/faq'},
-        {name: 'Help Center', href: '/help'},
-        {name: 'How to Sell', href: '/how-to-sell'},
+        {name: 'Terms & Conditions', href: '/terms'}
     ]
 
     // Logo component for footer
