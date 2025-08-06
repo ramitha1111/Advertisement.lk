@@ -7,8 +7,6 @@ import {
   Lock,
   Database,
   UserCheck,
-  Mail,
-  Phone,
   Globe,
   AlertTriangle,
   CheckCircle,
@@ -305,38 +303,6 @@ const PrivacyPolicy = () => {
               <p className="text-gray-600 dark:text-gray-400 mb-4">
                 To exercise any of these rights, please contact us using the information below.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section
-        id="contact"
-        className={`py-16 bg-gray-50 dark:bg-gray-800 transition-opacity duration-1000 ${isVisible.contact ? 'opacity-100' : 'opacity-0'}`}
-      >
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight mb-8">Contact Us</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-              If you have any questions about this Privacy Policy or our data practices, please reach out to us.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                <Mail className="h-8 w-8 text-primary mx-auto mb-4" />
-                <h4 className="font-semibold mb-2">Email</h4>
-                <p className="text-gray-600 dark:text-gray-400">privacy@advertisements.lk</p>
-              </div>
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                <Phone className="h-8 w-8 text-primary mx-auto mb-4" />
-                <h4 className="font-semibold mb-2">Phone</h4>
-                <p className="text-gray-600 dark:text-gray-400">+94 11 234 5678</p>
-              </div>
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                <FileText className="h-8 w-8 text-primary mx-auto mb-4" />
-                <h4 className="font-semibold mb-2">Address</h4>
-                <p className="text-gray-600 dark:text-gray-400">Colombo, Sri Lanka</p>
-              </div>
             </div>
           </div>
         </div>
