@@ -48,7 +48,7 @@ const AdvertisementCard = ({ ad }) => {
 
         <div className="flex items-center justify-between">
           <span className="font-bold text-lg text-primary">
-            Rs. {ad.price.toLocaleString()}
+            LKR {ad.price.toLocaleString()}
           </span>
           <div className="flex items-center text-gray-500 dark:text-gray-400">
             <Map className="h-4 w-4 mr-1" />

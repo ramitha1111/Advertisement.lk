@@ -37,7 +37,7 @@ const OrderCard = ({ order, isAdmin = false }) => {
                     <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
                         <p>Order ID: <span className="font-medium">{order._id}</span></p>
                         <p>Date: <span className="font-medium">{formatDate(order.createdAt)}</span></p>
-                        <p>Amount: <span className="font-medium">${order.amount.toFixed(2)}</span></p>
+                        <p>Amount: <span className="font-medium">LKR {order.amount.toFixed(2)}</span></p>
                         {isAdmin && (
                             <p>Customer: <span className="font-medium">{order.userDetails?.firstName} {order.userDetails?.lastName}</span></p>
                         )}

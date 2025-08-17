@@ -88,7 +88,7 @@ const PackageCard = ({
         </h3>
         <div className="mt-4 flex items-baseline justify-center">
           <span className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Rs. {price}
+            LKR {price}
           </span>
         </div>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
