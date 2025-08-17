@@ -71,7 +71,7 @@ const MyPackages = () => {
                                     <div>
                                         <h3 className="font-medium">{ad.packageDetails?.packageName || 'Standard Package'}</h3>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                                            {ad.packageDetails?.duration || 0} days - ${ad.packageDetails?.price || 0}
+                                            {ad.packageDetails?.duration || 0} days - LKR{ad.packageDetails?.price || 0}
                                         </p>
                                     </div>
                                 </div>

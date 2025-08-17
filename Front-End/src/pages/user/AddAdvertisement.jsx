@@ -242,7 +242,7 @@ const AddAdvertisement = () => {
                     </label>
                     <div className="relative">
                         <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            $
+                            LKR
                         </span>
                         <input
                             type="number"
